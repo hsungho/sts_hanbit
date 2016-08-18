@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="${css}/global.css"/>
 <jsp:include page="../global/top.jsp" />
-<jsp:include page="../global/header.jsp" /> 
+<jsp:include page="../global/header.jsp" />
+<link rel="stylesheet" href="/web/resources/css/global.css"/>
 <div class="box">
 	 <h2>서비스를 이용하시려면 회원가입을 하셔야 합니다.</h2>
 	  	<a href="${context}/member.do?page=regist">회원가입 하러 가기</a><br />
@@ -10,7 +10,7 @@
 </div>
 <jsp:include page="../global/footer.jsp" />
 <jsp:include page="../global/end.jsp" /> 
-<script src="${js}/admin.js"></script>
+<script src="/web/resources/js/admin.js"></script>
 <script type="text/javascript">
 	admin.init();
 </script>
