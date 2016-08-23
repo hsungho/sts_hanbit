@@ -6,6 +6,6 @@
 	<title>Document</title>
 </head>
 <body>
-	
+	타일즈 샘플 적용중...
 </body>
 </html>

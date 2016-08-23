@@ -33,7 +33,7 @@ public class HomeController {
 		
 		model.addAttribute("serverTime","안녕하세요" );
 		
-		return "home/main";
+		return "global/content.tiles";
 	}
 	
 }
