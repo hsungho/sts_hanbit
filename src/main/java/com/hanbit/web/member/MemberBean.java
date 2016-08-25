@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.hanbit.web.global.Constants;
+import com.hanbit.web.util.Constants;
 /**
  * @date   :2016. 6. 17.
  * @author :ckan

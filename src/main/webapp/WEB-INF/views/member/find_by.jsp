@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="${css}/global.css" />
 <link rel="stylesheet" href="${css}/member.css" />
-<jsp:include page="../global/top.jsp" />
-<jsp:include page="../global/header.jsp" />
-<jsp:include page="../global/navi.jsp" />
 <style>
 	iframe.ifrm{border:none;width:400px;height:400px}
 </style>
@@ -26,5 +23,3 @@
 	</form>
 		<iframe src="image.jsp" class="ifrm"></iframe><br>
 	</div>
-<jsp:include page="../global/footer.jsp"/>
-<jsp:include page="../global/end.jsp"/>

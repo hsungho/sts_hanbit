@@ -1,6 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<jsp:include page="../global/top.jsp" />
-<jsp:include page="../global/header.jsp" />
 <link rel="stylesheet" href="${css}/global.css" />
 <style type="text/css">
 	span.meta{position:absolute;margin:3px 0 0 -65px;}
@@ -17,5 +15,3 @@
 		<input type="reset" onclick=" location='${context}/index.jsp'" value="취소" />
 	</form>
 	</div>
-	<jsp:include page="../global/footer.jsp"/>
-	<jsp:include page="../global/end.jsp"/>

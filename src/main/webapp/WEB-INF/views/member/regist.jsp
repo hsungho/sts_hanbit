@@ -1,38 +1,55 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<jsp:include page="../global/top.jsp" />
-<jsp:include page="../global/header.jsp" />
-<jsp:include page="../global/navi.jsp" />
-<link rel="stylesheet" href="${css}/global.css" />
-<style type="text/css">
-	span.meta{position:absolute;margin:0 0 0 -65px;}
-	div.joinDiv{border: 1px dotted gray;width: 80%;margin: 10px 50px 10px 50px}
-</style>	
-	<div class = "box">
+	<section id="member_regist">	
 	<h2>회원가입</h2>
-	<form action="${context}/member.do" method="post">
-		<span class="meta">이름</span><input type="text" name="name" /><br />
-		<span class="meta">ID</span><input type="text" name="id" /><br />
-		<span class="meta">비밀번호</span><input type="password" name="pw" /><br />
-		<span class="meta">SSN</span><input type="text" name="ssn_id"/><br />
-		<span class="meta">이메일</span><input type="text" name="email"/><br />
-		<span class="meta">전화번호</span><input type="text" name="phone"/><br />
-		<span class="meta">전공</span> <br /><br />
-		<input type="radio" name="major" value="computer" checked/> 컴공학부
-		<input type="radio" name="major" value="mgmt" /> 경영학부
-		<input type="radio" name="major" value="math" /> 수학부 
-		<input type="radio" name="major" value="eng" /> 영문학부 <br /><br /><br/></brr>
-		<span class="meta">수강과목</span> <br /><br />
-		<input type="checkbox" name="subject" value="java" /> Java
-		<input type="checkbox" name="subject" value="sql" /> SQL
-		<input type="checkbox" name="subject" value="cpp" /> C++
-		<input type="checkbox" name="subject" value="python" /> 파이썬
-		<input type="checkbox" name="subject" value="delphi" /> 델파이
-		<input type="checkbox" name="subject" value="html" /> HTML
-		<br /><br />
+	<form id="member_regist_form">
+	    <div>
+    		<label for="exampleInputEmail1">이름</label>
+    		<div><input type="text" id="username" placeholder="NAME"></div>
+  		</div>
+  		<div>
+    		<label for="exampleInputEmail1">ID</label>
+    		<div><input type="text" id="id" placeholder="Id"></div>
+  		</div>
+  		<div>  		
+    		<label for="exampleInputPassword1">비밀번호</label>
+    		<div><input type="password" id="password" placeholder="PASSWORD"></div>
+  		</div>
+  		<div>
+    		<label for="exampleInputEmail1">SSN</label>
+    		<div><input type="text" id="ssn" placeholder="예)800101-1"></div>
+  		</div>
+  		<div>
+    		<label for="exampleInputEmail1">이메일</label>
+    		<div><input type="email" id="email" placeholder="EMAIL"></div>
+  		</div>
+  		<div>
+    		<label for="exampleInputEmail1">전화번호</label>
+    		<div><input type="text" id="phone" placeholder="PHONE"></div>
+  		</div>
+		<div id="rd_major">
+		<label for="exampleInputEmail1">전공</label><br/>
+		<div>
+		<label><input type="radio" name="major" value="computer"> 컴공학부</label>
+		<label><input type="radio" name="major" value="mgmt"> 경영학부</label>
+		<label><input type="radio" name="major" value="math"> 수학부	</label>
+		<label><input type="radio" name="major" value="eng"> 영문학부</label>
+		</div>
+		</div>
+		<div>
+			<label for="exampleInputEmail1">수강과목</label><br/>	
+    		<div>    			
+      			<div id="ck_subject" class="checkbox">        			
+					<label><input type="checkbox" name="subject" value="java"> Java </label>
+					<label><input type="checkbox" name="subject" value="sql"> SQL </label>
+					<label><input type="checkbox" name="subject" value="cpp"> C++</label>
+					<label><input type="checkbox" name="subject" value="python"> 파이썬</label>
+					<label><input type="checkbox" name="subject" value="delphi"> 델파이</label>
+					<label><input type="checkbox" name="subject" value="html"> HTML</label>
+      			</div>
+    		</div>
+  		</div>
 		<input type="hidden" name="action" value="regist" />
-		<input type="submit" value="회원가입"/>
-		<input type="reset" onclick=" location='${context}/index.jsp'" value="취소" />
+		<input id="bt_join" type="submit" value="회원가입"/>
+		<input id="bt_cancel" type="reset" value="취소" />
 	</form>
-	</div>
-	<jsp:include page="../global/footer.jsp"/>
-	<jsp:include page="../global/end.jsp"/>
+	</section>	

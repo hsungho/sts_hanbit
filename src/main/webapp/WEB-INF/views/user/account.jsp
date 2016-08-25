@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<jsp:include page="../global/top.jsp" />
 <jsp:include page="../global/header.jsp" />
 <jsp:include page="../global/navi.jsp" />
 <link rel="stylesheet" href="${css}/douglas.css" />
@@ -34,5 +33,5 @@
 <jsp:include page="../global/end.jsp"/>
 <script src="${js}/douglas.js"></script>
 <script type="text/javascript">
-	account.init();
+	member.init();
 </script>

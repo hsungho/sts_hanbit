@@ -1,6 +1,6 @@
 package com.hanbit.web.grade;
 
-public interface GradeService extends com.hanbit.web.global.CommonService{
+public interface GradeService extends com.hanbit.web.util.CommonService{
 	// 총 7개의 기본 패턴이 존재하더라
 	// exeu
 	public String insert(GradeBean grade);

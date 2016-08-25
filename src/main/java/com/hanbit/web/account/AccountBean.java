@@ -60,7 +60,7 @@ public class AccountBean implements Serializable{
 		this.chagePw = chagePw;
 	}
 	public String toString() {// 메소드 오버라이딩
-		return " ["+com.hanbit.web.global.Constants.BANK_NAME+" 계좌번호 : " + accountNo + " 성명 : " + name + 
+		return " ["+com.hanbit.web.util.Constants.BANK_NAME+" 계좌번호 : " + accountNo + " 성명 : " + name + 
 				  " 잔액 : " + String.format("%,d", money) + " 아이디 : " + id + "]\n";
 	}
 }
