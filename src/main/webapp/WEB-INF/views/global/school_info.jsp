@@ -10,7 +10,7 @@
 	<div class="box">
 	<h1>학교 소개</h1>
 	<iframe width="560" height="315" 
-	src="https://www.youtube.com/embed/sGbxmsDFVnE?autoplay=1" ></iframe>
+	src="https://www.youtube.com/embed/ddEdqOgGX3s?autoplay=1" ></iframe>
 	</div>
 </body>
 </html>

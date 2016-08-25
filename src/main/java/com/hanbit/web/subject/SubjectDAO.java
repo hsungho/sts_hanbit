@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.hanbit.web.global.Constants;
+import com.hanbit.web.util.Constants;
 
 public class SubjectDAO {
 	Connection con;

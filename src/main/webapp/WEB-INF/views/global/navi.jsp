@@ -10,22 +10,3 @@ width:100%;background-color: #333">${user.name}님 환영합니다</div>
 		<li><a href= "#"id="a_school">학교소개</a></li>
 	</ul>
 </div>
-<script type="text/javascript">
-$(function() {
-	$('#a_member').click(function(){ 
-		location.href = "${context}/member.do"
-		});
-	$('#a_grade').click(function(){
-	location.href = "${context}/grade.do"
-	});
-	$('#a_account').click(function(){
-	 location.href = "${context}/account.do"
-	});
-	$('#a_school').click(function(){
-	location.href = "${context}/global.do?page=school_info"
-				});
-	});	
-
-
-</script>
-

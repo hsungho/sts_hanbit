@@ -1,4 +1,4 @@
-package com.hanbit.web.global;
+package com.hanbit.web.util;
 
 public class Command implements Orderable{
 	

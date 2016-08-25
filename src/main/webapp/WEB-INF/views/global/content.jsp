@@ -1,11 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!doctype html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8" />
-	<title>Document</title>
-</head>
-<body>
-	타일즈 샘플 적용중...
-</body>
-</html>
+<section id="global_content" >
+	<h2><small>서비스를 이용하시려면</small><small>회원가입을 하셔야 합니다</small> </h2>
+	<a id="global_content_a_regist"></a> <br />
+	<a id="global_content_a_login"></a><br />
+	<a id="global_content_a_admin"></a> 
+</div>
