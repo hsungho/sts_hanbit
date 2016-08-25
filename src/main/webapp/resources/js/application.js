@@ -6,18 +6,13 @@ var app = (function(){
 		sessionStorage.setItem('img',context+'/resources/img');
 		move();
 		member.init();
+		$('footer').addClass('bottom');
 		$('#global_content').addClass('box');
 		$('#global_content a').addClass('cursor');
 		$('#global_content h2')
-		$('#global_content_a_regist')
-		.text('SIGN UP')
-		.click(function(){util.move('member','regist');});
-		$('#global_content_a_login')
-		.text('LOG IN')
-		.click(function(){util.move('member','login');});
-		$('#global_content_a_admin')
-		.text('ADMIN MODE')
-		.click(function(){admin.check();});
+		$('#global_content_a_regist').text('SIGN UP').click(function(){util.move('member','regist');});
+		$('#global_content_a_login').text('LOG IN').click(function(){util.move('member','login');});
+		$('#global_content_a_admin').text('ADMIN MODE').click(function(){admin.check();});
 	};
 	var context = function(){
 		return sessionStorage.getItem('context');
@@ -117,7 +112,6 @@ var user = (function(){
 			$('#a_count').click(function(){location.href=app.context()+"/account/count"});
 			$('#a_search').click(function(){location.href=app.context()+"/account/search"});
 			$('#a_delete').click(function(){location.href=app.context()+"/account/delete"});
-			
 			$('#member_content_img_home').attr('src',app.img()+'/home.png');
 		}
 	};
@@ -323,7 +317,11 @@ var member = (function(){
 			$('#member_content_ol > li:nth(7) > a').text('SEARCH');
 			$('#member_content_ol > li:nth(8) > a').text('COUNT');
 			$('#member_regist').addClass('box');
-			$('#member_regist span').addClass('bg_color_yellow').addClass('float_left').addClass('text_left').css('width','200px');
+			$('#member_regist span').addClass('float_left').addClass('text_left').css('width','200px');
+			$('#member_regist #bt_join').addClass('btn').addClass('btn btn-primary');
+			$('#member_regist #bt_cancel').addClass('btn').addClass('btn btn-warning');
+
+
 		}
 	};
 })();
