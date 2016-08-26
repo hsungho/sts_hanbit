@@ -259,21 +259,23 @@ var admin = (function(){
 		$('#admin_content_ol > li:nth(4) > a').text('LIST');
 		$('#admin_content_ol > li:nth(5) > a').text('SEARCH');
 		$('#admin_content_ol > li:nth(6) > a').text('COUNT');
+		$('#admin_content > h3').addClass('text_align_center');
 	};
 	var onCreate = function(){
 		setContentView();
-		$('#regist').click(function(){controller.move('member','regist');});
-		$('#detail').click(function(){controller.move('member','detail');});
-		$('#update').click(function(){controller.move('member','update');});
-		$('#delete').click(function(){controller.move('member','delete');});
-		$('#list').click(function(){controller.move('member','list');});
-		$('#find_by').click(function(){controller.move('member','find_by');});
-		$('#count').click(function(){controller.move('member','count');});
+		$('#admin_nav #member_mgmt #list').click(function(){controller.move('member','list');});
+		$('#admin_nav #member_mgmt #find_by').click(function(){controller.move('member','find_by');});
+		$('#admin_nav #member_mgmt #count').click(function(){controller.move('member','count');});
+		$('#admin_nav #account_mgmt #c_list').click(function(){controller.move('account','list');});
+		$('#admin_nav #account_mgmt #c_regist').click(function(){controller.move('account','regist');});
+		$('#admin_nav #account_mgmt #c_delete').click(function(){controller.move('account','delete');});
+		$('#admin_nav #account_mgmt #c_search').click(function(){controller.move('account','search');});
+		$('#admin_nav #account_mgmt #c_count').click(function(){controller.move('account','count');});
 		$('#admin_content_img_home').attr('src',app.img()+'/home.jpg').css('width','30px');
 		$('#admin_content_a_home').attr('alt','home').click(function(){controller.home();});
-		$('#member_management').attr('src',app.img()+'/member_management.jpg').css('width','300px').css('height','420px');
-		$('#grade_management').attr('src',app.img()+'/grade_management.jpg').css('width','300px').css('height','420px');
-		$('#account_management').attr('src',app.img()+'/account_management.jpg').css('width','300px').css('height','420px');
+		$('#member_management').attr('src',app.img()+'/member_management.jpg').css('width','350px').css('height','420px');
+		$('#grade_management').attr('src',app.img()+'/grade_management.jpg').css('width','350px').css('height','420px');
+		$('#account_management').attr('src',app.img()+'/account_management.jpg').css('width','350px').css('height','420px');
 	};
 	return{
 		getPass : getPass,
@@ -431,9 +433,12 @@ var nav = (function(){
 		$('#nav li').addClass('float_left').addClass('display_inline').css('border-right','1px').css('solid','#bbb');
 		$('#nav li:last-child').css('border-right','none');
 		$('#nav li a').addClass('color_white').addClass('text_align_center').css('display','block').css('padding','3px 2px').css('text-decoration','none');
+		
 		$('#nav li a:hover:not(.active)').addClass('bg_color_green');
 		$('#nav .active').addClass('bg_color_black');
-		$('#header_brand').attr('src',app.img()+'/brand.jpg').css('width','50px');
+		$('#header_brand').css('font-size','15px').addClass('cursor');
+		$('#header_brand').attr('src',app.img()+'/gof.JPG').css('width','70px').css('height','40px');
+		$('#header_brand_a_home').attr('alt','home').click(function(){controller.home();});
 	};
 	var onCreate = function(){setContentView()};
 	return{

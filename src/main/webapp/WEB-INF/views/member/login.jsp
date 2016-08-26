@@ -1,17 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="${css}/global.css" />
-<style type="text/css">
-	span.meta{position:absolute;margin:3px 0 0 -65px;}
-</style>	
 	<div class="box">
-	<h2>회원관리 로그인</h2>
-	<form action="${context}/member.do" method="post">
-		<span class=meta>ID</span><input type="text" name="id" /><br />
-		<span class=meta>비밀번호</span><input type="password" name="pw" /><br />
-		<br /> 
-		<input type="hidden" name="action" value="login" />
-		<input type="hidden" name="directory" value="global" />
-		<input type="submit" value="로그인" />
-		<input type="reset" onclick=" location='${context}/index.jsp'" value="취소" />
-	</form>
+	<form class="form-signin">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="text" id="inputEmail" class="form-control" placeholder="USER ID" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
 	</div>

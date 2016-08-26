@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="${css}/global.css" />
-<link rel="stylesheet" href="${css}/member.css" />
 <div class="box">
-	<h2>리스트</h2>
-	<table id="member_list">
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">학생 목록</div>
+
+  <!-- Table -->
+  <table id="member_list" class="table">
   <tr>
     <th>I D</th>
     <th>이   름</th>
@@ -13,14 +15,15 @@
     <th>전 화 번 호</th>
   </tr>
   <c:forEach var="member" items="${list}">
-  <tr>
-    <td>${member.id}</td>
-    <td><a href="${context}/member.do?action=find_by_id&page=find_by_id&keyword=${member.id}">${member.name }</a></td>
-    <td>${member.regDate}</td>
-    <td>${member.ssn.substring(0,6)}</td>
-    <td>${member.email}</td>
-    <td>${member.phone}</td>
-  </tr>
+  	<tr>
+    	<td>${member.id}</td>
+    	<td><a href="${context}/member.do?action=find_by_id&page=find_by_id&keyword=${member.id}">${member.name }</a></td>
+    	<td>${member.regDate}</td>
+    	<td>${member.ssn.substring(0,6)}</td>
+    	<td>${member.email}</td>
+    	<td>${member.phone}</td>
+  	</tr>
   </c:forEach>
-</table>
+  </table>
+</div>
 </div>		

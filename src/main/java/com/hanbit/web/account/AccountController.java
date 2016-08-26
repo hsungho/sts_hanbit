@@ -12,7 +12,7 @@ public class AccountController {
 	@RequestMapping("/main")
 	public String moveMain() {
 		logger.info("AccoountController ! moveMain()");
-		return "admin:account/content.tiles";
+		return "user:account/content.tiles";
 	}
 	@RequestMapping("/count")
 	public String count() {
@@ -27,7 +27,7 @@ public class AccountController {
 	@RequestMapping("/deposit")
 	public String deposit() {
 		logger.info("AccoountController ! deposit()");
-		return "admin:account/deposit.tiles";
+		return "user:account/deposit.tiles";
 	}
 	@RequestMapping("/list")
 	public String list() {
@@ -47,11 +47,11 @@ public class AccountController {
 	@RequestMapping("/update")
 	public String update() {
 		logger.info("AccoountController ! update()");
-		return "admin:account/update.tiles";
+		return "user:account/update.tiles";
 	}
 	@RequestMapping("/withdraw")
 	public String withdraw() {
 		logger.info("AccoountController ! withdraw()");
-		return "admin:account/withdraw.tiles";
+		return "user:account/withdraw.tiles";
 	}
 }
