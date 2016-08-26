@@ -6,6 +6,7 @@ var app = (function(){
 		user.init();
 		grade.init();
 		admin.init();
+		nav.init();
 	};
 	var context = function() {
 		return session.getContextPath();
@@ -20,7 +21,7 @@ var app = (function(){
 		return session.getImagePath();
 	};
 	var setContentView = function(){
-		$('footer').addClass('bottom');
+		$('#footer').addClass('bottom').addClass('footer');
 		$('#global_content').addClass('box');
 		$('#global_content a').addClass('cursor');
 		$('#global_content_a_regist').text('SIGN UP').click(function(){controller.move('member','regist');});
@@ -243,33 +244,43 @@ var admin = (function(){
 	var _pass;
 	var getPass = function(){return this._pass;};
 	var setPass = function(pass){this._pass = pass;};
+	var init = function(){onCreate();};
+	var setContentView = function(){
+		$('#admin_content').addClass('box').css('font-size','20px');
+		$('#admin_content > article').css('width','300px')
+		   .addClass('center').addClass('text_left');
+		$('#admin_content a').css('font-size','15px').addClass('cursor');
+		$('#admin_content > h1').text('관리자 메인화면');
+		$('#admin_content_ol > li > a').addClass('remove_underline');
+		$('#admin_content_ol > li:first > a').text('SIGN UP');
+		$('#admin_content_ol > li:nth(1) > a').text('DETAIL');
+		$('#admin_content_ol > li:nth(2) > a').text('UPDATE');
+		$('#admin_content_ol > li:nth(3) > a').text('DELETE');
+		$('#admin_content_ol > li:nth(4) > a').text('LIST');
+		$('#admin_content_ol > li:nth(5) > a').text('SEARCH');
+		$('#admin_content_ol > li:nth(6) > a').text('COUNT');
+	};
+	var onCreate = function(){
+		setContentView();
+		$('#regist').click(function(){controller.move('member','regist');});
+		$('#detail').click(function(){controller.move('member','detail');});
+		$('#update').click(function(){controller.move('member','update');});
+		$('#delete').click(function(){controller.move('member','delete');});
+		$('#list').click(function(){controller.move('member','list');});
+		$('#find_by').click(function(){controller.move('member','find_by');});
+		$('#count').click(function(){controller.move('member','count');});
+		$('#admin_content_img_home').attr('src',app.img()+'/home.jpg').css('width','30px');
+		$('#admin_content_a_home').attr('alt','home').click(function(){controller.home();});
+		$('#member_management').attr('src',app.img()+'/member_management.jpg').css('width','300px').css('height','420px');
+		$('#grade_management').attr('src',app.img()+'/grade_management.jpg').css('width','300px').css('height','420px');
+		$('#account_management').attr('src',app.img()+'/account_management.jpg').css('width','300px').css('height','420px');
+	};
 	return{
-		init : function(){
-			$('#regist').click(function(){controller.move('member','regist');});
-			$('#detail').click(function(){controller.move('member','detail');});
-			$('#update').click(function(){controller.move('member','update');});
-			$('#delete').click(function(){controller.move('member','delete');});
-			$('#list').click(function(){controller.move('member','list');});
-			$('#find_by').click(function(){controller.move('member','find_by');});
-			$('#count').click(function(){controller.move('member','count');});
-			$('#admin_content_img_home').attr('src',app.img()+'/home.jpg').css('width','30px');
-			$('#admin_content_a_home').attr('alt','home').click(function(){controller.home();});
-			$('#admin_content').addClass('box').css('font-size','20px');
-			$('#admin_content > article').css('width','300px')
-			   .addClass('center').addClass('text_left');
-			$('#admin_content a').css('font-size','15px').addClass('cursor');
-			$('#admin_content > h1').text('MEMBER MGMT');
-			$('#admin_content_ol > li > a').addClass('remove_underline');
-			$('#admin_content_ol > li:first > a').text('SIGN UP');
-			$('#admin_content_ol > li:nth(1) > a').text('DETAIL');
-			$('#admin_content_ol > li:nth(2) > a').text('UPDATE');
-			$('#admin_content_ol > li:nth(3) > a').text('DELETE');
-			$('#admin_content_ol > li:nth(4) > a').text('LIST');
-			$('#admin_content_ol > li:nth(5) > a').text('SEARCH');
-			$('#admin_content_ol > li:nth(6) > a').text('COUNT');
-		},
 		getPass : getPass,
 		setPass : setPass,
+		init : init,
+		setContentView : setContentView,
+		onCreate : onCreate,
 		checkAdmin : function(){
 			setPass(1);
 			var isAdmin = confirm('관리자입니까?');
@@ -412,4 +423,22 @@ var util = (function(){
 			return typeof value === 'number' && isFinite(value);
 		}
 	};
-});
+})();
+var nav = (function(){
+	var init = function(){onCreate();};
+	var setContentView = function(){
+		$('#nav ul').addClass('list_style_none').addClass('over_hidden').addClass('bg_color_black').css('margin','0').css('padding','0');
+		$('#nav li').addClass('float_left').addClass('display_inline').css('border-right','1px').css('solid','#bbb');
+		$('#nav li:last-child').css('border-right','none');
+		$('#nav li a').addClass('color_white').addClass('text_align_center').css('display','block').css('padding','3px 2px').css('text-decoration','none');
+		$('#nav li a:hover:not(.active)').addClass('bg_color_green');
+		$('#nav .active').addClass('bg_color_black');
+		$('#header_brand').attr('src',app.img()+'/brand.jpg').css('width','50px');
+	};
+	var onCreate = function(){setContentView()};
+	return{
+		init : init,
+		setContentView : setContentView,
+		onCreate : onCreate
+	};
+})();
