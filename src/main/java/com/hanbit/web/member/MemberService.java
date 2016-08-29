@@ -15,12 +15,12 @@ import com.hanbit.web.util.CommonService;
  * @story  :
 */
 public interface MemberService extends CommonService{
-	public String regist(MemberBean mem);
-	public MemberBean findById(String findID);
-	public void update(MemberBean stu2);
-	public void delete(MemberBean member);
-	public SubjectMember login(MemberBean member);
-	public void logout(MemberBean member);
-	public MemberBean show();
+	public String regist(MemberVO mem);
+	public MemberVO findById(String findID);
+	public void update(MemberVO stu2);
+	public void delete(MemberVO member);
+	public SubjectMember login(MemberVO member);
+	public void logout(MemberVO member);
+	public MemberVO show();
 	
 }

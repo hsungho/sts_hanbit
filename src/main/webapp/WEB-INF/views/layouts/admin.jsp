@@ -39,9 +39,5 @@
   <script src="${js}/application.js"></script>
   <script>
   app.init('${context}');
-  user.init();
-  grade.init();  
-  member.init();
-  user.account();
   </script>
 </html>

@@ -26,7 +26,7 @@ public class AccountDAO {
 	public static AccountDAO getInstance() {
 		return instance;
 	}
-	public int insertAccount(AccountBean acc) {
+	public int insertAccount(AccountVO acc) {
 		int result = 0; 
 		String sql = "insert into account (id, account_no, money) "
 				+ "values (?,?,?)";
@@ -60,7 +60,7 @@ public class AccountDAO {
 		
 		return money;
 	}
-	public void deposit(AccountBean acc) {
+	public void deposit(AccountVO acc) {
 		String sql = "update account set money = ?"
 				+ "where account_no = ?";
 		try {
@@ -73,7 +73,7 @@ public class AccountDAO {
 			e.printStackTrace();
 		}
 	}
-	public void withdraw(AccountBean acc) {
+	public void withdraw(AccountVO acc) {
 		this.deposit(acc);
 	}
 	public List<AccountMemberBean> selectAll() {

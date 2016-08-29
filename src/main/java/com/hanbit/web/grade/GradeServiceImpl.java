@@ -13,12 +13,12 @@ public class GradeServiceImpl implements GradeService {
 	}
 	private GradeServiceImpl() {}
 	@Override
-	public int insert(GradeBean grade) {
+	public int insert(GradeVO grade) {
 		return dao.insert(grade);
 	}
 
 	@Override
-	public void update(GradeBean grade) {
+	public void update(GradeVO grade) {
 		if (dao.update(grade)==1) {
 			System.out.println("성공");
 		} else {
@@ -50,7 +50,7 @@ public class GradeServiceImpl implements GradeService {
 	}
 
 	@Override
-	public GradeBean findBySeq(String seq) {
+	public GradeVO findBySeq(String seq) {
 		return dao.findBySeq(seq);
 	}
 	@Override
@@ -63,7 +63,7 @@ public class GradeServiceImpl implements GradeService {
 	}
 	@Override
 	public void score(String[] a) {
-		GradeBean g = new GradeBean();
+		GradeVO g = new GradeVO();
 		g.setId(a[0]);
 		g.setExamDate(a[1]);
 		g.setJava(Integer.parseInt(a[2]));

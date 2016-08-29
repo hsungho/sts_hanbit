@@ -19,6 +19,8 @@
 		<jaxb-impl-version>2.2.2</jaxb-impl-version>
 		<jackson-mapper-asl-version>1.7.1</jackson-mapper-asl-version>
 		<maven-version>3.1.1</maven-version>
+		<mybatis-spring-version>1.2.2</mybatis-spring-version>
+		<mybatis-version>3.4.1</mybatis-version>
 		
 		<commons-dbcp-version>1.4</commons-dbcp-version>
 		<ojdbc6-version>11.1.0.7.0</ojdbc6-version>
@@ -47,6 +49,11 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
 		<dependency>
@@ -250,12 +257,12 @@
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
-			<version>3.2.7</version>
+			<version>${mybatis-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-spring</artifactId>
-			<version>1.1.1</version>
+			<version>${mybatis-spring-version}</version>
 		</dependency>
 
 		<!-- 파일업로드 -->
@@ -270,11 +277,11 @@
 			<version>2.4</version>
 		</dependency>
 		<!-- tiles -->
-<dependency>
-     <groupId>org.apache.tiles</groupId>
-    <artifactId>tiles-extras</artifactId>
-    <version>${tiles-version}</version>
-  </dependency>
+	<dependency>
+     	<groupId>org.apache.tiles</groupId>
+    	<artifactId>tiles-extras</artifactId>
+    	<version>${tiles-version}</version>
+  	</dependency>
   
   <!-- <dependency>
     <groupId>org.apache.tiles</groupId>

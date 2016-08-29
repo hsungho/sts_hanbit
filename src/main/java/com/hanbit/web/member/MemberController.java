@@ -62,7 +62,7 @@ public class MemberController {
 		return "admin:member/list.tiles";
 	}
 
-	@RequestMapping("/find_by")
+	@RequestMapping("/find")
 	public String find_by() {
 		logger.info("MemberController! find_by()");
 		return "admin:member/find_by.tiles";

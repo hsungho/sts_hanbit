@@ -12,7 +12,7 @@ public class SubjectServiceImpl implements SubjectService{
 	}
 
 	@Override
-	public void insert(SubjectBean s) {
+	public void insert(SubjectmemberVO s) {
 		dao.insert(s);
 	}
 }

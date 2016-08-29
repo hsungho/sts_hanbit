@@ -30,7 +30,7 @@ public class GradeDAO {
 				.getConnection();
 	}
 
-	public int insert(GradeBean g){
+	public int insert(GradeVO g){
 		int result = 0;
 		String sql="insert into grade(seq,grade,java,sql,html,javascript,id,exam_date)"
 				+ "values(seq.nextval,?,?,?,?,?,?,?)";
@@ -52,13 +52,13 @@ public class GradeDAO {
 	}
 
 	public List<?> list() {
-		List<GradeBean> list = new ArrayList<GradeBean>();
+		List<GradeVO> list = new ArrayList<GradeVO>();
 		String sql = "select * from grade";
 		try {
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			while(rs.next()){
-				GradeBean g = new GradeBean();
+				GradeVO g = new GradeVO();
 				g.setSeq(String.valueOf(rs.getInt("SEQ")));
 				g.setId(rs.getString("ID"));
 				g.setExamDate(rs.getString("EXAM_DATE"));
@@ -99,8 +99,8 @@ public class GradeDAO {
 		return result;
 	}
 
-	public GradeBean findBySeq(String seq) {
-		GradeBean bean = new GradeBean();
+	public GradeVO findBySeq(String seq) {
+		GradeVO bean = new GradeVO();
 		String sql = "select * from grade where seq = ?";
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -123,7 +123,7 @@ public class GradeDAO {
 	}
 
 	public List<?> findById(String id) {
-		List<GradeBean> list = new ArrayList<GradeBean>();
+		List<GradeVO> list = new ArrayList<GradeVO>();
 		String sql= "select * from grade where id = ?";
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -131,7 +131,7 @@ public class GradeDAO {
 			
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				GradeBean bean = new GradeBean();
+				GradeVO bean = new GradeVO();
 				bean.setSeq(String.valueOf(rs.getInt("SEQ")));
 				bean.setExamDate(rs.getString("EXAM_DATE"));
 				bean.setJava(rs.getInt("JAVA"));
@@ -150,7 +150,7 @@ public class GradeDAO {
 		return list;
 	}
 
-	public int update(GradeBean grade) {
+	public int update(GradeVO grade) {
 		//"과목,점수,seq"
 		int result = 0;
 		String sql = "update grade set"+ grade.getSubject()+"="+grade.getScore()+ "where seq =?";

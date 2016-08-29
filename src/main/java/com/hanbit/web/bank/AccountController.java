@@ -17,10 +17,10 @@ public class AccountController {
 			return "admin:account/content.tiles";
 	  }
 	
-	 @RequestMapping("/regist")
-	 public String regist(){
-		 logger.info("AccountController! regist()");
-		 return "admin:account/regist.tiles";
+	 @RequestMapping("/open")
+	 public String open(){
+		 logger.info("AccountController! open()");
+		 return "admin:account/open.tiles";
 	 }
 
 	 @RequestMapping("/deposit")
@@ -41,10 +41,10 @@ public class AccountController {
 		 return "admin:account/list.tiles";
 	 }
 	
-	 @RequestMapping("/search")
-	 public String search(){
-		 logger.info("AccountController! search()");
-		 return "admin:account/search.tiles";
+	 @RequestMapping("/find")
+	 public String find(){
+		 logger.info("AccountController! find()");
+		 return "admin:account/find.tiles";
 	 }
 
 	 @RequestMapping("/update")
