@@ -29,7 +29,7 @@ public class GradeDAO {
 	public static GradeDAO getInstance() {
 		return instance;
 	}
-	public int insert(GradeBean grade){
+	public int insert(GradeVO grade){
 		int result = 0;
 		String sql = "insert into grade (seq,grade,java,sql,html,javascript,id,exam_date) "
 				      + " values(seq.nextval,?,?,?,?,?,?,?)";
@@ -48,7 +48,7 @@ public class GradeDAO {
 		}
 		return result;
 	}
-	public int update(GradeBean grade){
+	public int update(GradeVO grade){
 		int result = 0;
 		String sql = "update grade "
 				+ " set grade = ?, "
@@ -65,7 +65,7 @@ public class GradeDAO {
 		}
 		return result;
 	}
-	public int delete(GradeBean grade) {
+	public int delete(GradeVO grade) {
 		int result = 0;
 		String sql = "delete grade "
 				+ " where seq = ?";
@@ -81,12 +81,12 @@ public class GradeDAO {
 	// list
 	public List<?> list() {
 		String sql = "select * from grade_view order by name,id,exam_date";
-		List<GradeBean> tempList = new ArrayList<GradeBean>();
+		List<GradeVO> tempList = new ArrayList<GradeVO>();
 		try {
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				GradeBean mem = new GradeBean();
+				GradeVO mem = new GradeVO();
 				mem.setSeq(rs.getInt("SEQ"));
 				mem.setGrade(rs.getString("GRADE"));
 				mem.setJava(rs.getInt("JAVA"));
@@ -104,15 +104,15 @@ public class GradeDAO {
 		return tempList;
 	}
 	// findByPK
-	public GradeBean findBySeq(int seq) {
+	public GradeVO findBySeq(int seq) {
 		String sql = "select * from grade_view where seq = ? order by name,id,exam_date";
-		GradeBean tempBean = null;
+		GradeVO tempBean = null;
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, seq);
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
-				tempBean = new GradeBean();
+				tempBean = new GradeVO();
 				tempBean.setSeq(rs.getInt("SEQ"));
 				tempBean.setGrade(rs.getString("GRADE"));
 				tempBean.setJava(rs.getInt("JAVA"));
@@ -132,13 +132,13 @@ public class GradeDAO {
 	// findByName
 	public List<?> findById(String id) {
 		String sql = "select * from grade where id = ? order by name,id,exam_date";
-		List<GradeBean> tempList = new ArrayList<GradeBean>();
+		List<GradeVO> tempList = new ArrayList<GradeVO>();
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				GradeBean mem = new GradeBean();
+				GradeVO mem = new GradeVO();
 				mem.setSeq(rs.getInt("SEQ"));
 				mem.setGrade(rs.getString("GRADE"));
 				mem.setJava(rs.getInt("JAVA"));

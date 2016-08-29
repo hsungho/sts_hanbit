@@ -14,15 +14,15 @@ import com.hanbit.web.util.Constants;
  * @file   :Studente1.java
  * @story  :
  */
-public class MemberBean implements Serializable{
+public class MemberVO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String name,id,pw,ssn,regDate,gender,profileImg,changepw,confirmpw,email,phone;
 	private int birth,year,curyear;
-	public MemberBean() {
+	public MemberVO() {
 		// default constructor 기본 생성자
 		// 생성자 오버로딩 
 	}
-	public MemberBean(String name,String id,String pw,String ssn) {
+	public MemberVO(String name,String id,String pw,String ssn) {
 		this.name = name;
 		this.id = id;
 		this.pw = pw;

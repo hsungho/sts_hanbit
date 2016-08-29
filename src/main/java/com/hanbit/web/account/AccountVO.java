@@ -11,11 +11,11 @@ import java.io.Serializable;
  * @file   :Account.java
  * @story  :
  */
-public class AccountBean implements Serializable{
+public class AccountVO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private int accountNo,money; // 인스턴스 변수는 초기화를 하지 않는다. private 암호화 되어 있다. 보안
 	private String name,id,pw,chagePw;
-	public AccountBean() {
+	public AccountVO() {
 		// default constructor 기본 생성자
 		// 생성자 오버로딩 
 	}

@@ -27,7 +27,7 @@ public class SubjectDAO {
 	public static SubjectDAO getInstance() {
 		return instance;
 	}
-	public void insert(SubjectBean sub){
+	public void insert(SubjectVO sub){
 		int result = 0;
 		String sql = "insert into subject (subj_seq,major,subjects,id) "
 				      + " values(subj_seq.nextval,?,?,?)";
@@ -41,15 +41,15 @@ public class SubjectDAO {
 			e.printStackTrace();
 		}
 	}
-	public SubjectBean findById(String id) {
+	public SubjectVO findById(String id) {
 		String sql = "select * from subject_member where id = ?";
-		SubjectBean tempBean = null;
+		SubjectVO tempBean = null;
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
-				tempBean = new SubjectBean();
+				tempBean = new SubjectVO();
 				tempBean.setId(rs.getString("id"));
 				tempBean.setMajor(rs.getString("major"));
 				tempBean.setSubjects(rs.getString("subjects"));

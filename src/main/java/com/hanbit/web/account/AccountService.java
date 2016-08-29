@@ -19,13 +19,13 @@ public interface AccountService extends CommonService{
 		// 2입금
 		public String deposit(int accountNo, int inputMoney);
 		// 3출금
-		public String withdrawal(AccountBean account);
+		public String withdrawal(AccountVO account);
 		// 4.수정.. 사용자의 요청에 의해 비번만 전환가능
-		public String updateAccount(AccountBean acc);// AccountNo,PW
+		public String updateAccount(AccountVO acc);// AccountNo,PW
 		// 5해지
 		public String deleteAccount(int accountNo);
 		// 7조회(계좌번호)
-		public AccountMemberBean findByAccountNo(int accountNo);
+		public AccountMemberVO findByAccountNo(int accountNo);
 		// 10 id 존재여부 조회
 		public int findId(String id);
 		// 11 계좌번호 존재여부 조회
@@ -33,5 +33,5 @@ public interface AccountService extends CommonService{
 		// 12 이름 존재여부 조회
 		public int findName(String id,String name);
 		// 13 PW 맞는지 조회
-		public int findPw(AccountBean account);
+		public int findPw(AccountVO account);
 }

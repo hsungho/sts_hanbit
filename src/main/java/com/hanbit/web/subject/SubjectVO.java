@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @file   :SubjectBean.java 
  * @story  :
  */
-public class SubjectBean implements Serializable{
+public class SubjectVO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	String id,major,subjects;
     int subjSeq;

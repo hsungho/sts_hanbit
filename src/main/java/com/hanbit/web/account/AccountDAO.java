@@ -29,7 +29,7 @@ public class AccountDAO {
 	public static AccountDAO getInstance() {
 		return instance;
 	}
-	public int insert(AccountBean acct) {
+	public int insert(AccountVO acct) {
 		int result = 0;
 		String sql = "insert into account(account_no,money,id,pw)"
 				+ "values(?,?,?,?)";
@@ -105,7 +105,7 @@ public class AccountDAO {
 		}
 		return result;
 	}
-	public int updateAccount(AccountBean acc) {
+	public int updateAccount(AccountVO acc) {
 		int result = 0;
 		String sql = "update account "
 				+ "set pw = ? "
@@ -133,15 +133,15 @@ public class AccountDAO {
 		}
 		return result;
 	}
-	public AccountMemberBean findByAccountNo(int accountNo) {
+	public AccountMemberVO findByAccountNo(int accountNo) {
 		String sql = "select * from account_member where account_no = ? ";
-		AccountMemberBean tempBean = null;
+		AccountMemberVO tempBean = null;
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, accountNo);
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
-				tempBean = new AccountMemberBean();
+				tempBean = new AccountMemberVO();
 				tempBean.setAccountNo(rs.getInt("ACCOUNT_NO"));
 				tempBean.setName(rs.getString("NAME"));
 				tempBean.setId(rs.getString("ID"));
@@ -181,12 +181,12 @@ public class AccountDAO {
 				+ "ssn_id "
 				+ "from account_member "
 				+ "order by name,id,account_no";
-		List<AccountMemberBean> tempList = new ArrayList<AccountMemberBean>();
+		List<AccountMemberVO> tempList = new ArrayList<AccountMemberVO>();
 		try {
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				AccountMemberBean mem = new AccountMemberBean();
+				AccountMemberVO mem = new AccountMemberVO();
 				mem.setAccountNo(rs.getInt("account_no"));
 				mem.setName(rs.getString("name"));
 				mem.setId(rs.getString("id"));
@@ -204,13 +204,13 @@ public class AccountDAO {
 		String sql = "select * from account_member "
 				+ " where name = ? "
 				+ "order by name,id,account_no ";
-		List<AccountMemberBean> tempList = new ArrayList<AccountMemberBean>();
+		List<AccountMemberVO> tempList = new ArrayList<AccountMemberVO>();
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, name);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				AccountMemberBean mem = new AccountMemberBean();
+				AccountMemberVO mem = new AccountMemberVO();
 				mem.setAccountNo(rs.getInt("ACCOUNT_NO"));
 				mem.setName(rs.getString("NAME"));
 				mem.setId(rs.getString("ID"));
@@ -239,7 +239,7 @@ public class AccountDAO {
 		}
 		return result;
 	}
-	public int findPw(AccountBean account) {
+	public int findPw(AccountVO account) {
 		int result = 0;
 		String sql = "select count(*) count "
 				+ "from account "
@@ -260,13 +260,13 @@ public class AccountDAO {
 		return result;
 	}
 	public Map<?, ?> selectMap() {
-		Map<String, AccountMemberBean> map = new HashMap<String,AccountMemberBean>();
+		Map<String, AccountMemberVO> map = new HashMap<String,AccountMemberVO>();
 		String sql = "select * from account_member";
 		try {
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				AccountMemberBean mm = new AccountMemberBean();
+				AccountMemberVO mm = new AccountMemberVO();
 				mm.setAccountNo(rs.getInt("account_no"));
 				mm.setName(rs.getString("name"));
 				mm.setId(rs.getString("id"));

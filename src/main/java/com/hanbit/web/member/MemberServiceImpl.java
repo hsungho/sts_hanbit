@@ -5,14 +5,14 @@ import java.util.Map;
 
 import com.hanbit.web.account.AccountService;
 import com.hanbit.web.account.AccountServiceImpl;
-import com.hanbit.web.subject.SubjectBean;
+import com.hanbit.web.subject.SubjectVO;
 import com.hanbit.web.subject.SubjectDAO;
-import com.hanbit.web.subject.SubjectMember;
+import com.hanbit.web.subject.SubjectMemberVO;
 
 public class MemberServiceImpl implements MemberService{
-	private MemberDAOImpl dao = MemberDAOImpl.getInstance(); // 싱글톤 패턴
+	private MemberDAOImpl dao = null; // 싱글톤 패턴
 	private AccountService accService = AccountServiceImpl.getInstance();
-	private MemberBean session;
+	private MemberVO session;
 	private SubjectDAO subjDao = SubjectDAO.getInstance();
 	private static MemberServiceImpl instance = new MemberServiceImpl();
 	public static MemberServiceImpl getInstance() {
@@ -21,7 +21,7 @@ public class MemberServiceImpl implements MemberService{
 	private MemberServiceImpl() {
 	}
 	@Override
-	public String open(MemberBean stu) {
+	public String open(MemberVO stu) {
 		int cnt = findId(stu.getId());
 		if (cnt == 0) {
 			return (dao.insert(stu) == 1)?"회원가입 축하합니다.":"회원가입 실패";		
@@ -30,11 +30,11 @@ public class MemberServiceImpl implements MemberService{
 		}
 	}
 	@Override
-	public MemberBean show() {
+	public MemberVO show() {
 		return session;
 	}
 	@Override
-	public void update(MemberBean stu) {
+	public void update(MemberVO stu) {
 		dao.update(stu);
 	}
 	@Override
@@ -51,7 +51,7 @@ public class MemberServiceImpl implements MemberService{
 	public int count() {
 		return dao.count();
 	}
-	public MemberBean findById(String id) {
+	public MemberVO findById(String id) {
 		return dao.findById(id);
 	}
 	public List<?> list() {
@@ -65,9 +65,9 @@ public class MemberServiceImpl implements MemberService{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	public SubjectMember login(MemberBean member) {
-		SubjectMember sm = new SubjectMember();
-		SubjectBean sb =new SubjectBean();
+	public SubjectMemberVO login(MemberVO member) {
+		SubjectMemberVO sm = new SubjectMemberVO();
+		SubjectVO sb =new SubjectVO();
 		if(dao.findId(member.getId()) == 0) {
 			sm.setId("fail");
 		} else {
@@ -107,11 +107,11 @@ public class MemberServiceImpl implements MemberService{
 		return dao.findId(id);
 	}
 	@Override
-	public int findPw(MemberBean mem) {
+	public int findPw(MemberVO mem) {
 		return dao.findPw(mem);
 	}
 	@Override
-	public void logout(MemberBean mem) {
+	public void logout(MemberVO mem) {
 		if (session.getId().equals(mem.getId()) &&
 			session.getPw().equals(mem.getPw())	
 		   ) {

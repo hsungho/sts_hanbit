@@ -2,11 +2,11 @@ package com.hanbit.web.grade;
 
 import java.io.Serializable;
 
-public class GradeBean implements Serializable{
+public class GradeVO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String id,grade,examdate,className,name,subject,major;
 	private int java,sql,html,javascript,seq,updatescore;
-	public GradeBean() {
+	public GradeVO() {
 	}
 	public String getClassName() {
 		return className;

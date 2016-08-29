@@ -12,7 +12,7 @@ public class GradeServiceImpl implements GradeService{
 	}
 	private GradeServiceImpl() {
 	}
-	public String insert(GradeBean grade) {
+	public String insert(GradeVO grade) {
 		int total = 0,avg = 0;
 		String grade1 = "",result = "";
 		total = grade.getJava()+grade.getSeq()+grade.getSql()+grade.getHtml()+grade.getJavascript();
@@ -46,10 +46,10 @@ public class GradeServiceImpl implements GradeService{
 		return result;
 	}
 	@Override
-	public String update(GradeBean grade) {
+	public String update(GradeVO grade) {
 		int total = 0,avg = 0;
 		String grade1 = "",result = "";
-		GradeBean tempBean = findBySeq(grade.getSeq());		
+		GradeVO tempBean = findBySeq(grade.getSeq());		
 		if (grade.getClassName().equals("java")) {
 			total = grade.getUpdatescore()+tempBean.getSql()+tempBean.getHtml()+tempBean.getJavascript();
 		} else if(grade.getClassName().equals("sql")){
@@ -89,7 +89,7 @@ public class GradeServiceImpl implements GradeService{
 		return result;
 	}
 	@Override
-	public String delete(GradeBean grade) {
+	public String delete(GradeVO grade) {
 		return (dao.delete(grade) == 0)?"삭제 실패":"삭제 성공";
 	}
 	@Override
@@ -97,7 +97,7 @@ public class GradeServiceImpl implements GradeService{
 		return dao.findById(id);
 	}
 	@Override
-	public GradeBean findBySeq(int seq) {
+	public GradeVO findBySeq(int seq) {
 		return dao.findBySeq(seq);
 	}
 	@Override
@@ -106,7 +106,7 @@ public class GradeServiceImpl implements GradeService{
 	}
 	@Override
 	public String score(String[] a) {
-		GradeBean g = new GradeBean();
+		GradeVO g = new GradeVO();
 		g.setId(a[0]);
 		g.setJava(Integer.parseInt(a[1]));
 		g.setSql(Integer.parseInt(a[2]));

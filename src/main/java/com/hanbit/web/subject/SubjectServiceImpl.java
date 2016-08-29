@@ -16,7 +16,7 @@ public class SubjectServiceImpl implements SubjectService{
 		return instance;
 	}
 	@Override
-	public void insert(SubjectBean sub) {
+	public void insert(SubjectVO sub) {
 		dao.insert(sub);
 	}
 
