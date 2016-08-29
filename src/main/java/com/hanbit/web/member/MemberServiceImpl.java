@@ -10,7 +10,7 @@ import com.hanbit.web.subject.SubjectDAO;
 import com.hanbit.web.subject.SubjectMember;
 
 public class MemberServiceImpl implements MemberService{
-	private MemberDAO dao = MemberDAO.getInstance(); // 싱글톤 패턴
+	private MemberDAOImpl dao = MemberDAOImpl.getInstance(); // 싱글톤 패턴
 	private AccountService accService = AccountServiceImpl.getInstance();
 	private MemberBean session;
 	private SubjectDAO subjDao = SubjectDAO.getInstance();
