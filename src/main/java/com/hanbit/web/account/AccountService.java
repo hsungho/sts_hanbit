@@ -31,7 +31,7 @@ public interface AccountService extends CommonService{
 		// 11 계좌번호 존재여부 조회
 		public int findAccount(int accountNo);
 		// 12 이름 존재여부 조회
-		public int findName(String id,String name);
+		public int findName(String name);
 		// 13 PW 맞는지 조회
 		public int findPw(AccountVO account);
 }

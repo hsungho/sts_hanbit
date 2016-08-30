@@ -14,5 +14,4 @@ public interface MemberDAO {
 	public int findId(String id);
 	public int findPw(MemberVO mem);
 	public boolean existId(String id);
-
 }

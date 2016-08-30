@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <div class="box">
-	<form class="navbar-form navbar-center" role="search">
+	<form id="member_find_form" class="navbar-form navbar-center" role="search">
 		<div class="form-group">
 			<div class="col-lg-6">
 				<select style='width:100px;height:30px'>
@@ -9,9 +9,7 @@
 					<option value="gender">GENDER</option>
 				</select>
     			<input type="text" class="form-control" placeholder="Search">
-      			<input type="hidden" name="action" value="find_by_id"/>
-	  			<input type="hidden" name="page" value="find_by_id"/>
-	  			<button type="submit" class="btn btn-primary">Submit</button>
+	  			<input type="button" class="btn btn-primary" value="SEARCH"/>
 	  		</div>
     		</div><!-- /input-group -->
 	</form>

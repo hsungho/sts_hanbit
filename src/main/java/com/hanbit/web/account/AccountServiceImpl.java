@@ -7,17 +7,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
 /**
  * @date   :2016. 6. 20.
  * @author :ckan
  * @file   :AccountServiceImpl.java
  * @story  :계좌 인터페이스
  */
+@Service
 public class AccountServiceImpl implements AccountService {
-	AccountDAO dao = null;
+	AccountDAOImpl dao = null;
 	private Map<?,?> map;
 	private AccountServiceImpl() {
-		dao = AccountDAO.getInstance();
+		dao = AccountDAOImpl.getInstance();
 		map = new HashMap<String,AccountMemberVO>();
 	}
 	private static AccountServiceImpl instance = new AccountServiceImpl();
@@ -43,7 +46,7 @@ public class AccountServiceImpl implements AccountService {
 			msg = "존재하지 않는 ID 입니다.";
 			return msg;
 		}
-		if (dao.findName(account.getId(),account.getName()) == 0) {
+		if (dao.findName(account.getName()) == 0) {
 			msg = "존재하지 않는 성명 입니다.";
 			return msg;
 		}
@@ -62,7 +65,7 @@ public class AccountServiceImpl implements AccountService {
 		if (findAccount(accountNo) == 0) {
 			msg = "계좌번호가 존재 하지않습니다.";
 		}
-		msg = (dao.deposit(accountNo,inputMoney) == 0)?"입금이 실패했습니다.":"입금이 완료 되었습니다.";
+		msg = (dao.deposit(account1) == 0)?"입금이 실패했습니다.":"입금이 완료 되었습니다.";
 		return msg;
 	}
 	public String withdrawal(AccountVO account) {
@@ -79,7 +82,7 @@ public class AccountServiceImpl implements AccountService {
 		if (acct.getMoney() < account.getMoney()) {
 			msg = "잔액이 부족 합니다.";
 		}else{
-			msg = (dao.withdrawal(account.getAccountNo(),account.getMoney()) == 0)?"출금이 실패했습니다.":"출금이 완료 되었습니다.";
+			msg = (dao.withdrawal(account) == 0)?"출금이 실패했습니다.":"출금이 완료 되었습니다.";
 		}
 		return msg;
 	}
@@ -132,8 +135,8 @@ public class AccountServiceImpl implements AccountService {
 		return dao.findAccount(accountNo);
 	}
 	@Override
-	public int findName(String id,String name) {
-		return dao.findName(id,name);
+	public int findName(String name) {
+		return dao.findName(name);
 	}
 	@Override
 	public int findPw(AccountVO account) {

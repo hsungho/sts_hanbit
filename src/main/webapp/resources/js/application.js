@@ -185,6 +185,7 @@ var member = (function(){
 		$('#member_regist #rd_major > label:gt(1)').addClass('radio-inline');
 		$('#member_regist #ck_subject').addClass('checkbox');
 		$('#member_regist #ck_subject > label').addClass('checkbox-inline');
+		$('#member_find_form').click(function(){controller.move('member','search');});
 	};
 	var onCreate = function(){
 		setContentView();
@@ -197,6 +198,7 @@ var member = (function(){
 		$('#list').click(function(){controller.move('member','list');});
 		$('#find_by').click(function(){controller.move('member','find_by');});
 		$('#count').click(function(){controller.move('member','count');});
+		
 	};
 	return {
 		setName : setName,

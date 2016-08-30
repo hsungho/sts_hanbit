@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.account">
+	<select id="findId" parameterType="string" resultType="int">
+		select count(*) count from member where id = #{id}
+	</select>
+	<select id="findAccount" parameterType="int" resultType="int">
+		select count(*) count from account where account_no = #{account_no}
+	</select>
+	<select id="findByAccountNo" parameterType="int" resultType="com.hanbit.web.account.AccountMemberVO">
+		select * from account_member where account_no = #{account_no}
+	</select>
+	<select id="findName" parameterType="string" resultType="int">
+		select count(*) from member where name = #{name}
+	</select>
+	<select id="selectAll" resultType="com.hanbit.web.account.AccountMemberVO">
+		select account_no,id,name,money,ssn_id from account_member order by name,id,account_no
+	</select>
+	<select id="findByName" resultType="com.hanbit.web.account.AccountMemberVO">
+		select * from account_member where name = #{name} order by name,id,account_no
+	</select>
+	<select id="count" resultType="int">
+		select count(*) count from account 
+	</select>
+	<select id="findPw" parameterType="com.hanbit.web.account.AccountVO" resultType="int">
+		select count(*) count from account  where account_no = #{account_no} and pw = #{pw} 
+	</select>
+	<select id="selectMap" resultType="com.hanbit.web.account.AccountMemberVO">
+		select * from account_member
+	</select>
+	<insert id="insert" parameterType="com.hanbit.web.account.AccountVO">
+		insert into account(account_no,money,id,pw)
+		values(#{account_no},#{money},#{id},#{pw})
+	</insert>
+	<update id="update" parameterType="com.hanbit.web.account.AccountVO">
+		update account set pw = #{pw} where account_no = #{account_no} 
+	</update>
+	<update id="deposit" parameterType="com.hanbit.web.account.AccountVO">
+		update account set money = money + #{money} where account_no = #{account_no} 
+	</update>
+	<update id="withdrawal" parameterType="com.hanbit.web.account.AccountVO">
+		update account set money = money - #{money} where account_no = #{account_no} 
+	</update>
+	<delete id="delete" parameterType="com.hanbit.web.account.AccountVO">
+		delete account where account_no = #{account_no}
+	</delete>
+</mapper>

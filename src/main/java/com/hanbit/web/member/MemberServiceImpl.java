@@ -3,22 +3,25 @@ package com.hanbit.web.member;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
 import com.hanbit.web.account.AccountService;
 import com.hanbit.web.account.AccountServiceImpl;
 import com.hanbit.web.subject.SubjectVO;
-import com.hanbit.web.subject.SubjectDAO;
+import com.hanbit.web.subject.SubjectDAOImple;
 import com.hanbit.web.subject.SubjectMemberVO;
-
+@Service
 public class MemberServiceImpl implements MemberService{
-	private MemberDAOImpl dao = null; // 싱글톤 패턴
+	private MemberDAO dao = MemberDAOImpl.getInstance(); // 싱글톤 패턴
 	private AccountService accService = AccountServiceImpl.getInstance();
 	private MemberVO session;
-	private SubjectDAO subjDao = SubjectDAO.getInstance();
+	private SubjectDAOImple subjDao = SubjectDAOImple.getInstance();
 	private static MemberServiceImpl instance = new MemberServiceImpl();
 	public static MemberServiceImpl getInstance() {
 		return instance;
 	}
 	private MemberServiceImpl() {
+		dao = MemberDAOImpl.getInstance();
 	}
 	@Override
 	public String open(MemberVO stu) {
@@ -67,6 +70,7 @@ public class MemberServiceImpl implements MemberService{
 	}
 	public SubjectMemberVO login(MemberVO member) {
 		SubjectMemberVO sm = new SubjectMemberVO();
+		SubjectMemberVO sm1 = new SubjectMemberVO();
 		SubjectVO sb =new SubjectVO();
 		if(dao.findId(member.getId()) == 0) {
 			sm.setId("fail");
@@ -78,7 +82,7 @@ public class MemberServiceImpl implements MemberService{
 				if(subjDao.findId(session.getId()) == 0){
 					sm.setId("fail");
 				} else {
-					sb = subjDao.findById(member.getId());
+					sm1 = subjDao.findById(member.getId());
 					sm.setEmail(session.getEmail());
 					sm.setId(session.getId());
 					sm.setImg(session.getProfileImg());
