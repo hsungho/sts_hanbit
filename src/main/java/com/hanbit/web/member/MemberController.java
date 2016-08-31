@@ -4,21 +4,54 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
-@Controller // has a 관계 
+import com.hanbit.web.subject.SubjectMemberVO;
+
+@Controller // has a 관계
+@SessionAttributes("user")
 @RequestMapping("/member")
 public class MemberController {
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	@Autowired MemberServiceImpl service;
 	
 	@RequestMapping("/search")
-	public String find(){
-		System.out.println("MemberController!! find()");
-		MemberVO vo = (MemberVO) service.findById("park");
-		System.out.println("name : "+vo.getName());
+	public String find(@RequestParam("keyword") String keyword,
+			@RequestParam("search_option")String option,
+			@RequestParam("context")String context,
+			Model model){
 		logger.info("MemberController!! find()");
-		return "admin:member/find_by.tiles";
+		System.out.println("검색어 : "+keyword);
+		System.out.println("옵션 : "+option);
+		System.out.println("context : "+context);
+		MemberVO member = (MemberVO) service.findById(keyword);
+		System.out.println("name : "+member.getName());
+		System.out.println("이미지 : "+member.getProfileImg());
+		model.addAttribute("member", member);
+		model.addAttribute("img", context+"/resources/img");
+		return "admin:member/detail.tiles";
+	}
+	@RequestMapping("/login/execute")
+	public String executelogin(@RequestParam("id") String id,
+			@RequestParam("pw") String pw,
+			@RequestParam("context")String context,
+			Model model) {
+		logger.info("MemberController ! loginexecute()");
+		System.out.println("로그인시 넘어온 ID : "+id);
+		System.out.println("CONTEXT : "+context);
+		MemberVO member = new MemberVO();
+		member.setId(id);
+		member.setPw(pw);
+		System.out.println("=== 서비스 login 가기 직전=====");
+		SubjectMemberVO sm = service.login(member);
+		model.addAttribute("user", sm);
+		model.addAttribute("js", context+"/resources/js");
+		model.addAttribute("css", context+"/resources/css");
+		model.addAttribute("img", context+"/resources/img");
+		return "user:user/content.tiles";
 	}
 	@RequestMapping("/main")
 	public String moveMain() {

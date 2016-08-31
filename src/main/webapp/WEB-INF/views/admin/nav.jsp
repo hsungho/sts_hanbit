@@ -33,3 +33,8 @@
  		<li><a id="c_count" href="#">통장수</a></li>
     </ul>
 </ul>
+<script type="text/javascript">
+$(function(){
+	$('#admin_nav').css('height','50px');
+});
+</script>

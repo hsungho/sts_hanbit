@@ -41,7 +41,7 @@ public class SubjectDAOImple implements SubjectDAO{
 	public void insert(SubjectVO sub){
 		SqlSession session = sqlSessionFactory.openSession();
 	}
-	public SubjectMemberVO findById(String id) {
+	public SubjectVO findById(String id) {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			return session.selectOne(NAMESPACE + "findById",id); 
@@ -51,6 +51,10 @@ public class SubjectDAOImple implements SubjectDAO{
 	}
 	public int findId(String id) {
 		SqlSession session = sqlSessionFactory.openSession();
-		return session.selectOne("",id);
+		try {
+			return session.selectOne(NAMESPACE + "findId",id); 
+		} finally {
+			session.close();
+		}
 	}
 }

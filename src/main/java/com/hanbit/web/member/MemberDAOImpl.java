@@ -21,6 +21,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class MemberDAOImpl implements MemberDAO{
 	private static final Logger logger = LoggerFactory.getLogger(MemberDAOImpl.class);
+	private static MemberDAOImpl instance = new MemberDAOImpl();
+	private static final String NAMESPACE = "mapper.member.";
+	private SqlSessionFactory sqlSessionFactory = null;
 	private MemberDAOImpl() {
 		try {
 			InputStream is = Resources.getResourceAsStream("config/mybatis-config.xml");
@@ -29,8 +32,6 @@ public class MemberDAOImpl implements MemberDAO{
 			logger.info("session build fail");
 		}
 	}
-	private static MemberDAOImpl instance = new MemberDAOImpl();
-	
 	public static MemberDAOImpl getInstance() {
 		if (instance==null) {
 			logger.info("MemberDAOImpl instance is created ||");
@@ -38,8 +39,8 @@ public class MemberDAOImpl implements MemberDAO{
 		}
 		return instance;
 	}
-	private static final String NAMESPACE = "mapper.member.";
-	private SqlSessionFactory sqlSessionFactory = null;
+	
+	
 	public MemberDAOImpl(SqlSessionFactory sqlSessionFactory){
 		this.sqlSessionFactory = sqlSessionFactory;
 	}
@@ -93,6 +94,7 @@ public class MemberDAOImpl implements MemberDAO{
 				loginOk = true;
 			}
 		}
+		System.out.println("LOGIN OK ?"+loginOk);
 		return loginOk;
 	}
 	@Override
@@ -103,7 +105,11 @@ public class MemberDAOImpl implements MemberDAO{
 	@Override
 	public int findId(String id) {
 		SqlSession session = sqlSessionFactory.openSession();
-		return session.selectOne("",id);
+		try {
+			return session.selectOne(NAMESPACE + "findId",id); 
+		} finally {
+			session.close();
+		}
 	}
 	@Override
 	public int findPw(MemberVO mem) {
@@ -112,8 +118,15 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 	@Override
 	public boolean existId(String id){
+		int count = 0;
+		boolean flag = false;
 		SqlSession session = sqlSessionFactory.openSession();
-		int temp = session.selectOne("",id);
-		return false;
+		try {
+			count = session.selectOne("mapper.member.existId", id);
+			if(count==1){flag = true;}
+		} finally {
+			session.close();
+		}
+		return flag;
 	}
 }

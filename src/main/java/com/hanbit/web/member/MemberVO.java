@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+
 import com.hanbit.web.util.Constants;
 /**
  * @date   :2016. 6. 17.
@@ -14,6 +16,7 @@ import com.hanbit.web.util.Constants;
  * @file   :Studente1.java
  * @story  :
  */
+@Component
 public class MemberVO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String name,id,pw,ssn,regDate,gender,profileImg,changepw,confirmpw,email,phone;

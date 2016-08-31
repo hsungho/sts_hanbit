@@ -24,8 +24,8 @@ public class SubjectServiceImpl implements SubjectService{
 		dao.insert(sub);
 	}
 	@Override
-	public SubjectMemberVO findById(String id) {
-		SubjectMemberVO subject = new SubjectMemberVO();
+	public SubjectVO findById(String id) {
+		SubjectVO subject = new SubjectVO();
 		subject = dao.findById(id);
 		return subject;
 	}

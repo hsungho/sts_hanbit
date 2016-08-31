@@ -185,7 +185,10 @@ var member = (function(){
 		$('#member_regist #rd_major > label:gt(1)').addClass('radio-inline');
 		$('#member_regist #ck_subject').addClass('checkbox');
 		$('#member_regist #ck_subject > label').addClass('checkbox-inline');
-		$('#member_find_form').click(function(){controller.move('member','search');});
+		$('#member_find_form').attr('action',app.context()+'/member/search');
+		$('#member_find_form input[type="hidden"]').attr('name','context').attr('value',app.context());
+		$('#member_login_form').attr('action',app.context()+'/member/login/execute');
+		$('#member_login_form input[type="hidden"]').attr('value',app.context());
 	};
 	var onCreate = function(){
 		setContentView();
@@ -198,7 +201,10 @@ var member = (function(){
 		$('#list').click(function(){controller.move('member','list');});
 		$('#find_by').click(function(){controller.move('member','find_by');});
 		$('#count').click(function(){controller.move('member','count');});
-		
+		$('#member_find_form input[type="submit"]').click(function(){$('#member_find_form').submit()});
+		$('#member_login_form input[type="submit"]').click(function(){
+			$('#member_login_form').submit();
+		});
 	};
 	return {
 		setName : setName,

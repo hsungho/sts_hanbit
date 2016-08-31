@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.subject">
-	<select id="findById" parameterType="string" resultType="com.hanbit.web.subject.SubjectMemberVO">
+	<select id="findById" parameterType="string" resultType="com.hanbit.web.subject.SubjectVO">
 		select * from subject_member where id = #{id}
 	</select>
 	<select id="findId" parameterType="string" resultType="int">

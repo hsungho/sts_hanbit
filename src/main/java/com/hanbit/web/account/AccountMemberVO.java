@@ -1,11 +1,14 @@
 package com.hanbit.web.account;
 
+import org.springframework.stereotype.Component;
+
 /**
  * @date   :2016. 7. 8.
  * @author :ckan
  * @file   :AccountMemberBean.java 
  * @story  :
  */
+@Component
 public class AccountMemberVO {
 	private int accountNo,money,year,curyear; // 인스턴스 변수는 초기화를 하지 않는다. private 암호화 되어 있다. 보안
 	private String name,id,pw,chagePw,ssn,regDate,gender,birth;

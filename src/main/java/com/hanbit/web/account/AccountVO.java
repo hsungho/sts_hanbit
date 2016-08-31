@@ -5,12 +5,15 @@ package com.hanbit.web.account;
 
 import java.io.Serializable;
 
+import org.springframework.stereotype.Component;
+
 /**
  * @date   :2016. 6. 16.
  * @author :ckan
  * @file   :Account.java
  * @story  :
  */
+@Component
 public class AccountVO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private int accountNo,money; // 인스턴스 변수는 초기화를 하지 않는다. private 암호화 되어 있다. 보안

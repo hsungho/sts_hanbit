@@ -3,25 +3,25 @@ package com.hanbit.web.member;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hanbit.web.account.AccountService;
 import com.hanbit.web.account.AccountServiceImpl;
-import com.hanbit.web.subject.SubjectVO;
 import com.hanbit.web.subject.SubjectDAOImple;
 import com.hanbit.web.subject.SubjectMemberVO;
+import com.hanbit.web.subject.SubjectVO;
 @Service
 public class MemberServiceImpl implements MemberService{
-	private MemberDAO dao = MemberDAOImpl.getInstance(); // 싱글톤 패턴
-	private AccountService accService = AccountServiceImpl.getInstance();
-	private MemberVO session;
-	private SubjectDAOImple subjDao = SubjectDAOImple.getInstance();
-	private static MemberServiceImpl instance = new MemberServiceImpl();
-	public static MemberServiceImpl getInstance() {
-		return instance;
-	}
+	private MemberDAOImpl dao;
+	private SubjectDAOImple subjDao;
+	@Autowired private MemberVO member;
+	@Autowired private SubjectVO subject;
+	@Autowired private SubjectMemberVO subjectMember;
+	private AccountService accService;
 	private MemberServiceImpl() {
 		dao = MemberDAOImpl.getInstance();
+		subjDao = SubjectDAOImple.getInstance();
 	}
 	@Override
 	public String open(MemberVO stu) {
@@ -34,7 +34,7 @@ public class MemberServiceImpl implements MemberService{
 	}
 	@Override
 	public MemberVO show() {
-		return session;
+		return member;
 	}
 	@Override
 	public void update(MemberVO stu) {
@@ -44,7 +44,7 @@ public class MemberServiceImpl implements MemberService{
 	public String delete(String id) {
 		String msg = "";
 		if (dao.delete(id) != 0) {
-			session = this.findById(id);
+			member = this.findById(id);
 			msg = "삭제 성공 입니다.";
 		}else{
 			msg = "삭제 실패입니다.";
@@ -69,38 +69,33 @@ public class MemberServiceImpl implements MemberService{
 		return null;
 	}
 	public SubjectMemberVO login(MemberVO member) {
-		SubjectMemberVO sm = new SubjectMemberVO();
-		SubjectMemberVO sm1 = new SubjectMemberVO();
-		SubjectVO sb =new SubjectVO();
-		if(dao.findId(member.getId()) == 0) {
-			sm.setId("fail");
-		} else {
-			// 2.로그인
+		if (dao.findId(member.getId()) == 0){
+			subjectMember.setId("fail");
+		} else{
 			if (dao.login(member)) {
-				session = dao.findById(member.getId());
-				accService.map();
-				if(subjDao.findId(session.getId()) == 0){
-					sm.setId("fail");
-				} else {
-					sm1 = subjDao.findById(member.getId());
-					sm.setEmail(session.getEmail());
-					sm.setId(session.getId());
-					sm.setImg(session.getProfileImg());
-					sm.setMajor(sb.getMajor());
-					sm.setName(session.getName());
-					sm.setPhone(session.getPhone());
-					sm.setPw(session.getPw());
-					sm.setReg_date(session.getRegDate());
-					sm.setSsn_id(session.getSsn());
-					sm.setSubjects(sb.getSubjects());
-					sm.setBirth(session.getSsn().substring(0,6));
-					sm.setGender(session.getGender());
-				}
-			}else{
-				sm.setId("fail");
+				member = dao.findById(member.getId());
+				//accService.map();
+				if(subjDao.findId(member.getId()) == 0){
+					subjectMember.setId("fail");
+				}else {
+					subject = subjDao.findById(member.getId());
+					subjectMember.setEmail(member.getEmail());
+					subjectMember.setId(member.getId());
+					subjectMember.setImg(member.getProfileImg());
+					subjectMember.setMajor(subject.getMajor());
+					subjectMember.setName(member.getName());
+					subjectMember.setPhone(member.getPhone());
+					subjectMember.setPw(member.getPw());
+					subjectMember.setReg_date(member.getRegDate());
+					subjectMember.setSsn_id(member.getSsn());
+					subjectMember.setSubjects(subject.getSubjects());
+				}	
+			} else{
+				subjectMember.setId("fail");
 			}
 		}
-		return sm;
+		System.out.println("서비스로그인결과?"+subjectMember.getId());
+		return subjectMember;
 	}
 	@Override
 	public int genderCount(String gender) {
@@ -116,10 +111,10 @@ public class MemberServiceImpl implements MemberService{
 	}
 	@Override
 	public void logout(MemberVO mem) {
-		if (session.getId().equals(mem.getId()) &&
-			session.getPw().equals(mem.getPw())	
+		if (member.getId().equals(mem.getId()) &&
+			member.getPw().equals(mem.getPw())	
 		   ) {
-			session = null;
+			member = null;
 		} 
 	}
 }
