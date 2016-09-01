@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<jsp:include page="../global/header.jsp"/>
-<jsp:include page="../global/navi.jsp"/>
 <link rel="stylesheet" href="${css}/douglas.css" />
 <div id="container" style='width:100%'>
 <h1 style='margin:0 auto;width:250px'>Creator 학습장</h1>
@@ -29,8 +27,7 @@
 </section>
 
 </div>
-<jsp:include page="../global/footer.jsp"/>
-<jsp:include page="../global/end.jsp"/>
+
 <script src="${js}/douglas.js"></script>
 <script>
 account.init();

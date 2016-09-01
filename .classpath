@@ -38,5 +38,10 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="C:/STS/cos.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/STS/jstl.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/STS/ojdbc14.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/STS/servlet-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/STS/standard.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

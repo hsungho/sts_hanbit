@@ -7,15 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @date   :2016. 6. 20. 
- * @author :pakjkwan@gmail.com
- * @file   :AccountServiceImpl.java
- * @story  :계좌 인터페이스
-*/
+import org.springframework.stereotype.Service;
+
+@Service
 public class AccountServiceImpl implements AccountService {
 	
-	AccountDAO dao = AccountDAO.getInstance();
+	AccountDAOImpl dao = AccountDAOImpl.getInstance();
 	private Map<?,?> map ;
 	private static AccountServiceImpl instance = new AccountServiceImpl();
 	
@@ -23,7 +20,7 @@ public class AccountServiceImpl implements AccountService {
 		return instance;
 	}
 	private AccountServiceImpl() {
-		map = new HashMap<String,AccountMemberBean>();
+		map = new HashMap<String,AccountMemberVO>();
 	}
 	@Override
 	public String openAccount(String id) {
@@ -32,7 +29,7 @@ public class AccountServiceImpl implements AccountService {
 		acc.setId(id);
 		acc.setMoney(0);
 		String msg = "";
-		if (dao.insertAccount(acc)==1) {
+		if (dao.openAccount(acc)==1) {
 			msg = "계좌생성 완료";
 		} else {
 			msg = "계좌생성 실패";
@@ -85,7 +82,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public List<?> list() {
-		List<AccountMemberBean> list = dao.selectAll();
+		List<AccountMemberVO> list = dao.selectAll();
 		
 		return list;
 	}
@@ -114,7 +111,7 @@ public class AccountServiceImpl implements AccountService {
 	}
 	@Override
 	public Map<?,?> map() {
-		map = new HashMap<String,AccountMemberBean>();
+		map = new HashMap<String,AccountMemberVO>();
 		map = dao.selectMap();
 		return map;
 	}

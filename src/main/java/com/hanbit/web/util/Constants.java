@@ -14,5 +14,5 @@ public class Constants {
 	public final static String MYSQL_DRIVER = "";
 	public final static String MYSQL_URL = "";
 	public final static String USER_ID = "hanbit";
-	public final static String USER_PW = "hanbit";
+	public final static String USER_PW = "gksqlc";
 }

@@ -2,75 +2,121 @@ package com.hanbit.web.member;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.hanbit.web.home.HomeController;
 
+import com.hanbit.web.subject.SubjectMemberVO;
+
 @Controller
+@SessionAttributes({"user","context","js","css","img"})
 @RequestMapping("/member")
 public class MemberController {
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-
+	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
+	@Autowired MemberServiceImpl service;
+	
+	@RequestMapping("/search")
+	public String find(@RequestParam("keyword")String keyword,
+			@RequestParam("search_option")String option,
+			@RequestParam("context")String context,
+			Model model){
+		logger.info("MemberController! findById : {}","??");
+		System.out.println("검색어:"+keyword);
+	    System.out.println("옵션:"+option);
+	    System.out.println("context :"+context);
+		MemberVO member = (MemberVO)service.findById(keyword);
+		System.out.println("NAME:"+member.getName());
+		System.out.println("이미지:"+member.getProfileImg());
+		model.addAttribute("member",member);
+		model.addAttribute("img",context+"/resources/img");
+		return "admin:member/detail.tiles";
+		
+	}
+	@RequestMapping(value="/login",method=RequestMethod.POST)
+	public String login(@RequestParam("id")String id,
+	@RequestParam("pw")String pw,
+	@RequestParam("context")String context,
+			Model model) {
+		logger.info("MemberController ! login() ");
+	   logger.info("TO LOGIN ID IS {} ",id);
+	   logger.info("TO LOGIN ID IS {}",pw);
+	   logger.info("CONTEXT IS {} ",context);
+		MemberVO member = new MemberVO();
+		member.setId(id);	
+		member.setPw(pw);
+		SubjectMemberVO sm = service.login(member);
+		model.addAttribute("user",sm);
+		model.addAttribute("context",context);
+		model.addAttribute("js", context+"/resources/js");
+		model.addAttribute("css", context+"/resources/css");
+		model.addAttribute("img", context+"/resources/img");
+		return "user:user/content.tiles";
+	}
 	@RequestMapping("/main")
 	public String moveMain() {
-		logger.info("MemberController! goMain()");
+		logger.info("GO TO {}","main");
 		return "admin:member/content.tiles";
 
 	}
 	
 	@RequestMapping("/regist")
 	public String regist() {
-		logger.info("MemberController! regist()");
+		logger.info("GO TO {}","regist");
 		return "public:member/regist.tiles";
 		
 	}
 
 	@RequestMapping("/detail")
 	public String detail() {
-		logger.info("MemberController! detail()");
+		logger.info("GO TO {}","detail");
 		return "admin:member/detail.tiles";
 	}
 
 	@RequestMapping("/update")
 	public String update() {
-		logger.info("MemberController! update()");
+		logger.info("GO TO {}","update");
 		return "admin:member/update.tiles";
 	}
 
 	@RequestMapping("/delete")
 	public String delete() {
-		logger.info("MemberController! delete()");
+		logger.info("GO TO {}","delete");
 		return "admin:member/delete.tiles";
 	}
 
 	@RequestMapping("/login")
 	public String login() {
-		logger.info("MemberController! login()");
+		logger.info("GO TO {}","login");
 		return "public:member/login.tiles";
 	}
 
 	@RequestMapping("/logout")
 	public String logout() {
-		logger.info("MemberController! logout()");
+		logger.info("GO TO {}","logout");
 		return "admin:member/logout.tiles";
 	}
 
 	@RequestMapping("/list")
 	public String list() {
-		logger.info("MemberController! list()");
+		logger.info("GO TO {}","list");
 		return "admin:member/list.tiles";
 	}
 
 	@RequestMapping("/find")
 	public String find_by() {
-		logger.info("MemberController! find_by()");
+		logger.info("GO TO {}","find");
 		return "admin:member/find_by.tiles";
 	}
 
 	@RequestMapping("/count")
 	public String count() {
-		logger.info("MemberController! count()");
+		logger.info("GO TO {}","count");
 		return "admin:member/count.tiles";
 	}
 

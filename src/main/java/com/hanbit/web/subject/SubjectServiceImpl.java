@@ -1,7 +1,10 @@
 package com.hanbit.web.subject;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class SubjectServiceImpl implements SubjectService{
-	SubjectDAO dao = SubjectDAO.getInstance();
+	SubjectDAOImpl dao = SubjectDAOImpl.getInstance();
 	private static SubjectServiceImpl instance
 		= new SubjectServiceImpl();
 	private SubjectServiceImpl() {
@@ -12,7 +15,7 @@ public class SubjectServiceImpl implements SubjectService{
 	}
 
 	@Override
-	public void insert(SubjectmemberVO s) {
+	public void insert(SubjectVO s) {
 		dao.insert(s);
 	}
 }

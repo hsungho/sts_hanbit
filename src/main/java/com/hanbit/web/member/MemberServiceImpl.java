@@ -3,28 +3,26 @@ package com.hanbit.web.member;
 import java.util.List;
 import java.util.Map;
 
-import com.hanbit.web.bank.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+
 import com.hanbit.web.bank.AccountServiceImpl;
-import com.hanbit.web.subject.SubjectmemberVO;
-import com.hanbit.web.subject.SubjectDAO;
-import com.hanbit.web.subject.SubjectMember;
-
+import com.hanbit.web.subject.SubjectVO;
+import com.hanbit.web.subject.SubjectDAOImpl;
+import com.hanbit.web.subject.SubjectMemberVO;
+@Service
 public class MemberServiceImpl implements MemberService{
+	private MemberDAOImpl dao;
+	private SubjectDAOImpl subjDao;
+	@Autowired private MemberVO member;
+	@Autowired private SubjectVO subject;
+	@Autowired private SubjectMemberVO subjectMember;
+	private AccountServiceImpl accService;
 	
-	private MemberDAOImpl dao = null;
-	private SubjectDAO subjDao = SubjectDAO.getInstance();
-	private AccountService accService = AccountServiceImpl.getInstance();
-	private MemberVO session;
-	
-	private static MemberServiceImpl instance = new MemberServiceImpl();
-	
-	public static MemberServiceImpl getInstance() {
-		return instance;
-	}
-
-	
-	private MemberServiceImpl() {
-		session = new MemberVO();
+	public MemberServiceImpl() {
+		dao = MemberDAOImpl.getInstance();
+		subjDao = SubjectDAOImpl.getInstance();
 	}
 	
 	@Override
@@ -59,7 +57,7 @@ public class MemberServiceImpl implements MemberService{
 	}
 	@Override
 	public MemberVO show() {
-		return session;
+		return member;
 	}
 	@Override
 	public void delete(MemberVO member) {
@@ -100,39 +98,42 @@ public class MemberServiceImpl implements MemberService{
 		return null;
 	}
 	@Override
-	public SubjectMember login(MemberVO member) {
-		SubjectMember sm = new SubjectMember();
-		SubjectmemberVO sb =new SubjectmemberVO();
-		// 2.로그인
+	public SubjectMemberVO login(MemberVO member) {
 			if (dao.login(member)) {
-				session = dao.findById(member.getId());
-				accService.map();
-				sb = subjDao.findById(member.getId());
-				sm.setEmail(session.getEmail());
-				sm.setId(session.getId());
-				sm.setImg(session.getProfileImg());
-				sm.setMajor(sb.getMajor());
-				sm.setName(session.getName());
-				sm.setPhone(session.getPhone());
-				sm.setPw(session.getPw());
-				sm.setReg(session.getRegDate());
-				sm.setSsn(session.getSsn());
-				sm.setSubjects(sb.getSubjects());
+				member = dao.findById(member.getId());
+				System.out.println("서비스 로그인 하는 중..ID"+member.getId());
+			//	accService.map();
+				subject = subjDao.findById(member.getId());
+				subjectMember.setEmail(member.getEmail());
+				subjectMember.setId(member.getId());
+				subjectMember.setImg(member.getProfileImg());
+				subjectMember.setMajor(subject.getMajor());
+				subjectMember.setName(member.getName());
+				subjectMember.setPhone(member.getPhone());
+				subjectMember.setPw(member.getPw());
+				subjectMember.setReg(member.getRegDate());
+				subjectMember.setSsn(member.getSsn());
+				subjectMember.setSubjects(subject.getSubjects());
 				
 			}else{
-				sm.setId("fail");
+				subjectMember.setId("fail");
 			}
-		System.out.println("서비스로그인결과?"+sm.getId());
-		return sm;
+		System.out.println("서비스로그인결과?"+subjectMember.getId());
+		return subjectMember;
 	}
 
 
 	@Override
 	public void logout(MemberVO member) {
-		if (member.getId().equals(session.getId()) 
-				&& member.getPw().equals(session.getPw())) {
-			session = null;
+		if (member.getId().equals(member.getId()) 
+				&& member.getPw().equals(member.getPw())) {
+			member = null;
 		}
 		
+	}
+
+	public static MemberServiceImpl getInstance() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

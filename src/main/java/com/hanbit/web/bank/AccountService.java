@@ -10,12 +10,6 @@ import com.hanbit.web.util.CommonService;
 
 
 
-/**
- * @date   :2016. 6. 20. 
- * @author :pakjkwan@gmail.com
- * @file   :AccountService.java
- * @story  :
-*/
 public interface AccountService extends CommonService{
 	// 1개설 2입금 3조회 4출금 5통장내역 6해지
 		

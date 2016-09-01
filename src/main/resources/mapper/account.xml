@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.account">
+<select id="openAccount" parameterType="com.hanbit.web.bank.AccountVO" resultType="com.hanbit.web.member.MemberVO">
+insert into account (id, account_no, money)values (#{},#{},#{})
+</select>
+<select id="selectMoney" parameterType="int" resultType="int">
+select money from account where account_no = #{}
+</select>
+<select id="deposit" parameterType="com.hanbit.web.bank.AccountVO">
+update account set money = ? where account_no = #{}
+</select>
+<select id="withdraw" parameterType="com.hanbit.web.bank.AccountVO">
+select account_no as acc, id as id,name as name,money as money,ssn as birth ,from account_member,order by name
+</select>
+<select id="selectAll" resultType="com.hanbit.web.bank.AccountVO">
+select * from account_member
+</select>
+<select id="selectMap" resultType="com.hanbit.web.bank.AccountVO">
+</select>
+</mapper>

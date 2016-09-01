@@ -15,7 +15,7 @@ var app = (function(){
 	var css = function(){return session.getCssPath('css');};
 	var img = function(){return session.getImagePath('img');};
 	var setContentView = function(){
-		$('#header_brand').attr('src',app.img()+'/images.jpg').css('height','80px').css('width','100px').css('padding-bottom','20px');
+		$('#header_brand').attr('src',app.img()+'/default/images.jpg').css('height','80px').css('width','100px').css('padding-bottom','20px');
 		$('#footer').addClass('bottom').addClass('footer');
 		$('#global_content').addClass('box');
 		$('#global_content a').addClass('cursor');
@@ -159,6 +159,9 @@ var member = (function(){
 		$('#member_regist #rd_major > label:gt(1)').addClass('radio-inline');
 		$('#member_regist #ck_subject').addClass('checkbox');
 		$('#member_regist #ck_subject > label').addClass('checkbox-inline');
+		$('#member_find_form').attr('action',sessionStorage.getItem('context')+'/member/search');
+		$('#member_find_form input[type="hidden"]').attr('name','context').attr('value',app.context());
+	
 	};
 	var onCreate = function(){
 		setContentView();
@@ -171,6 +174,8 @@ var member = (function(){
 		$('#list').click(function(){controller.move('member','list');});
 		$('#find_by').click(function(){controller.move('member','find_by');});
 		$('#count').click(function(){controller.move('member','count');});
+		$('#member_find_form input[type="submit"]').click(function(){$('#member_find_form').submit()});
+	
 	};
 	return {
 		setSSN : setSSN,
@@ -291,9 +296,9 @@ var admin = (function() {
     var setPass = function(pass){this._pass=pass;};
     var init = function(){onCreate();};
     var setContentView = function(){
-    	$('#admin_content #img_1').attr('src',app.img()+'/member_mgmt.PNG');
-    	$('#admin_content #img_2').attr('src',app.img()+'/grade_mgmt.PNG');
-    	$('#admin_content #img_3').attr('src',app.img()+'/account_mgmt.PNG');
+    	$('#admin_content #img_1').attr('src',app.img()+'/member.jsp');
+    	$('#admin_content #img_2').attr('src',app.img()+'/grade.jsp');
+    	$('#admin_content #img_3').attr('src',app.img()+'/account.jsp');
     	$('#admin_content h3').addClass('text_center');
     };
     var onCreate = function(){
