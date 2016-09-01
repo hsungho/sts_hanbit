@@ -20,6 +20,9 @@ var app = (function(){
 	var img = function(){
 		return session.getImagePath();
 	};
+	var fonts = function(){
+		return session.getFontsPath();
+	};
 	var setContentView = function(){
 		$('#footer').addClass('bottom').addClass('footer');
 		$('#global_content').addClass('box');
@@ -43,7 +46,8 @@ var app = (function(){
 		setContentView : setContentView,
 		img : img,
 		css : css,
-		js : js
+		js : js,
+		fonts : fonts
 	}
 })();
 var user = (function(){
@@ -51,7 +55,7 @@ var user = (function(){
 		onCreate();
 	};
 	var setContentView = function(){
-		$('#account_content_img_home').attr('src',app.img()+'/home.jpg').css('width','30px');
+		$('#account_content_img_home').attr('src',app.img()+'/default/home.jpg').css('width','30px');
 		$('#account_content_a_home').attr('alt','home').click(function(){controller.home();});
 		$('#account_content').addClass('box').css('font-size','20px');
 		$('#account_content > article').css('width','300px')
@@ -157,7 +161,7 @@ var member = (function(){
 	var getGender = function(){return this._gender;};
 	var init = function(){onCreate();};
 	var setContentView = function(){
-		$('#member_content_img_home').attr('src',app.img()+'/home.jpg').css('width','30px');
+		$('#member_content_img_home').attr('src',app.img()+'/default/home.jpg').css('width','30px');
 		$('#member_content_a_home').attr('alt','home').click(function(){controller.home();});
 		$('#member_content').addClass('box').css('font-size','20px');
 		$('#member_content > article').css('width','300px')
@@ -187,7 +191,7 @@ var member = (function(){
 		$('#member_regist #ck_subject > label').addClass('checkbox-inline');
 		$('#member_find_form').attr('action',app.context()+'/member/search');
 		$('#member_find_form input[type="hidden"]').attr('name','context').attr('value',app.context());
-		$('#member_login_form').attr('action',app.context()+'/member/login/execute');
+		$('#member_login_form').attr('method','post').attr('action',app.context()+'/member/login');
 		$('#member_login_form input[type="hidden"]').attr('value',app.context());
 	};
 	var onCreate = function(){
@@ -279,11 +283,11 @@ var admin = (function(){
 		$('#admin_nav #account_mgmt #c_delete').click(function(){controller.move('account','delete');});
 		$('#admin_nav #account_mgmt #c_search').click(function(){controller.move('account','search');});
 		$('#admin_nav #account_mgmt #c_count').click(function(){controller.move('account','count');});
-		$('#admin_content_img_home').attr('src',app.img()+'/home.jpg').css('width','30px');
+		$('#admin_content_img_home').attr('src',app.img()+'/default/home.jpg').css('width','30px');
 		$('#admin_content_a_home').attr('alt','home').click(function(){controller.home();});
-		$('#member_management').attr('src',app.img()+'/member_management.jpg').css('width','350px').css('height','420px');
-		$('#grade_management').attr('src',app.img()+'/grade_management.jpg').css('width','350px').css('height','420px');
-		$('#account_management').attr('src',app.img()+'/account_management.jpg').css('width','350px').css('height','420px');
+		$('#member_management').attr('src',app.img()+'/default/member_management.jpg').css('width','350px').css('height','420px');
+		$('#grade_management').attr('src',app.img()+'/default/grade_management.jpg').css('width','350px').css('height','420px');
+		$('#account_management').attr('src',app.img()+'/default/account_management.jpg').css('width','350px').css('height','420px');
 	};
 	return{
 		getPass : getPass,
@@ -357,7 +361,7 @@ var kaup = (function(){
 var grade = (function(){
 	var init = function(){onCreate();};
 	var setContentView = function(){
-		$('#grade_content_img_home').attr('src',app.img()+'/home.jpg').css('width','30px');
+		$('#grade_content_img_home').attr('src',app.img()+'/default/home.jpg').css('width','30px');
 		$('#grade_content_a_home').attr('alt','home').click(function(){controller.home();});
 		$('#grade_content').addClass('box').css('font-size','20px');
 		$('#grade_content > article').css('width','300px')
@@ -391,17 +395,20 @@ var session = (function(){
 		sessionStorage.setItem('js',context+'/resources/js');
 		sessionStorage.setItem('css',context+'/resources/css');
 		sessionStorage.setItem('img',context+'/resources/img');
+		sessionStorage.setItem('fonts',context+'/resources/fonts');
 	};
 	var getContextPath = function(){return sessionStorage.getItem('context');};
 	var getJavascriptPath = function(){return sessionStorage.getItem('js');};
 	var getCssPath = function(){return sessionStorage.getItem('js');};
 	var getImagePath = function(){return sessionStorage.getItem('img');};
+	var getFontsPath = function(){return sessionStorage.getItem('fonts');};
 	return {
 		init : init,
 		getContextPath : getContextPath,
 		getJavascriptPath : getJavascriptPath,
 		getCssPath : getCssPath,
-		getImagePath : getImagePath
+		getImagePath : getImagePath,
+		getFontsPath : getFontsPath
 	};
 	
 })();
@@ -445,7 +452,7 @@ var nav = (function(){
 		$('#nav li a:hover:not(.active)').addClass('bg_color_green');
 		$('#nav .active').addClass('bg_color_black');
 		$('#header_brand').css('font-size','15px').addClass('cursor');
-		$('#header_brand').attr('src',app.img()+'/gof.JPG').css('width','70px').css('height','40px');
+		$('#header_brand').attr('src',app.img()+'/default/gof.JPG').css('width','70px').css('height','40px');
 		$('#header_brand_a_home').attr('alt','home').click(function(){controller.home();});
 	};
 	var onCreate = function(){setContentView()};

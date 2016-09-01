@@ -114,7 +114,11 @@ public class MemberDAOImpl implements MemberDAO{
 	@Override
 	public int findPw(MemberVO mem) {
 		SqlSession session = sqlSessionFactory.openSession();
-		return session.selectOne("",mem);
+		try {
+			return session.selectOne(NAMESPACE + "findPw",mem); 
+		} finally {
+			session.close();
+		}
 	}
 	@Override
 	public boolean existId(String id){

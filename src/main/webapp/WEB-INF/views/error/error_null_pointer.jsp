@@ -6,6 +6,6 @@
 	<title>Null Pointer Exception</title>
 </head>
 <body>
-	<img src="${img}/null_pointer.jpg" alt="" />
+	<img src="${img}/default/null_pointer.jpg" alt="" />
 </body>
 </html>

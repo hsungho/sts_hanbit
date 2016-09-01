@@ -6,6 +6,6 @@
 	<title>Error 500</title>
 </head>
 <body>
-	<img src="${img}/error500.jpg" alt="" />
+	<img src="${img}/default/error500.jpg" alt="" />
 </body>
 </html>

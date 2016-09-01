@@ -6,6 +6,6 @@
 	<title>Error 404</title>
 </head>
 <body>
-	<img src="${img}/error404.jpg" alt="" />
+	<img src="${img}/default/error404.jpg" alt="" />
 </body>
 </html>

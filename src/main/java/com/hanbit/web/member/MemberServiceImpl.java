@@ -70,28 +70,32 @@ public class MemberServiceImpl implements MemberService{
 	}
 	public SubjectMemberVO login(MemberVO member) {
 		if (dao.findId(member.getId()) == 0){
-			subjectMember.setId("fail");
+			subjectMember.setId("ID Faile");
 		} else{
-			if (dao.login(member)) {
-				member = dao.findById(member.getId());
-				//accService.map();
-				if(subjDao.findId(member.getId()) == 0){
+			if(dao.findPw(member) == 0){
+				subjectMember.setId("PW Faile");
+			} else {
+				if (dao.login(member)) {
+					member = dao.findById(member.getId());
+					//accService.map();
+					if(subjDao.findId(member.getId()) == 0){
+						subjectMember.setId("Subject ID fail");
+					}else {
+						subject = subjDao.findById(member.getId());
+						subjectMember.setEmail(member.getEmail());
+						subjectMember.setId(member.getId());
+						subjectMember.setImg(member.getProfileImg());
+						subjectMember.setMajor(subject.getMajor());
+						subjectMember.setName(member.getName());
+						subjectMember.setPhone(member.getPhone());
+						subjectMember.setPw(member.getPw());
+						subjectMember.setReg_date(member.getRegDate());
+						subjectMember.setSsn_id(member.getSsn());
+						subjectMember.setSubjects(subject.getSubjects());
+					}	
+				} else{
 					subjectMember.setId("fail");
-				}else {
-					subject = subjDao.findById(member.getId());
-					subjectMember.setEmail(member.getEmail());
-					subjectMember.setId(member.getId());
-					subjectMember.setImg(member.getProfileImg());
-					subjectMember.setMajor(subject.getMajor());
-					subjectMember.setName(member.getName());
-					subjectMember.setPhone(member.getPhone());
-					subjectMember.setPw(member.getPw());
-					subjectMember.setReg_date(member.getRegDate());
-					subjectMember.setSsn_id(member.getSsn());
-					subjectMember.setSubjects(subject.getSubjects());
-				}	
-			} else{
-				subjectMember.setId("fail");
+				}
 			}
 		}
 		System.out.println("서비스로그인결과?"+subjectMember.getId());
