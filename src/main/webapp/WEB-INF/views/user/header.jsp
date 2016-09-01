@@ -17,11 +17,11 @@
       <ul class="nav navbar-nav">
       	<li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">내 계좌 <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">계좌 정보</a></li>
-            <li><a href="#">계좌 생성</a></li>
-            <li><a href="#">입출금</a></li>
-            <li><a href="#">계좌 해지</a></li>
+          <ul id="account" class="dropdown-menu">
+            <li><a >계좌 정보</a></li>
+            <li><a id="account_open">계좌 생성</a></li>
+            <li><a id="account_transaction">입출금</a></li>
+            <li><a id="account_delete">계좌 해지</a></li>
           </ul>
         </li>
         <li class="dropdown">
@@ -45,7 +45,10 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">비밀번호 변경</a></li>
+            <li><a id="a_mypage">마이페이지</a></li>
+            <li><a id="a_detail">내 정보 보기</a></li>
+            <li><a id="a_update">내 정보 수정</a></li>
+            <li><a id="a_delete">회 원 탈 퇴</a></li>
           </ul>
         </li>
       </ul>
@@ -59,5 +62,13 @@ $(function(){
 	$('#user_header').css('height','50px');
 	$('.navbar-header').css('height','50px');
 	$('#user_header #logout').addClass('cursor').click(function() {controller.home();});
+	$('#user_header #a_mypage').click(function() {controller.move('member','content');});
+	$('#user_header #a_detail').click(function() {controller.move('member','detail');});
+	$('#user_header #a_update').click(function() {controller.move('member','update');});
+	$('#user_header #a_delete').click(function() {controller.move('member','delete');});
+	$("#user_header #account li:eq(0) a").click(function(){controller.move('account','detail');});
+	$("#user_header #account li:eq(1) a").click(function(){controller.move('account','open');});
+	$("#user_header #account li:eq(2) a").click(function(){controller.move('account','transaction');});
+	$("#user_header #account li:eq(3) a").click(function(){controller.move('account','delete');});
 });
 </script>

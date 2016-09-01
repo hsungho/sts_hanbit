@@ -7,9 +7,12 @@
 					<option value="open">개설</option>
 					<option value="delete">해지</option>
 				</select>
-    			<input type="text" class="form-control" placeholder="개설하시려면 비번을 해지시에는 계좌번호 입력">
+				<div style="padding:30px"></div>
+				<h4>개설하시려면 비번을 해지시에는 계좌번호 입력</h4>
+				<div style="padding:30px"></div>
+    			<input type="text" class="form-control" placeholder="">
 	  			<button type="submit" class="btn btn-primary">실 행</button>
 	  		</div>
-    		</div><!-- /input-group -->
+    		</div>
 	</form>
 </div>

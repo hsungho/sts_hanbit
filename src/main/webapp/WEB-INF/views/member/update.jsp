@@ -7,7 +7,7 @@
 		<table id="member_detail">
 				<tr>
 				<td rowspan="7" style="width:30%">
-				<img src="${img}/${user.img}" alt="W3Schools.com" width="104"
+				<img src="${img}/default/${user.img}" alt="W3Schools.com" width="104"
 			height="142"></td>
 				<td class="font_bold bg_color_yellow" style="width:20%">ID</td>
 				<td style="width:40%">${user.id}</td>

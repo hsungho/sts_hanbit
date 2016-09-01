@@ -27,6 +27,7 @@ footer{width:100%;height:50px;}
 /* EFFECTIVE */
 .remove_underline{text-decoration: none}
 .cursor{cursor:pointer}
+a{cursor:pointer;}
 .list_style_none{list-style-type: none}
 .over_hidden{overflow: hidden;}
 .display_inline{display: inline;}

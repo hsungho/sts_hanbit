@@ -413,21 +413,31 @@ var session = (function(){
 	
 })();
 var controller = (function(){
-	var _page,_directory;
+	var _page,_directory,_key;
 	var setDirectory = function(directory){this._directory=directory;};
 	var setPage = function(page){this._page=page;};
 	var getDirectory = function(){return this._directory;};
 	var getPage = function(){return this._page;};
+	var setKey = function(key){this._key=key;};
+	var getKey = function(){return this._key;};
 	return{
 		setDirectory : setDirectory,
 		setPage : setPage,
 		getDirectory : getDirectory,
 		getPage : getPage,
+		setKey : setKey,
+		getKey : getKey,
 		move : function(directory,page){
 			setDirectory(directory);
 			setPage(page);
 			
 			location.href=app.context()+'/'+getDirectory()+'/'+getPage();
+		},
+		moveWithKey : function(directory,page,key){
+			setDirectory(directory);
+			setPage(page);
+			setKey(key);
+			location.href=app.context()+'/'+getDirectory()+'/'+getPage()+'?key='+getKey();
 		},
 		home : function(){
 			location.href=app.context()+'/';

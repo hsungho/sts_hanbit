@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="${css}/douglas.css" />
 <div id="container">
 	<section id="formbox">
-			<p>BOM 학습장</p>
+			<p>가위바위보</p>
 	</section>
 	<section>
 		<p>결과 : </p> <span id="result"></span>
