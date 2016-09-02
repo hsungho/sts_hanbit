@@ -6,8 +6,3 @@
   			<li class="active"><a href="#" id="a_account">계좌 보기</a></li>
   		</ul>
 	</div>
-<script type="text/javascript">
-	$(function(){
-		
-	});
-</script>

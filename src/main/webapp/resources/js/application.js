@@ -38,6 +38,10 @@ var app = (function(){
 		$('#a_grade').click(function(){controller.move('grade','main');});
 		$('#a_account').click(function(){controller.move('account','main');});
 		$('#a_school').click(function(){controller.move('global','school_info');});
+		$('#go_public_home').click(function(){controller.home()});
+		$('#a_school').click(function(){controller.move('public','school_info')});
+		$('#contact').click(function(){controller.move('public','contact')});
+		$('#free_board').click(function(){controller.move('public','free_board')});
 	};
 	return {
 		init : init,
@@ -69,8 +73,10 @@ var user = (function(){
 		$('#account_content_ol > li:nth(3) > a').text('UPDATE');
 		$('#account_content_ol > li:nth(4) > a').text('DELETE');
 		$('#account_content_ol > li:nth(5) > a').text('LIST');
-		$('#account_content_ol > li:nth(6) > a').text('SEARCH');
+		$('#account_content_ol > li:nth(6) > a').text('FIND');
 		$('#account_content_ol > li:nth(7) > a').text('COUNT');
+		$('#user_header').css('height','50px');
+		$('.navbar-header').css('height','50px');
 	};
 	var onCreate = function(){
 		setContentView();
@@ -81,11 +87,30 @@ var user = (function(){
 		$('#c_deposit').click(function(){controller.move('account','deposit');});
 		$('#c_withdraw').click(function(){controller.move('account','withdraw');});
 		$('#c_update').click(function(){controller.move('account','update');});
-		$('#c_delete').click(function(){controller.move('account','delete');});
+		$('#account_delete_form').click(function(){controller.move('account','delete');});
 		$('#c_list').click(function(){controller.move('account','list');});
-		$('#c_search').click(function(){controller.move('account','search');});
+		$('#c_find').click(function(){controller.move('account','find');});
 		$('#c_count').click(function(){controller.move('account','count');});
 		$('#c_regist').click(function(){controller.move('account','regist');});
+		$('#user_content #kaup').addClass('cursor').click(function(){controller.move('member','kaup');});
+		$('#user_content #rock_sissor_paper').addClass('cursor').click(function(){controller.move('member','rock_sissor_paper');});
+		$('#user_content #lotto_drawing').addClass('cursor').click(function(){controller.move('member','lotto');});
+		var key = $('#user_content_subject #major_subject_1 input[type="hidden"]').val();
+		$('#user_content_subject #major_subject_1').click(function(){controller.moveWithKey('subject','detail',key);});
+		$('#user_content_subject #major_subject_2').click(function(){controller.moveWithKey('member','lotto');});
+		$('#user_content_subject #major_subject_3').click(function(){controller.moveWithKey('member','lotto');});
+		$('#go_user_home').click(function(){controller.move('member','content');});
+		$('#user_header #logout').addClass('cursor').click(function() {controller.home();});
+		$('#user_header #a_mypage').click(function() {controller.move('member','content');});
+		$('#user_header #a_detail').click(function() {controller.move('member','detail');});
+		$('#user_header #a_update').click(function() {controller.move('member','update');});
+		$('#user_header #a_delete').click(function() {controller.move('member','delete');});
+		$("#user_header #account li:eq(0) a").click(function(){controller.move('account','detail');});
+		$("#user_header #account li:eq(1) a").click(function(){controller.move('account','open');});
+		$("#user_header #account li:eq(2) a").click(function(){controller.move('account','transaction');});
+		$("#user_header #account li:eq(3) a").click(function(){controller.move('account','delete');});
+		$("#user_header #grade li:eq(0) a").click(function(){controller.move('grade','detail');});
+		$("#user_header #grade li:eq(1) a").click(function(){controller.move('grade','find');});
 	};
 	var context = sessionStorage.getItem("context");	
 	return{
@@ -176,7 +201,7 @@ var member = (function(){
 		$('#member_content_ol > li:nth(4) > a').text('LOG IN');
 		$('#member_content_ol > li:nth(5) > a').text('LOG OUT');
 		$('#member_content_ol > li:nth(6) > a').text('LIST');
-		$('#member_content_ol > li:nth(7) > a').text('SEARCH');
+		$('#member_content_ol > li:nth(7) > a').text('FIND');
 		$('#member_content_ol > li:nth(8) > a').text('COUNT');
 		$('#member_regist').addClass('box');			
 		$('#member_regist_form').addClass('form-horizontal');
@@ -269,7 +294,7 @@ var admin = (function(){
 		$('#admin_content_ol > li:nth(2) > a').text('UPDATE');
 		$('#admin_content_ol > li:nth(3) > a').text('DELETE');
 		$('#admin_content_ol > li:nth(4) > a').text('LIST');
-		$('#admin_content_ol > li:nth(5) > a').text('SEARCH');
+		$('#admin_content_ol > li:nth(5) > a').text('FIND');
 		$('#admin_content_ol > li:nth(6) > a').text('COUNT');
 		$('#admin_content > h3').addClass('text_align_center');
 	};
@@ -281,13 +306,27 @@ var admin = (function(){
 		$('#admin_nav #account_mgmt #c_list').click(function(){controller.move('account','list');});
 		$('#admin_nav #account_mgmt #c_regist').click(function(){controller.move('account','regist');});
 		$('#admin_nav #account_mgmt #c_delete').click(function(){controller.move('account','delete');});
-		$('#admin_nav #account_mgmt #c_search').click(function(){controller.move('account','search');});
+		$('#admin_nav #account_mgmt #c_find').click(function(){controller.move('account','find');});
 		$('#admin_nav #account_mgmt #c_count').click(function(){controller.move('account','count');});
 		$('#admin_content_img_home').attr('src',app.img()+'/default/home.jpg').css('width','30px');
 		$('#admin_content_a_home').attr('alt','home').click(function(){controller.home();});
 		$('#member_management').attr('src',app.img()+'/default/member_management.jpg').css('width','350px').css('height','420px');
 		$('#grade_management').attr('src',app.img()+'/default/grade_management.jpg').css('width','350px').css('height','420px');
 		$('#account_management').attr('src',app.img()+'/default/account_management.jpg').css('width','350px').css('height','420px');
+		$('#go_admin_home').click(function() {controller.move('admin','main');});
+		$('#admin_header').css('height','50px').css('color','white');
+		$('.navbar-header').css('height','50px');
+		$('#admin_header #exit').addClass('cursor');
+		$('#admin_header #exit').click(function() {controller.home();});
+		$('#admin_nav').css('height','50px');
+		$('#g_regist').click(function(){alert('등록하시려면 회원리스트로 이동해 주세요');controller.move('member','list');})
+		$('#g_update').click(function(){alert('수정하시려면 회원리스트로 이동해 주세요');controller.move('member','list');})
+		$('#c_list').click(function(){controller.move('account','list');});
+		$('#c_find').click(function(){controller.move('account','find');});
+		$('#c_count').click(function(){controller.move('account','count');});
+		$('#member_list_table .name').click(function(){controller.moveWithKey('member','a_detail','park');});
+		$('#member_list_table .regist').click(function(){controller.moveWithKey('grade','a_regist','park');});
+		$('#member_list_table .update').click(function(){controller.moveWithKey('grade','a_update','park');});
 	};
 	return{
 		getPass : getPass,
@@ -374,16 +413,30 @@ var grade = (function(){
 		$('#grade_content_ol > li:nth(2) > a').text('DELETE');
 		$('#grade_content_ol > li:nth(3) > a').text('LIST');
 		$('#grade_content_ol > li:nth(4) > a').text('COUNT');
-		$('#grade_content_ol > li:nth(5) > a').text('SEARCH');
+		$('#grade_content_ol > li:nth(5) > a').text('FIND');
 	};
 	var onCreate = function(){
 		setContentView();
 		$('#g_regist').click(function(){controller.move('grade','regist');});
 		$('#g_update').click(function(){controller.move('grade','update');});
-		$('#g_delete').click(function(){controller.move('grade','delete');});
 		$('#g_list').click(function(){controller.move('grade','list');});
-		$('#g_search').click(function(){controller.move('grade','search');});
-		$('#g_count').click(function(){controller.move('grade','count');});
+		$('#g_find').click(function(){controller.move('grade','find');});
+		$('#grade_regist').addClass('box').css('padding-top','0');			
+		$('#grade_regist_form').addClass('form-horizontal');
+		$('#grade_regist_form > div').addClass('form-group').addClass('form-group-lg');
+		$('#grade_regist_form > div > label').addClass('col-sm-2').addClass('control-label');
+		$('#grade_regist_form > div > div').addClass('col-sm-10');
+		$('#grade_regist_form > div > div > input').addClass('form-control');
+		$('#grade_regist #bt_send').addClass('btn').addClass('btn-primary');
+		$('#grade_regist #bt_cancel').addClass('btn').addClass('btn-danger');
+		$('#grade_update').addClass('box').css('padding-top','0');			
+		$('#grade_update_form').addClass('form-horizontal');
+		$('#grade_update_form > div').addClass('form-group').addClass('form-group-lg');
+		$('#grade_update_form > div > label').addClass('col-sm-2').addClass('control-label');
+		$('#grade_update_form > div > div').addClass('col-sm-10');
+		$('#grade_update_form > div > div > input').addClass('form-control');
+		$('#grade_update #bt_update').addClass('btn').addClass('btn-primary');
+		$('#grade_update #bt_cancel').addClass('btn').addClass('btn-danger');
 	};
 	return {
 		init : init

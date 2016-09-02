@@ -1,33 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<style>
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-}
-
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}
-
-tr:nth-child(even) {
-    background-color: #dddddd;
-}
-</style>
-<div class="box" style="height: 150px">
+<div class="box" style='padding-top:0;width:90%'>
 	<ul class="list-group">
 	   	<li class="list-group-item">박신혜</li>
-	   	<li class="list-group-item">26</li>
-		<li class="list-group-item">여</li>
+	   	<li class="list-group-item">하나은행</li>
 		<li class="list-group-item">123-456-789</li>
-		<li class="list-group-item">3,000,000,000</li>
+		<li class="list-group-item">잔액 : ￦3,000,000,000</li>
 	</ul>
 <div class="panel panel-primary">
   	<div class="panel-heading">계좌 내역</div>
   	<div class="panel-body"></div>	
-<table>
+<table id="account_detail_table">
   <tr>
     <th>날짜</th>
     <th>입금</th>

@@ -36,7 +36,7 @@ public class AccountController {
 	}
 	@RequestMapping("/count")
 	public String count() {
-		logger.info("AccoountController ! count()");
+		logger.info("GO TO {}","count");
 		return "admin:account/count.tiles";
 	}
 	
@@ -47,14 +47,14 @@ public class AccountController {
 	}
 	@RequestMapping("/list")
 	public String list() {
-		logger.info("AccoountController ! list()");
+		logger.info("GO TO {}","list");
 		return "admin:account/list.tiles";
 	}
 	
-	@RequestMapping("/search")
-	public String search() {
-		logger.info("AccoountController ! search()");
-		return "admin:account/search.tiles";
+	@RequestMapping("/find")
+	public String moveFind() {
+		logger.info("GO TO {}","find");
+		return "admin:account/find.tiles";
 	}
 	@RequestMapping("/update")
 	public String update() {

@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <nav id="admin_header" class="navbar navbar-inverse" style='height: 50px'>
   <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-    <a id="header_brand_a_home">
+    <a id="go_admin_home">
  		<img id="header_brand" />
  	</a>
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -29,14 +28,6 @@
           </ul>
         </li>
       </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
+    </div>
+  </div>
 </nav>
-<script>
-	$(function(){
-		$('#admin_header').css('height','50px');
-		$('.navbar-header').css('height','50px');
-		$('#admin_header #exit').addClass('cursor');
-		$('#admin_header #exit').click(function() {controller.home();});
-	});
-</script>

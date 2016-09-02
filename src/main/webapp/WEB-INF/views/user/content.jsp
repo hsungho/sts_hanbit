@@ -1,9 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%-- <link rel="apple-touch-icon" sizes="60x60" href="${img}/favicons/kaup.png">
-<link rel="icon" type="image/png" href="${img}/favicons/favicon-32x32.png" sizes="32x32">
-<link rel="icon" type="image/png" href="${img}/favicons/favicon-16x16.png" sizes="16x16"> 
-<link rel="manifest" href="${img}/favicons/manifest.json">
-<link rel="shortcut icon" href="${img}/favicons/favicon.ico">--%>
 <link rel="stylesheet" type="text/css" href="${css}/normalize.css">
 <link rel="stylesheet" type="text/css" href="${css}/application.css">
 <link rel="stylesheet" type="text/css" href="${css}/owl.css">
@@ -110,14 +105,3 @@
 			</div>
 		</div>
 	</section>
-<script type="text/javascript">	
-	$(function(){
-		$('#user_content #kaup').addClass('cursor').click(function(){controller.move('member','kaup');});
-		$('#user_content #rock_sissor_paper').addClass('cursor').click(function(){controller.move('member','rock_sissor_paper');});
-		$('#user_content #lotto_drawing').addClass('cursor').click(function(){controller.move('member','lotto');});
-		var key = $('#user_content_subject #major_subject_1 input[type="hidden"]').val();
-		$('#user_content_subject #major_subject_1').click(function(){controller.moveWithKey('subject','detail',key);});
-		$('#user_content_subject #major_subject_2').click(function(){controller.moveWithKey('member','lotto');});
-		$('#user_content_subject #major_subject_3').click(function(){controller.moveWithKey('member','lotto');});
-	});
-</script>

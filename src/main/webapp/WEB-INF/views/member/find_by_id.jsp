@@ -1,6 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="${css}/global.css" />
-<link rel="stylesheet" href="${css}/member.css" />
 <div class="box">
 		<h2>검색된 회원 정보</h2>
 		<table id="member_detail">

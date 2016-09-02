@@ -17,10 +17,7 @@
     <ul id="grade_mgmt" class="dropdown-menu">
     	<li><a id="g_regist" href="#">등 록</a></li>
  		<li><a id="g_update" href="#">수 정</a></li>
- 		<li><a id="g_delete" href="#">삭 제</a></li>
  		<li><a id="g_list" href="#">목 록</a></li>
- 		<li><a id="g_count" href="#">학생수</a></li>
- 		<li><a id="g_search" href="#">검 색</a></li>
     </ul>
   </li>
   <li role="presentation" class="dropdown">
@@ -29,12 +26,7 @@
     </a>
     <ul id="account_mgmt" class="dropdown-menu">
     	<li><a id="c_list" href="#">목 록</a></li>
- 		<li><a id="c_search" href="#">검 색</a></li>
+ 		<li><a id="c_find" href="#">검 색</a></li>
  		<li><a id="c_count" href="#">통장수</a></li>
     </ul>
 </ul>
-<script type="text/javascript">
-$(function(){
-	$('#admin_nav').css('height','50px');
-});
-</script>

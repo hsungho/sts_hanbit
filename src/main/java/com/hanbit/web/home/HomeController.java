@@ -31,5 +31,12 @@ public class HomeController {
 	public String school_info(){
 		return "public:public/school_info.tiles";
 	}
-	
+	@RequestMapping("public/free_board")
+	public String freeBoard(){
+		return "public:public/free_board.tiles";
+	}
+	@RequestMapping("public/contact")
+	public String contact(){
+		return "public:public/contact.tiles";
+	}
 }

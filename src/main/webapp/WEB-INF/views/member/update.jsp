@@ -1,10 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="${css}/global.css" />
-<link rel="stylesheet" href="${css}/member.css" />
 <div class="box">
 		<h2>회원정보 수정</h2>
-		<form action="${context}/member.do" method="post">
-		<table id="member_detail">
+		<form >
+		<table id="member_update" class="table">
 				<tr>
 				<td rowspan="7" style="width:30%">
 				<img src="${img}/default/${user.img}" alt="W3Schools.com" width="104"
