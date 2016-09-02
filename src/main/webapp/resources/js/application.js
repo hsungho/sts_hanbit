@@ -92,9 +92,9 @@ var user = (function(){
 		$('#c_find').click(function(){controller.move('account','find');});
 		$('#c_count').click(function(){controller.move('account','count');});
 		$('#c_regist').click(function(){controller.move('account','regist');});
-		$('#user_content #kaup').addClass('cursor').click(function(){controller.move('member','kaup');});
-		$('#user_content #rock_sissor_paper').addClass('cursor').click(function(){controller.move('member','rock_sissor_paper');});
-		$('#user_content #lotto_drawing').addClass('cursor').click(function(){controller.move('member','lotto');});
+		$('#user_content_service #kaup').addClass('cursor').click(function(){controller.move('member','kaup');});
+		$('#user_content_service #rock_sissor_paper').addClass('cursor').click(function(){controller.move('member','rock_sissor_paper');});
+		$('#user_content_service #lotto_drawing').addClass('cursor').click(function(){controller.move('member','lotto');});
 		var key = $('#user_content_subject #major_subject_1 input[type="hidden"]').val();
 		$('#user_content_subject #major_subject_1').click(function(){controller.moveWithKey('subject','detail',key);});
 		$('#user_content_subject #major_subject_2').click(function(){controller.moveWithKey('member','lotto');});
