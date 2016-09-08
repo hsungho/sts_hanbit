@@ -1,3 +1,13 @@
+drop table account;
+drop view account_member;
+drop table grade;
+drop view grade_member;
+drop view grade_view;
+drop table member;
+drop table subject;
+drop view subject_member;
+drop table test;
+
 DROP SEQUENCE major_seq;
 DROP SEQUENCE grade_seq;
 DROP SEQUENCE art_seq;
@@ -11,9 +21,6 @@ CREATE SEQUENCE subj_seq START WITH 1000 INCREMENT BY 1 NOCACHE NOCYCLE;
 CREATE SEQUENCE exam_seq START WITH 1000 INCREMENT BY 1 NOCACHE NOCYCLE;
 
 select * from tab;
-SELECT *
-FROM   member
-;
 
 DROP TABLE Major CASCADE CONSTRAINT;
 DROP TABLE Member CASCADE CONSTRAINT;
@@ -26,6 +33,7 @@ CREATE TABLE Major(
   major_seq  INT CONSTRAINT major_pk PRIMARY KEY,
   title      VARCHAR2(100) NOT NULL
 );
+select * from major;
 
 CREATE TABLE Member(
   mem_id      VARCHAR2(20) CONSTRAINT member_pk PRIMARY KEY,
@@ -43,6 +51,9 @@ CREATE TABLE Member(
   CONSTRAINT major_member_fk FOREIGN KEY(major_seq)
 	REFERENCES Major(major_seq) ON DELETE CASCADE
 );
+select *
+from   member
+;
 
 CREATE TABLE Grade(
 	grade_seq  INT CONSTRAINT grade_pk PRIMARY KEY,
@@ -52,6 +63,9 @@ CREATE TABLE Grade(
 	CONSTRAINT member_grade_fk FOREIGN KEY(mem_id)
 	REFERENCES Member(mem_id) ON DELETE CASCADE
 );
+select *
+from   grade
+;
 
 CREATE TABLE Board(
   art_seq    INT CONSTRAINT board_pk PRIMARY KEY,
@@ -63,6 +77,9 @@ CREATE TABLE Board(
   CONSTRAINT member_board_fk FOREIGN KEY(mem_id)
 	REFERENCES Member(mem_id) ON DELETE CASCADE
 );
+select *
+from   board
+;
 
 CREATE TABLE Subject(
   subj_seq   INT CONSTRAINT subject_pk PRIMARY KEY,
@@ -71,6 +88,9 @@ CREATE TABLE Subject(
   CONSTRAINT member_subject_fk FOREIGN KEY(mem_id)
 	REFERENCES Member(mem_id) ON DELETE CASCADE
 );
+select *
+from   Subject
+;
 
 CREATE TABLE Exam(
   exam_seq   INT CONSTRAINT exam_pk PRIMARY KEY,
@@ -83,6 +103,9 @@ CREATE TABLE Exam(
   CONSTRAINT member_exam_fk FOREIGN KEY(mem_id)
 	REFERENCES Member(mem_id) ON DELETE CASCADE
 );
+select *
+from   exam
+;
 
 CREATE OR REPLACE VIEW Major_view AS
 SELECT m.major_seq
@@ -101,6 +124,9 @@ FROM   Major   m
       ,Member  u
 WHERE  m.major_seq = u.major_seq      
 ;
+select *
+from   Major_view;
+
 CREATE OR REPLACE VIEW Grade_view AS
 SELECT u.mem_id
       ,u.pw
@@ -128,6 +154,9 @@ AND    u.mem_id = x.mem_id
 AND    u.mem_id = s.mem_id
 AND    x.subj_seq = s.subj_seq
 ;
+select *
+from   Grade_view;
+
 CREATE OR REPLACE VIEW Board_view AS
 SELECT u.mem_id
       ,u.pw
@@ -148,7 +177,28 @@ FROM   member u
       ,board  b
 WHERE  u.mem_id = b.mem_id
 ;
+select *
+from   Board_view;
 
+/*
+META PROCEDURE
+*/
+select *
+from   user_sequences
+;
+select *
+from   user_objects
+;
+select *
+from   SYS.user_constraints
+order by table_name,constraint_name
+;
+SELECT *
+FROM   user_procedures
+;
+/*
+CREATE PROCEDURE
+*/
 CREATE OR REPLACE PROCEDURE insert_major(
 	sp_title IN Major.title%TYPE
 ) AS
@@ -156,6 +206,7 @@ BEGIN
 	INSERT INTO Major(major_seq,title)
 	VALUES(major_seq.nextval,sp_title);
 END insert_major;
+EXEC insert_major('미국문화학과');
 
 CREATE OR REPLACE PROCEDURE insert_student(
 	sp_mem_id      IN Member.mem_id%TYPE,
@@ -174,6 +225,7 @@ BEGIN
 	INSERT INTO Member(mem_id,pw,name,gender,reg_date,ssn,email,profile_img,role,phone,major_seq)
 	VALUES(sp_mem_id,sp_pw,sp_name,sp_gender,sp_reg_date,sp_ssn,sp_email,sp_profile_img,sp_role,sp_phone,sp_major_seq);
 END insert_student;
+EXEC insert_student('han','1','한효주','FEMALE','2016-07-01','870222-2','han@test.com','han.jpg','STUDENT','010-1234-5678',1000);
 
 CREATE OR REPLACE PROCEDURE insert_prof(
 	sp_mem_id      IN Member.mem_id%TYPE,
@@ -191,6 +243,7 @@ BEGIN
 	INSERT INTO Member(mem_id,pw,name,gender,reg_date,ssn,email,profile_img,role,phone)
 	VALUES(sp_mem_id,sp_pw,sp_name,sp_gender,sp_reg_date,sp_ssn,sp_email,sp_profile_img,sp_role,sp_phone);
 END insert_prof;
+EXEC insert_prof('haesu','1','김혜수','FEMALE','2016-07-01','700905-2','haesu@test.com','haesu.jpg','PROFESSOR','010-1234-5678');
 
 CREATE OR REPLACE PROCEDURE insert_grade(
 	sp_grade       IN Grade.grade%TYPE,
@@ -201,6 +254,7 @@ BEGIN
 	INSERT INTO Grade(grade_seq,grade,term,mem_id)
 	VALUES(grade_seq.nextval,sp_grade,sp_term,sp_mem_id);
 END insert_grade;
+EXEC insert_grade('A','1-1','han');
 
 CREATE OR REPLACE PROCEDURE insert_notice(
 	sp_category  IN Board.category%TYPE,
@@ -212,6 +266,7 @@ BEGIN
 	INSERT INTO Board(art_seq,category,title ,reg_date,content)
 	VALUES(art_seq.nextval,sp_category,sp_title,sp_reg_date,sp_content);
 END insert_notice;
+EXEC insert_notice('학교','의자좀 만들어주세요','2016-09-08','의자를 많이 만들어서 쉴수 있는공간 이있어야 합니다.');
 
 CREATE OR REPLACE PROCEDURE insert_qna(
 	sp_category  IN Board.category%TYPE,
@@ -224,6 +279,7 @@ BEGIN
 	INSERT INTO Board(art_seq,category,title ,reg_date,content,mem_id)
 	VALUES(art_seq.nextval,sp_category,sp_title,sp_reg_date,sp_content,sp_mem_id);
 END insert_qna;
+EXEC insert_qna('학점','학점이상해요','2016-09-08','1-1 JAVA 학점이 이상 해요.','han');
 
 CREATE OR REPLACE PROCEDURE insert_subject(
 	sp_subj_name IN Subject.subj_name%TYPE,
@@ -233,6 +289,7 @@ BEGIN
 	INSERT INTO Subject(subj_seq,subj_name,mem_id)
 	VALUES(subj_seq.nextval,sp_subj_name,sp_mem_id);
 END insert_subject;
+EXEC insert_subject('JAVA','haesu');
 
 CREATE OR REPLACE PROCEDURE insert_exam(
 	sp_term      IN Exam.term%TYPE,
@@ -244,42 +301,12 @@ BEGIN
 	INSERT INTO Exam(exam_seq,term,score ,subj_seq,mem_id)
 	VALUES(exam_seq.nextval,sp_term,sp_score,sp_subj_seq,sp_mem_id);
 END insert_exam;
-
-
-
-drop table account;
-drop view account_member;
-drop table grade;
-drop view grade_member;
-drop view grade_view;
-drop table member;
-drop table subject;
-drop view subject_member;
-drop table test;
-
-select *
-from   user_sequences
-;
-select *
-from   user_objects
-;
-select *
-from   SYS.user_constraints
-order by table_name,constraint_name
-;
-
-DROP PROCEDURE HANBIT.INSERTBOARD;
-
-EXEC insert_major('미국문화학과');
-EXEC insert_student('han','1','한효주','FEMALE','2016-07-01','870222-2','han@test.com','han.jpg','STUDENT','010-1234-5678',1000);
-EXEC insert_prof('haesu','1','김혜수','FEMALE','2016-07-01','700905-2','haesu@test.com','haesu.jpg','PROFESSOR','010-1234-5678');
-EXEC insert_grade('A','1-1','han');
-EXEC insert_notice('학교','의자좀 만들어주세요','2016-09-08','의자를 많이 만들어서 쉴수 있는공간 이있어야 합니다.');
-EXEC insert_qna('학점','학점이상해요','2016-09-08','1-1 JAVA 학점이 이상 해요.','han');
-EXEC insert_subject('JAVA','haesu');
 EXEC insert_exam('1-1','95',1000,'han');
 
--- Major Query
+/*
+READE PROCEDURE
+*/
+----- Major store procedure -------
 CREATE OR REPLACE PROCEDURE count_major(
     sp_major_count OUT NUMBER
 ) AS
@@ -288,6 +315,14 @@ BEGIN
     INTO   sp_major_count
     FROM   Major m;    
 END count_major;
+DECLARE
+     sp_count NUMBER := 0;
+BEGIN
+    count_major(sp_count);
+    DBMS_OUTPUT.PUT_LINE('전공 과목 숫 : '||sp_count);
+    
+END;  
+
 CREATE OR REPLACE PROCEDURE find_major(
     sp_major_seq IN OUT major.major_seq%TYPE,    
     sp_result       OUT VARCHAR2
@@ -315,8 +350,16 @@ BEGIN
     END IF;
     
 END find_major;
+DECLARE
+    sp_major_seq major.major_seq%TYPE := 1001;
+    sp_result    VARCHAR2(100) := null;
+BEGIN
+    find_major(sp_major_seq,sp_result);
+    DBMS_OUTPUT.PUT_LINE(sp_result);
+    
+END;
 
-CREATE OR REPLACE PROCEDURE HANBIT.select_major(
+CREATE OR REPLACE PROCEDURE HANBIT.all_major(
     sp_result OUT CLOB
 ) AS
     sp_temp CLOB;
@@ -330,41 +373,23 @@ BEGIN
     LOOP
         sp_cnt := sp_cnt + 1;
         IF sp_cnt = 1 THEN
-           sp_temp := major_rec.major_seq||'  -  '||major_rec.title;
+           sp_temp := major_rec.major_seq||','||major_rec.title;
            
         ELSE
         
           sp_temp := sp_temp||CHR(10)||
-                     major_rec.major_seq||'  -  '||major_rec.title;
+                     major_rec.major_seq||','||major_rec.title;
           
         END IF;
     END LOOP;
     
     sp_result := sp_temp;
     
-END select_major;
-
-DECLARE
-     sp_count NUMBER := 0;
-BEGIN
-    count_major(sp_count);
-    DBMS_OUTPUT.PUT_LINE('전공 과목 숫 : '||sp_count);
-    
-END;  
-
-DECLARE
-    sp_major_seq major.major_seq%TYPE := 1001;
-    sp_result    VARCHAR2(100) := null;
-BEGIN
-    find_major(sp_major_seq,sp_result);
-    DBMS_OUTPUT.PUT_LINE(sp_result);
-    
-END;    
-
+END all_major;
 DECLARE
      sp_result CLOB;
 BEGIN
-    select_major(sp_result);
+    all_major(sp_result);
     DBMS_OUTPUT.PUT_LINE(sp_result);
     
 END; 
@@ -381,8 +406,7 @@ BEGIN
         DBMS_OUTPUT.PUT_LINE(pkg_major.major_seq||'  -  '||pkg_major.title);
     END LOOP;    
 END;
-
--- member store procedure
+----- Member store procedure -------
 CREATE OR REPLACE PROCEDURE count_member(
     sp_member_count OUT NUMBER
 ) AS
@@ -391,6 +415,13 @@ BEGIN
     INTO   sp_member_count
     FROM   member u;    
 END count_member;
+DECLARE
+     sp_count NUMBER := 0;
+BEGIN
+    count_member(sp_count);
+    DBMS_OUTPUT.PUT_LINE('멤버수 : '||sp_count);
+    
+END;
 
 CREATE OR REPLACE PROCEDURE find_by_id(
     sp_mem_id  IN member.mem_id%TYPE,    
@@ -449,15 +480,6 @@ BEGIN
     END IF;
     
 END find_by_id;
-
-DECLARE
-     sp_count NUMBER := 0;
-BEGIN
-    count_member(sp_count);
-    DBMS_OUTPUT.PUT_LINE('멤버수 : '||sp_count);
-    
-END;
-
 DECLARE    
     sp_result    VARCHAR2(3000) := null;
 BEGIN
@@ -472,13 +494,13 @@ BEGIN
     END LOOP;    
 END; 
 
-select *
-from   member
-;
-select * from major;
-select * from subject;
+/*
+UPDATE PROCEDURE
+*/
 
-begin
-  SYS.dbms_output.put_line('HELLO WORD');
-END;
 
+/*
+DROP PROCEDURE
+*/
+DROP PROCEDURE insert_exam;
+DROP PROCEDURE HANBIT.INSERTBOARD;
