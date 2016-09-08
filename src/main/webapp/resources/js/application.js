@@ -451,7 +451,7 @@ var session = (function(){
 		sessionStorage.setItem('fonts',context+'/resources/fonts');
 	};
 	var getContextPath = function(){return sessionStorage.getItem('context');};
-	var getJavascriptPath = function(){return sessionStorage.getItem('js');};
+	var getJavascriptPath = function(){return sessionStorage.getItem('css');};
 	var getCssPath = function(){return sessionStorage.getItem('js');};
 	var getImagePath = function(){return sessionStorage.getItem('img');};
 	var getFontsPath = function(){return sessionStorage.getItem('fonts');};
