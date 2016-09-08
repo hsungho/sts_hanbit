@@ -270,7 +270,7 @@ order by table_name,constraint_name
 
 DROP PROCEDURE HANBIT.INSERTBOARD;
 
-EXEC insert_major('컴퓨터공학');
+EXEC insert_major('미국문화학과');
 EXEC insert_student('han','1','한효주','FEMALE','2016-07-01','870222-2','han@test.com','han.jpg','STUDENT','010-1234-5678',1000);
 EXEC insert_prof('haesu','1','김혜수','FEMALE','2016-07-01','700905-2','haesu@test.com','haesu.jpg','PROFESSOR','010-1234-5678');
 EXEC insert_grade('A','1-1','han');
@@ -279,8 +279,206 @@ EXEC insert_qna('학점','학점이상해요','2016-09-08','1-1 JAVA 학점이 이상 해요.',
 EXEC insert_subject('JAVA','haesu');
 EXEC insert_exam('1-1','95',1000,'han');
 
+-- Major Query
+CREATE OR REPLACE PROCEDURE count_major(
+    sp_major_count OUT NUMBER
+) AS
+BEGIN
+    SELECT COUNT(*)
+    INTO   sp_major_count
+    FROM   Major m;    
+END count_major;
+CREATE OR REPLACE PROCEDURE find_major(
+    sp_major_seq IN OUT major.major_seq%TYPE,    
+    sp_result       OUT VARCHAR2
+) AS
+    sp_title    MAJOR.TITLE%TYPE := NULL;
+    major_count NUMBER := 0;
+BEGIN
+    SELECT COUNT(*)
+    INTO   major_count
+    FROM   Major m
+    WHERE  m.major_seq = sp_major_seq;
+    
+    IF major_count > 0 THEN
+       
+       SELECT major_seq,title
+       INTO   sp_major_seq,sp_title
+       FROM   Major
+       WHERE  major_seq = sp_major_seq
+       ;
+       sp_result := '과목번호 : '||sp_major_seq||', 과목명 : '||sp_title;
+    ELSE
+    
+       sp_result := '전공 과목이 없습니다';
+       
+    END IF;
+    
+END find_major;
+
+CREATE OR REPLACE PROCEDURE HANBIT.select_major(
+    sp_result OUT CLOB
+) AS
+    sp_temp CLOB;
+    sp_cnt  NUMBER := 0;
+BEGIN
+        
+    FOR major_rec IN (SELECT m.major_seq
+                            ,m.title
+                      FROM   major m
+                     )
+    LOOP
+        sp_cnt := sp_cnt + 1;
+        IF sp_cnt = 1 THEN
+           sp_temp := major_rec.major_seq||'  -  '||major_rec.title;
+           
+        ELSE
+        
+          sp_temp := sp_temp||CHR(10)||
+                     major_rec.major_seq||'  -  '||major_rec.title;
+          
+        END IF;
+    END LOOP;
+    
+    sp_result := sp_temp;
+    
+END select_major;
+
+DECLARE
+     sp_count NUMBER := 0;
+BEGIN
+    count_major(sp_count);
+    DBMS_OUTPUT.PUT_LINE('전공 과목 숫 : '||sp_count);
+    
+END;  
+
+DECLARE
+    sp_major_seq major.major_seq%TYPE := 1001;
+    sp_result    VARCHAR2(100) := null;
+BEGIN
+    find_major(sp_major_seq,sp_result);
+    DBMS_OUTPUT.PUT_LINE(sp_result);
+    
+END;    
+
+DECLARE
+     sp_result CLOB;
+BEGIN
+    select_major(sp_result);
+    DBMS_OUTPUT.PUT_LINE(sp_result);
+    
+END; 
+
+DECLARE
+    pkg_major    major%ROWTYPE;
+    CURSOR cur IS
+    SELECT major_seq,title
+    FROM   Major;    
+BEGIN
+    FOR pkg_major IN cur
+    LOOP
+        EXIT WHEN cur%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE(pkg_major.major_seq||'  -  '||pkg_major.title);
+    END LOOP;    
+END;
+
+-- member store procedure
+CREATE OR REPLACE PROCEDURE count_member(
+    sp_member_count OUT NUMBER
+) AS
+BEGIN
+    SELECT COUNT(*)
+    INTO   sp_member_count
+    FROM   member u;    
+END count_member;
+
+CREATE OR REPLACE PROCEDURE find_by_id(
+    sp_mem_id  IN member.mem_id%TYPE,    
+    sp_result OUT VARCHAR2
+) AS
+    sp_pw          member.pw%TYPE;
+    sp_name        member.name%TYPE;
+    sp_gender      member.gender%TYPE;
+    sp_reg_date    member.reg_date%TYPE;
+    sp_ssn         member.ssn%TYPE;
+    sp_email       member.email%TYPE;
+    sp_profile_img member.profile_img%TYPE;
+    sp_role        member.role%TYPE;
+    sp_phone       member.phone%TYPE;
+    sp_major_seq   member.major_seq%TYPE;
+    mem_count   NUMBER := 0;
+BEGIN
+    SELECT COUNT(*)
+    INTO   mem_count
+    FROM   member m
+    WHERE  m.mem_id = sp_mem_id;
+    
+    IF mem_count > 0 THEN
+       
+       SELECT pw,
+              name,
+              gender,
+              reg_date,
+              ssn,
+              email,
+              profile_img,
+              role,
+              phone,
+              major_seq
+       INTO   sp_pw,
+              sp_name,
+              sp_gender,
+              sp_reg_date,
+              sp_ssn,
+              sp_email,
+              sp_profile_img,
+              sp_role,
+              sp_phone,
+              sp_major_seq
+       FROM   member m
+       WHERE  m.mem_id = sp_mem_id
+       ;
+       sp_result := '멤버 ID : '||sp_mem_id||', 비번 : '||sp_pw||', 이름 : '||sp_name||
+                    ', 성별 : '||sp_gender||', 입학일자 : '||sp_reg_date||', SSN : '||sp_ssn||
+                    ', 이메일 : '||sp_email||', 사진 : '||sp_profile_img||', 권한 : '||sp_role||
+                    ', 전화번호 : '||sp_phone||', 전공순서 : '||sp_major_seq;
+    ELSE
+    
+       sp_result := sp_mem_id||' 멤버가 없습니다';
+       
+    END IF;
+    
+END find_by_id;
+
+DECLARE
+     sp_count NUMBER := 0;
+BEGIN
+    count_member(sp_count);
+    DBMS_OUTPUT.PUT_LINE('멤버수 : '||sp_count);
+    
+END;
+
+DECLARE    
+    sp_result    VARCHAR2(3000) := null;
+BEGIN
+    
+    FOR mem_rec IN (SELECT mem_id
+                    FROM   member
+                   )
+    LOOP
+                   
+        find_by_id(mem_rec.mem_id,sp_result);
+        DBMS_OUTPUT.PUT_LINE(sp_result);
+    END LOOP;    
+END; 
+
 select *
 from   member
 ;
 select * from major;
 select * from subject;
+
+begin
+  SYS.dbms_output.put_line('HELLO WORD');
+END;
+
