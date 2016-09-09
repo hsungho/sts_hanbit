@@ -312,27 +312,22 @@ BEGIN
     END LOOP;    
 END;
 -- DEF_CURSOR_RETURN_ALL_MAJOR
-CREATE OR REPLACE PROCEDURE HANBIT.all_major1(
-    sp_result OUT SYS_REFCURSOR
+CREATE OR REPLACE PROCEDURE HANBIT.all_major(
+    major_cur OUT SYS_REFCURSOR
 ) AS
-BEGIN
-        
-    OPEN sp_result FOR 
-    SELECT *
-    FROM   major
-    ;
-    
-END all_major1;
+BEGIN        
+    OPEN major_cur FOR SELECT major_seq,title FROM major ORDER BY major_seq;
+END all_major;
 -- EXC_RETURN_CURSOR_ALL_MAJOR
 DECLARE
-    sp_result SYS_REFCURSOR;
+    major_cur SYS_REFCURSOR;
     marjor_rec major%ROWTYPE;
 BEGIN
-    all_major1(sp_result);
+    all_major1(major_cur);
     LOOP 
-    FETCH sp_result 
+    FETCH major_cur 
     INTO marjor_rec;
-        EXIT WHEN sp_result%NOTFOUND;
+        EXIT WHEN major_cur%NOTFOUND;
         DBMS_OUTPUT.PUT_LINE(marjor_rec.major_seq||','||marjor_rec.title);
     END LOOP;
 END;
