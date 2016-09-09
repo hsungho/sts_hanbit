@@ -33,3 +33,27 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE(sp_result);
     
 END; 
+-------- CURSOR TYPE -----------------------------
+CREATE OR REPLACE PROCEDURE HANBIT.all_major1(
+    sp_result OUT SYS_REFCURSOR
+) AS
+BEGIN
+        
+    OPEN sp_result FOR 
+    SELECT *
+    FROM   major
+    ;
+    
+END all_major1;
+DECLARE
+    sp_result SYS_REFCURSOR;
+    marjor_rec major%ROWTYPE;
+BEGIN
+    all_major1(sp_result);
+    LOOP 
+    FETCH sp_result 
+    INTO marjor_rec;
+        EXIT WHEN sp_result%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE(marjor_rec.major_seq||','||marjor_rec.title);
+    END LOOP;
+END;
