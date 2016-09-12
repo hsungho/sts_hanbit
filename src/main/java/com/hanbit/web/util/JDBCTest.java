@@ -18,7 +18,7 @@ public class JDBCTest {
 		Connection con = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-		String sql = "select * from member where id = 'hong' ",result="";
+		String sql = "select * from member where mem_id = 'haesu' ",result="";
 		List<String> list = new ArrayList<String>();
 		try {
 			Class.forName(Constants.ORACLE_DRIVER);
@@ -28,7 +28,7 @@ public class JDBCTest {
 			/*sql = "select * from test"; 
 			rs = stmt.executeQuery(sql);*/ 
 			while (rs.next()) {
-				result = "id : "+rs.getString("ID")+" pw : "+rs.getString("pw");
+				result = "id : "+rs.getString("MEM_ID")+" pw : "+rs.getString("pw");
 				list.add(result);
 			}
 		} catch (Exception e) {

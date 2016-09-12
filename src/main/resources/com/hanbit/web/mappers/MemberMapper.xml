@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hanbit.web.mappers.MemberMapper">
+	<select id="findById" parameterType="string" resultType="com.hanbit.web.domains.MemberDTO">
+		select mem_id as id,
+               pw as pw,
+               name as name,
+               gender as gender,
+               reg_date as regDate,
+               ssn as ssn,
+               email as email,
+               profile_img as profileImg,
+               phone as phone
+	   from    member where mem_id = #{id}
+	</select>
+</mapper>

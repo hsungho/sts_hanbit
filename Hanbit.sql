@@ -320,16 +320,17 @@ BEGIN
 END all_major;
 -- EXC_RETURN_CURSOR_ALL_MAJOR
 DECLARE
-    major_cur SYS_REFCURSOR;
-    marjor_rec major%ROWTYPE;
+    sp_major_cur SYS_REFCURSOR;
+    sp_marjor_rec major%ROWTYPE;
 BEGIN
-    all_major1(major_cur);
+    all_major(sp_major_cur);
     LOOP 
-    FETCH major_cur 
-    INTO marjor_rec;
-        EXIT WHEN major_cur%NOTFOUND;
-        DBMS_OUTPUT.PUT_LINE(marjor_rec.major_seq||','||marjor_rec.title);
+    FETCH sp_major_cur 
+    INTO sp_marjor_rec;
+        EXIT WHEN sp_major_cur%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE(sp_marjor_rec.major_seq||','||sp_marjor_rec.title);
     END LOOP;
+    CLOSE sp_major_cur;
 END;
 -- DEF_UPDATE_MAJOR
 CREATE OR REPLACE PROCEDURE update_major(
@@ -373,7 +374,101 @@ BEGIN
 	VALUES(sp_mem_id,sp_pw,sp_name,sp_gender,sp_reg_date,sp_ssn,sp_email,sp_profile_img,sp_role,sp_phone);
 END insert_prof;
 -- EXC_INSERT_PROFESSOR
-EXEC insert_prof('haesu','1','김혜수','FEMALE','2016-07-01','700905-2','haesu@test.com','haesu.jpg','PROFESSOR','010-1234-5678');
+EXEC insert_prof('prof_james','1','제임스 고슬링','MALE','2016-08-01','620905-1','james@test.com','prof_james.jpg','PROF','010-1234-5678');
+-- DEF_COUNT_PROFESSOR
+CREATE OR REPLACE PROCEDURE count_prof(sp_count OUT NUMBER) AS
+BEGIN SELECT COUNT(*) INTO sp_count FROM Member m WHERE role = 'PROF' ;END count_prof;
+-- EXE_COUNT_MAJOR
+DECLARE sp_count NUMBER := 0;
+BEGIN 
+count_prof(sp_count);
+DBMS_OUTPUT.PUT_LINE('교수인원 : '||sp_count||' 명');END;
+-- DEF_EXIST_MEMBER_ID
+CREATE OR REPLACE FUNCTION exist_member_id(sp_mem_id IN member.mem_id%TYPE) 
+RETURN NUMBER AS 
+    sp_cnt NUMBER := 0;
+BEGIN 
+ SELECT COUNT(*)
+ INTO   sp_cnt
+ FROM   member m
+ WHERE  m.mem_id = sp_mem_id;
+ RETURN sp_cnt;
+END exist_member_id; 
+-- EXE_EXIST_MEMBER_ID
+DECLARE
+    sp_mem_cnt NUMBER := 0;
+    sp_mem_id  VARCHAR2(20) := 'haesu';
+BEGIN
+    sp_mem_cnt := exist_member_id(sp_mem_id);
+    IF sp_mem_cnt = 0 THEN
+       DBMS_OUTPUT.PUT_LINE('존재하지 않는 멤버 입니다.');
+    END IF;
+    
+END;    
+-- DEF_FIND_BY_PROF_ID
+CREATE OR REPLACE PROCEDURE find_by_prof_id(
+    sp_prof_id      IN member.mem_id%TYPE,
+    sp_prof_rec    OUT member%ROWTYPE    
+) AS BEGIN SELECT * INTO sp_prof_rec FROM member WHERE mem_id = sp_prof_id;END find_by_prof_id;
+-- EXC_FIND_BY_PROF_ID
+DECLARE
+    sp_mem_id    member.mem_id%TYPE := 'prof_james';
+    sp_prof_rec  member%ROWTYPE;
+    sp_mem_cnt   NUMBER := 0;
+BEGIN
+    sp_mem_cnt := exist_member_id(sp_mem_id);
+    IF sp_mem_cnt = 0 THEN
+       DBMS_OUTPUT.PUT_LINE('존재하지 않는 멤버 입니다.');
+    ELSE
+       find_by_prof_id(sp_mem_id,sp_prof_rec);
+        DBMS_OUTPUT.PUT_LINE('멤버 ID : '||sp_prof_rec.mem_id||', 비번 : '||sp_prof_rec.pw||', 이름 : '||sp_prof_rec.name||
+                            ', 성별 : '||sp_prof_rec.gender||', 입학일자 : '||sp_prof_rec.reg_date||', SSN : '||sp_prof_rec.ssn||
+                            ', 이메일 : '||sp_prof_rec.email||', 사진 : '||sp_prof_rec.profile_img||', 권한 : '||sp_prof_rec.role||
+                            ', 전화번호 : '||sp_prof_rec.phone);
+    END IF;    
+END;
+-- DEF_ALL_PROF
+CREATE OR REPLACE PROCEDURE all_prof(
+    sp_prof_cur OUT SYS_REFCURSOR
+) AS
+BEGIN        
+    OPEN sp_prof_cur FOR SELECT * FROM member WHERE role = 'PROF';
+END all_prof;
+-- EXE_ALL_PROF
+DECLARE
+    sp_prof_cur SYS_REFCURSOR;
+    sp_prof_rec member%ROWTYPE;
+BEGIN
+    all_prof(sp_prof_cur);
+    LOOP 
+    FETCH sp_prof_cur 
+    INTO sp_prof_rec;
+        EXIT WHEN sp_prof_cur%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('멤버 ID : '||sp_prof_rec.mem_id||', 비번 : '||sp_prof_rec.pw||', 이름 : '||sp_prof_rec.name||
+                            ', 성별 : '||sp_prof_rec.gender||', 입학일자 : '||sp_prof_rec.reg_date||', SSN : '||sp_prof_rec.ssn||
+                            ', 이메일 : '||sp_prof_rec.email||', 사진 : '||sp_prof_rec.profile_img||', 권한 : '||sp_prof_rec.role||
+                            ', 전화번호 : '||sp_prof_rec.phone);
+    END LOOP;
+    CLOSE sp_prof_cur;
+END;
+-- DEF_UPDATE_PROF
+CREATE OR REPLACE PROCEDURE update_prof(
+    sp_prof_id    IN member.mem_id%TYPE,
+    sp_prof_pw    IN member.pw%TYPE,
+    sp_prof_email IN member.email%TYPE,
+    sp_prof_phone IN member.phone%TYPE
+)
+AS
+BEGIN    
+    UPDATE Member SET pw = NVL(sp_prof_pw,pw),email = NVL(sp_prof_email,email),phone = NVL(sp_prof_phone,phone) WHERE mem_id = sp_prof_id AND role = 'PROF';
+END update_prof;
+-- EXC_UPDATE_PROF
+BEGIN update_prof('haesu',2,null,null);END;
+-- DEF_DELETE_MAJOR
+CREATE OR REPLACE PROCEDURE delete_prof(sp_prof_id IN member.mem_id%TYPE) AS
+BEGIN DELETE FROM  Member WHERE mem_id = sp_prof_id AND role = 'PROF';END delete_prof;
+-- EXC_DELETE_MAJOR
+BEGIN delete_prof('prof_james');END;
 /*
 ========== MEMBER_STUDENT =========
 @AUTHOR : ckan2010@gmail.com
@@ -403,21 +498,10 @@ END insert_student;
 -- EXC_INSERT_STUDENT
 EXEC insert_student('han','1','한효주','FEMALE','2016-07-01','870222-2','han@test.com','han.jpg','STUDENT','010-1234-5678',1000);
 -- DEF_COUNT_STUDENT
-CREATE OR REPLACE PROCEDURE count_member(
-    sp_member_count OUT NUMBER
-) AS
-BEGIN
-    SELECT COUNT(*)
-    INTO   sp_member_count
-    FROM   member u;    
-END count_member;
+CREATE OR REPLACE PROCEDURE count_student(sp_student_cnt OUT NUMBER) AS
+BEGIN SELECT COUNT(*) INTO sp_student_cnt FROM member u WHERE u.role = 'STUDENT'; END count_student;
 -- EXC_COUNT_MEMBER
-DECLARE
-     sp_count NUMBER := 0;
-BEGIN
-    count_member(sp_count);
-    DBMS_OUTPUT.PUT_LINE('멤버수 : '||sp_count);    
-END;
+DECLARE sp_count NUMBER := 0;BEGIN count_student(sp_count);DBMS_OUTPUT.PUT_LINE('학생 : '||sp_count||' 명');END;
 /*
 ========== EXAM =========
 @AUTHOR : ckan2010@gmail.com
