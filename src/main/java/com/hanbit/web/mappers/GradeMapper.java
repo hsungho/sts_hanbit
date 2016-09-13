@@ -2,8 +2,10 @@ package com.hanbit.web.mappers;
 
 import java.util.List;
 
-import com.hanbit.web.domains.GradeDTO;
+import org.springframework.stereotype.Repository;
 
+import com.hanbit.web.domains.GradeDTO;
+@Repository
 public interface GradeMapper {
 	public int insert(GradeDTO grade);
 	public int update(GradeDTO grade);

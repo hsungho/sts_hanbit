@@ -1,8 +1,11 @@
 package com.hanbit.web.service.impl;
 
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hanbit.web.domains.SubjectDTO;
+import com.hanbit.web.mappers.SubjectMapper;
 import com.hanbit.web.services.SubjectService;
 
 /**
@@ -13,19 +16,12 @@ import com.hanbit.web.services.SubjectService;
  */
 @Service
 public class SubjectServiceImpl implements SubjectService{
-	private  SubjectServiceImpl() {
-		// TODO Auto-generated constructor stub
-	}
-	private static SubjectServiceImpl instance = new SubjectServiceImpl();
-	
-	public static SubjectServiceImpl getInstance() {
-		return instance;
-	}
+	@Autowired SqlSession sqlSession;
 
 	@Override
 	public void insert(SubjectDTO sub) {
 		// TODO Auto-generated method stub
-		
+		SubjectMapper mapper = sqlSession.getMapper(SubjectMapper.class);
 	}
 
 	@Override

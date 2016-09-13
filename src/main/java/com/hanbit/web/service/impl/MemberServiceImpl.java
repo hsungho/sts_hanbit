@@ -25,6 +25,7 @@ public class MemberServiceImpl implements MemberService{
 	}
 	@Override
 	public String open(MemberDTO stu) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		int cnt = findId(stu.getId());
 		if (cnt == 0) {
 			return "";		
@@ -34,27 +35,31 @@ public class MemberServiceImpl implements MemberService{
 	}
 	@Override
 	public MemberDTO show() {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		return member;
 	}
 	@Override
 	public void update(MemberDTO stu) {
-		
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 	}
 	@Override
 	public String delete(String id) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		String msg = "";
 		return msg;
 	}
 	public int count() {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		return 0;
 	}
 	@Override
 	public Map<?, ?> map() {
-		// TODO Auto-generated method stub
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		return null;
 	}
 	@Override
 	public void logout(MemberDTO mem) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		if (member.getId().equals(mem.getId()) &&
 			member.getPw().equals(mem.getPw())	
 		   ) {
@@ -63,12 +68,12 @@ public class MemberServiceImpl implements MemberService{
 	}
 	@Override
 	public List<?> list() {
-		// TODO Auto-generated method stub
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		return null;
 	}
 	@Override
 	public List<?> findBy(String keyword) {
-		// TODO Auto-generated method stub
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		return null;
 	}
 	@Override
@@ -79,12 +84,12 @@ public class MemberServiceImpl implements MemberService{
 	}
 	@Override
 	public int genderCount(String gender) {
-		// TODO Auto-generated method stub
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		return 0;
 	}
 	@Override
 	public int findId(String id) {
-		// TODO Auto-generated method stub
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		return 0;
 	}
 	@Override

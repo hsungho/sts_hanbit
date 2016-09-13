@@ -3,9 +3,10 @@ package com.hanbit.web.mappers;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import com.hanbit.web.domains.MemberDTO;
-@Component
+@Repository
 public interface MemberMapper {
 	public int insert(MemberDTO stu);
 	public int update(MemberDTO stu);

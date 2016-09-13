@@ -108,18 +108,19 @@ from   exam
 ;
 
 CREATE OR REPLACE VIEW Major_view AS
-SELECT m.major_seq
-      ,m.title major_title
-      ,u.mem_id
+SELECT m.major_seq AS majorSeq
+      ,m.title 
+      ,u.mem_id AS id
       ,u.pw
       ,u.name
-      ,u.reg_date
+      ,u.reg_date AS regDate
       ,u.gender
       ,u.ssn
-      ,u.profile_img
+      ,u.profile_img AS profileImg
       ,u.email
       ,u.phone
       ,u.role
+      ,substrb(u.ssn,1,6) birth
 FROM   Major   m
       ,Member  u
 WHERE  m.major_seq = u.major_seq      
@@ -128,23 +129,24 @@ select *
 from   Major_view;
 
 CREATE OR REPLACE VIEW Grade_view AS
-SELECT u.mem_id
+SELECT u.mem_id AS id
       ,u.pw
       ,u.name
-      ,u.reg_date
-      ,u.gender
+      ,u.reg_date AS regDate
+      ,u.gender 
       ,u.ssn
-      ,u.profile_img
+      ,u.profile_img AS profileImg
       ,u.email
       ,u.phone
       ,u.role
-      ,g.grade_seq
+      ,substrb(u.ssn,1,6) AS birth
+      ,g.grade_seq AS gradeSeq
       ,g.grade
       ,g.term
-      ,x.exam_seq
+      ,x.exam_seq AS examSeq
       ,x.score
-      ,s.subj_seq
-      ,s.subj_name
+      ,s.subj_seq AS subjSeq
+      ,s.subj_name AS subjName
 FROM   member u
       ,grade   g
       ,exam    x
@@ -158,20 +160,21 @@ select *
 from   Grade_view;
 
 CREATE OR REPLACE VIEW Board_view AS
-SELECT u.mem_id
+SELECT u.mem_id AS id
       ,u.pw
       ,u.name
-      ,u.reg_date 
+      ,u.reg_date AS regDate
       ,u.gender
       ,u.ssn
-      ,u.profile_img
+      ,u.profile_img AS profileImg
       ,u.email
       ,u.phone
       ,u.role
-      ,b.art_seq
+      ,substrb(u.ssn,1,6) birth
+      ,b.art_seq AS artSeq
       ,b.content
       ,b.title
-      ,b.reg_date write_date
+      ,b.reg_date AS writeDate
       ,b.category
 FROM   member u
       ,board  b
@@ -180,6 +183,27 @@ WHERE  u.mem_id = b.mem_id
 select *
 from   Board_view;
 
+CREATE OR REPLACE VIEW Subject_view AS
+SELECT u.mem_id AS id
+      ,u.pw
+      ,u.name
+      ,u.reg_date AS regDate
+      ,u.gender
+      ,u.ssn
+      ,u.profile_img AS profileImg
+      ,u.email
+      ,u.phone
+      ,u.role
+      ,substrb(u.ssn,1,6) birth
+      ,s.subj_seq AS subjSeq
+      ,s.subj_name AS subjName
+FROM   member  u
+      ,subject s
+WHERE  u.mem_id = s.mem_id
+;
+select *
+from   Subject_view
+;
 /*
 ======== META PROCEDURE ==============
 */
