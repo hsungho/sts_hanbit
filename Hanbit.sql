@@ -109,7 +109,7 @@ from   exam
 
 CREATE OR REPLACE VIEW Major_view AS
 SELECT m.major_seq AS majorSeq
-      ,m.title 
+      ,m.title AS majorTitle
       ,u.mem_id AS id
       ,u.pw
       ,u.name
