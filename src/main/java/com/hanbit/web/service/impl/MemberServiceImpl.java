@@ -20,7 +20,7 @@ public class MemberServiceImpl implements MemberService{
 	@Autowired private SqlSession sqlSession;
 	@Autowired private MemberDTO member;
 	@Autowired private SubjectDTO subject;
-	private MemberServiceImpl() {
+	MemberServiceImpl() {
 		
 	}
 	@Override
