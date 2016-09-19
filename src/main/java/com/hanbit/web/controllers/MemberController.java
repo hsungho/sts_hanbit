@@ -49,7 +49,7 @@ public class MemberController {
 		member.setPw(pw);
 		member = service.login(member);
 		if (member.getId().equals("NONE")) {
-			logger.info("Controller LOGIN ","FAIL");
+			logger.info("Controller LOGIN {}","FAIL");
 			return "public:member/login.tiles";
 			
 		}else{

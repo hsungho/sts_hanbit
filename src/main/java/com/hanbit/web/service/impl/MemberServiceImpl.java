@@ -103,11 +103,11 @@ public class MemberServiceImpl implements MemberService{
 		logger.info("MemberService login ID = {}",member.getId());
 		MemberDTO mem = this.findById(member.getId());
 		if (member.getPw().equals(mem.getPw())) {
-			logger.info("MemberService LOGIN IS ","SUCCESS");
+			logger.info("MemberService LOGIN IS {}","SUCCESS");
 			return mem;
 		}
 		mem.setId("NONE");
-		logger.info("MemberService LOGIN IS ","FAIL");
+		logger.info("MemberService LOGIN IS {}","FAIL");
 		return mem;
 	}
 }
