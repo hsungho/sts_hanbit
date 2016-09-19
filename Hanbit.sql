@@ -31,7 +31,7 @@ DROP TABLE Exam CASCADE CONSTRAINT;
 
 CREATE TABLE Major(
   major_seq  INT CONSTRAINT major_pk PRIMARY KEY,
-  title      VARCHAR2(100) NOT NULL
+  title      VARCHAR2(100) NOT NULL UNIQUE
 );
 select * from major;
 
@@ -41,19 +41,17 @@ CREATE TABLE Member(
   name        VARCHAR2(20)  NOT NULL,
   gender      VARCHAR2(10)  NOT NULL,
   reg_date    VARCHAR2(20)  NOT NULL,
-  ssn         VARCHAR2(10)  NOT NULL,
+  ssn         VARCHAR2(10)  NOT NULL UNIQUE,
   email       VARCHAR2(30),
   profile_img VARCHAR2(100) DEFAULT 'default.jpg',
   role        VARCHAR2(10)  DEFAULT 'STUDENT',
-  phone       VARCHAR2(13)  NOT NULL,
+  phone       VARCHAR2(13)  NOT NULL UNIQUE,
   major_seq   INT,
   CONSTRAINT gender_ck CHECK (gender IN ('MALE','FEMALE')),
   CONSTRAINT major_member_fk FOREIGN KEY(major_seq)
 	REFERENCES Major(major_seq) ON DELETE CASCADE
 );
-select *
-from   member
-;
+select * from member;
 
 CREATE TABLE Grade(
 	grade_seq  INT CONSTRAINT grade_pk PRIMARY KEY,
@@ -207,6 +205,7 @@ from   Subject_view
 /*
 ======== META PROCEDURE ==============
 */
+
 select *
 from   user_sequences
 ;
@@ -227,7 +226,7 @@ DROP PROCEDURE HANBIT.INSERTBOARD;
 @AUTHOR : ckan2010@gmail.com
 @CREATE : 2016-09-08
 @UPDATE : 2016-09-09
-@DESC   : Àü°ø
+@DESC   : ï¿½ï¿½ï¿½ï¿½
 =====================================
 */
 -- DEF_INSERT_MAJOR
@@ -243,12 +242,12 @@ SELECT *
 FROM   major
 ;
 -- EXE_INSERT_MAJOR
-EXEC insert_major('ÄÄÇ»ÅÍ°øÇÐ°ú');
+EXEC insert_major('ï¿½ï¿½Ç»ï¿½Í°ï¿½ï¿½Ð°ï¿½');
 -- DEF_COUNT_MAJOR
 CREATE OR REPLACE PROCEDURE count_major(sp_major_count OUT NUMBER) AS
 BEGIN SELECT COUNT(*) INTO sp_major_count FROM   Major m;END count_major;
 -- EXE_COUNT_MAJOR
-DECLARE sp_count NUMBER := 0;BEGIN count_major(sp_count);DBMS_OUTPUT.PUT_LINE('Àü°ø °ú¸ñ ¼ý : '||sp_count);END;  
+DECLARE sp_count NUMBER := 0;BEGIN count_major(sp_count);DBMS_OUTPUT.PUT_LINE('ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ : '||sp_count);END;  
 -- DEF_FIND_BY_MAJOR_SEQ
 CREATE OR REPLACE PROCEDURE find_by_major_seq(
     sp_major_seq IN OUT major.major_seq%TYPE,    
@@ -269,10 +268,10 @@ BEGIN
        FROM   Major
        WHERE  major_seq = sp_major_seq
        ;
-       sp_result := '°ú¸ñ¹øÈ£ : '||sp_major_seq||', °ú¸ñ¸í : '||sp_title;
+       sp_result := 'ï¿½ï¿½ï¿½ï¿½ï¿½È£ : '||sp_major_seq||', ï¿½ï¿½ï¿½ï¿½ï¿½ : '||sp_title;
     ELSE
     
-       sp_result := 'Àü°ø °ú¸ñÀÌ ¾ø½À´Ï´Ù';
+       sp_result := 'ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½';
        
     END IF;
     
@@ -366,7 +365,7 @@ BEGIN
     UPDATE Major SET title = sp_title WHERE major_seq = sp_major_seq;
 END update_major;
 -- EXC_UPDATE_MAJOR
-BEGIN update_major('¿¹¼úÇÐºÎ',1006);END;
+BEGIN update_major('ï¿½ï¿½ï¿½ï¿½ï¿½Ðºï¿½',1006);END;
 -- DEF_DELETE_MAJOR
 CREATE OR REPLACE PROCEDURE delete_major(sp_major_seq IN major.major_seq%TYPE) AS
 BEGIN DELETE FROM  Major WHERE major_seq = sp_major_seq;END delete_major;
@@ -377,7 +376,7 @@ BEGIN delete_major(1006);END;
 @AUTHOR : ckan2010@gmail.com
 @CREATE : 2016-09-08
 @UPDATE : 2016-09-09
-@DESC   : Àü°ø
+@DESC   : ï¿½ï¿½ï¿½ï¿½
 =====================================
 */
 -- DEF_INSERT_PROFESSOR
@@ -398,7 +397,7 @@ BEGIN
 	VALUES(sp_mem_id,sp_pw,sp_name,sp_gender,sp_reg_date,sp_ssn,sp_email,sp_profile_img,sp_role,sp_phone);
 END insert_prof;
 -- EXC_INSERT_PROFESSOR
-EXEC insert_prof('prof_james','1','Á¦ÀÓ½º °í½½¸µ','MALE','2016-08-01','620905-1','james@test.com','prof_james.jpg','PROF','010-1234-5678');
+EXEC insert_prof('prof_james','1','ï¿½ï¿½ï¿½Ó½ï¿½ ï¿½ï¿½ï¿½ï¿½','MALE','2016-08-01','620905-1','james@test.com','prof_james.jpg','PROF','010-1234-5678');
 -- DEF_COUNT_PROFESSOR
 CREATE OR REPLACE PROCEDURE count_prof(sp_count OUT NUMBER) AS
 BEGIN SELECT COUNT(*) INTO sp_count FROM Member m WHERE role = 'PROF' ;END count_prof;
@@ -406,7 +405,7 @@ BEGIN SELECT COUNT(*) INTO sp_count FROM Member m WHERE role = 'PROF' ;END count
 DECLARE sp_count NUMBER := 0;
 BEGIN 
 count_prof(sp_count);
-DBMS_OUTPUT.PUT_LINE('±³¼öÀÎ¿ø : '||sp_count||' ¸í');END;
+DBMS_OUTPUT.PUT_LINE('ï¿½ï¿½ï¿½ï¿½ï¿½Î¿ï¿½ : '||sp_count||' ï¿½ï¿½');END;
 -- DEF_EXIST_MEMBER_ID
 CREATE OR REPLACE FUNCTION exist_member_id(sp_mem_id IN member.mem_id%TYPE) 
 RETURN NUMBER AS 
@@ -425,7 +424,7 @@ DECLARE
 BEGIN
     sp_mem_cnt := exist_member_id(sp_mem_id);
     IF sp_mem_cnt = 0 THEN
-       DBMS_OUTPUT.PUT_LINE('Á¸ÀçÇÏÁö ¾Ê´Â ¸â¹ö ÀÔ´Ï´Ù.');
+       DBMS_OUTPUT.PUT_LINE('ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´ï¿½ ï¿½ï¿½ï¿½ ï¿½Ô´Ï´ï¿½.');
     END IF;
     
 END;    
@@ -442,13 +441,13 @@ DECLARE
 BEGIN
     sp_mem_cnt := exist_member_id(sp_mem_id);
     IF sp_mem_cnt = 0 THEN
-       DBMS_OUTPUT.PUT_LINE('Á¸ÀçÇÏÁö ¾Ê´Â ¸â¹ö ÀÔ´Ï´Ù.');
+       DBMS_OUTPUT.PUT_LINE('ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´ï¿½ ï¿½ï¿½ï¿½ ï¿½Ô´Ï´ï¿½.');
     ELSE
        find_by_prof_id(sp_mem_id,sp_prof_rec);
-        DBMS_OUTPUT.PUT_LINE('¸â¹ö ID : '||sp_prof_rec.mem_id||', ºñ¹ø : '||sp_prof_rec.pw||', ÀÌ¸§ : '||sp_prof_rec.name||
-                            ', ¼ºº° : '||sp_prof_rec.gender||', ÀÔÇÐÀÏÀÚ : '||sp_prof_rec.reg_date||', SSN : '||sp_prof_rec.ssn||
-                            ', ÀÌ¸ÞÀÏ : '||sp_prof_rec.email||', »çÁø : '||sp_prof_rec.profile_img||', ±ÇÇÑ : '||sp_prof_rec.role||
-                            ', ÀüÈ­¹øÈ£ : '||sp_prof_rec.phone);
+        DBMS_OUTPUT.PUT_LINE('ï¿½ï¿½ï¿½ ID : '||sp_prof_rec.mem_id||', ï¿½ï¿½ï¿½ : '||sp_prof_rec.pw||', ï¿½Ì¸ï¿½ : '||sp_prof_rec.name||
+                            ', ï¿½ï¿½ï¿½ï¿½ : '||sp_prof_rec.gender||', ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : '||sp_prof_rec.reg_date||', SSN : '||sp_prof_rec.ssn||
+                            ', ï¿½Ì¸ï¿½ï¿½ï¿½ : '||sp_prof_rec.email||', ï¿½ï¿½ï¿½ï¿½ : '||sp_prof_rec.profile_img||', ï¿½ï¿½ï¿½ï¿½ : '||sp_prof_rec.role||
+                            ', ï¿½ï¿½È­ï¿½ï¿½È£ : '||sp_prof_rec.phone);
     END IF;    
 END;
 -- DEF_ALL_PROF
@@ -468,10 +467,10 @@ BEGIN
     FETCH sp_prof_cur 
     INTO sp_prof_rec;
         EXIT WHEN sp_prof_cur%NOTFOUND;
-        DBMS_OUTPUT.PUT_LINE('¸â¹ö ID : '||sp_prof_rec.mem_id||', ºñ¹ø : '||sp_prof_rec.pw||', ÀÌ¸§ : '||sp_prof_rec.name||
-                            ', ¼ºº° : '||sp_prof_rec.gender||', ÀÔÇÐÀÏÀÚ : '||sp_prof_rec.reg_date||', SSN : '||sp_prof_rec.ssn||
-                            ', ÀÌ¸ÞÀÏ : '||sp_prof_rec.email||', »çÁø : '||sp_prof_rec.profile_img||', ±ÇÇÑ : '||sp_prof_rec.role||
-                            ', ÀüÈ­¹øÈ£ : '||sp_prof_rec.phone);
+        DBMS_OUTPUT.PUT_LINE('ï¿½ï¿½ï¿½ ID : '||sp_prof_rec.mem_id||', ï¿½ï¿½ï¿½ : '||sp_prof_rec.pw||', ï¿½Ì¸ï¿½ : '||sp_prof_rec.name||
+                            ', ï¿½ï¿½ï¿½ï¿½ : '||sp_prof_rec.gender||', ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : '||sp_prof_rec.reg_date||', SSN : '||sp_prof_rec.ssn||
+                            ', ï¿½Ì¸ï¿½ï¿½ï¿½ : '||sp_prof_rec.email||', ï¿½ï¿½ï¿½ï¿½ : '||sp_prof_rec.profile_img||', ï¿½ï¿½ï¿½ï¿½ : '||sp_prof_rec.role||
+                            ', ï¿½ï¿½È­ï¿½ï¿½È£ : '||sp_prof_rec.phone);
     END LOOP;
     CLOSE sp_prof_cur;
 END;
@@ -498,7 +497,7 @@ BEGIN delete_prof('prof_james');END;
 @AUTHOR : ckan2010@gmail.com
 @CREATE : 2016-09-08
 @UPDATE : 2016-09-09
-@DESC   : Àü°ø
+@DESC   : ï¿½ï¿½ï¿½ï¿½
 =====================================
 */
 -- DEF_INSERT_STUDENT
@@ -520,18 +519,19 @@ BEGIN
 	VALUES(sp_mem_id,sp_pw,sp_name,sp_gender,sp_reg_date,sp_ssn,sp_email,sp_profile_img,sp_role,sp_phone,sp_major_seq);
 END insert_student;
 -- EXC_INSERT_STUDENT
-EXEC insert_student('han','1','ÇÑÈ¿ÁÖ','FEMALE','2016-07-01','870222-2','han@test.com','han.jpg','STUDENT','010-1234-5678',1000);
+EXEC insert_student('IU','1','ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½','FEMALE','2016-07-01','870212-2','han@test.com','han.jpg','STUDENT','010-1234-3678',1000);
+
 -- DEF_COUNT_STUDENT
 CREATE OR REPLACE PROCEDURE count_student(sp_student_cnt OUT NUMBER) AS
-BEGIN SELECT COUNT(*) INTO sp_student_cnt FROM member u WHERE u.role = 'STUDENT'; END count_student;
+BEGIN SELECT COUNT(*) INTO sp_student_cnt FROM member u WHERE u.role = 'STUDENT'; COMMIT; END count_student;
 -- EXC_COUNT_MEMBER
-DECLARE sp_count NUMBER := 0;BEGIN count_student(sp_count);DBMS_OUTPUT.PUT_LINE('ÇÐ»ý : '||sp_count||' ¸í');END;
+DECLARE sp_count NUMBER := 0;BEGIN count_student(sp_count);DBMS_OUTPUT.PUT_LINE('ï¿½Ð»ï¿½ : '||sp_count||' ï¿½ï¿½');END;
 /*
 ========== EXAM =========
 @AUTHOR : ckan2010@gmail.com
 @CREATE : 2016-09-08
 @UPDATE : 2016-09-09
-@DESC   : Àü°ø
+@DESC   : ï¿½ï¿½ï¿½ï¿½
 =====================================
 */
 -- DEF_INSERT_EXAM
@@ -552,7 +552,7 @@ EXEC insert_exam('1-1','95',1000,'han');
 @AUTHOR : ckan2010@gmail.com
 @CREATE : 2016-09-08
 @UPDATE : 2016-09-09
-@DESC   : Àü°ø
+@DESC   : ï¿½ï¿½ï¿½ï¿½
 =====================================
 */
 -- DEF_INSERT_GRADE
@@ -572,7 +572,7 @@ EXEC insert_grade('A','1-1','han');
 @AUTHOR : ckan2010@gmail.com
 @CREATE : 2016-09-08
 @UPDATE : 2016-09-09
-@DESC   : Àü°ø
+@DESC   : ï¿½ï¿½ï¿½ï¿½
 =====================================
 */
 -- DEF_INSERT_NOTICE
@@ -587,13 +587,13 @@ BEGIN
 	VALUES(art_seq.nextval,sp_category,sp_title,sp_reg_date,sp_content);
 END insert_notice;
 -- EXC_INSERT_NOTICE
-EXEC insert_notice('ÇÐ±³','ÀÇÀÚÁ» ¸¸µé¾îÁÖ¼¼¿ä','2016-09-08','ÀÇÀÚ¸¦ ¸¹ÀÌ ¸¸µé¾î¼­ ½¯¼ö ÀÖ´Â°ø°£ ÀÌÀÖ¾î¾ß ÇÕ´Ï´Ù.');
+EXEC insert_notice('ï¿½Ð±ï¿½','ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½','2016-09-08','ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½î¼­ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Â°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ö¾ï¿½ï¿½ ï¿½Õ´Ï´ï¿½.');
 /*
 ========== BOARD_QNA =========
 @AUTHOR : ckan2010@gmail.com
 @CREATE : 2016-09-08
 @UPDATE : 2016-09-09
-@DESC   : Àü°ø
+@DESC   : ï¿½ï¿½ï¿½ï¿½
 =====================================
 */
 -- DEF_INSERT_QNA
@@ -609,13 +609,13 @@ BEGIN
 	VALUES(art_seq.nextval,sp_category,sp_title,sp_reg_date,sp_content,sp_mem_id);
 END insert_qna;
 -- EXC_INSERT_QNA
-EXEC insert_qna('ÇÐÁ¡','ÇÐÁ¡ÀÌ»óÇØ¿ä','2016-09-08','1-1 JAVA ÇÐÁ¡ÀÌ ÀÌ»ó ÇØ¿ä.','han');
+EXEC insert_qna('ï¿½ï¿½ï¿½ï¿½','ï¿½ï¿½ï¿½ï¿½ï¿½Ì»ï¿½ï¿½Ø¿ï¿½','2016-09-08','1-1 JAVA ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½Ø¿ï¿½.','han');
 /*
 ========== SUBJECT =========
 @AUTHOR : ckan2010@gmail.com
 @CREATE : 2016-09-08
 @UPDATE : 2016-09-09
-@DESC   : Àü°ø
+@DESC   : ï¿½ï¿½ï¿½ï¿½
 =====================================
 */
 -- DEF_INSERT_SUBJECT
@@ -634,7 +634,7 @@ EXEC insert_subject('JAVA','haesu');
 @AUTHOR : ckan2010@gmail.com
 @CREATE : 2016-09-08
 @UPDATE : 2016-09-09
-@DESC   : Àü°ø
+@DESC   : ï¿½ï¿½ï¿½ï¿½
 =====================================
 */
 -- DEF_INSERT_PROFESSOR
@@ -684,13 +684,13 @@ BEGIN
        FROM   member m
        WHERE  m.mem_id = sp_mem_id
        ;
-       sp_result := '¸â¹ö ID : '||sp_mem_id||', ºñ¹ø : '||sp_pw||', ÀÌ¸§ : '||sp_name||
-                    ', ¼ºº° : '||sp_gender||', ÀÔÇÐÀÏÀÚ : '||sp_reg_date||', SSN : '||sp_ssn||
-                    ', ÀÌ¸ÞÀÏ : '||sp_email||', »çÁø : '||sp_profile_img||', ±ÇÇÑ : '||sp_role||
-                    ', ÀüÈ­¹øÈ£ : '||sp_phone||', Àü°ø¼ø¼­ : '||sp_major_seq;
+       sp_result := 'ï¿½ï¿½ï¿½ ID : '||sp_mem_id||', ï¿½ï¿½ï¿½ : '||sp_pw||', ï¿½Ì¸ï¿½ : '||sp_name||
+                    ', ï¿½ï¿½ï¿½ï¿½ : '||sp_gender||', ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : '||sp_reg_date||', SSN : '||sp_ssn||
+                    ', ï¿½Ì¸ï¿½ï¿½ï¿½ : '||sp_email||', ï¿½ï¿½ï¿½ï¿½ : '||sp_profile_img||', ï¿½ï¿½ï¿½ï¿½ : '||sp_role||
+                    ', ï¿½ï¿½È­ï¿½ï¿½È£ : '||sp_phone||', ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : '||sp_major_seq;
     ELSE
     
-       sp_result := sp_mem_id||' ¸â¹ö°¡ ¾ø½À´Ï´Ù';
+       sp_result := sp_mem_id||' ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½';
        
     END IF;
     
@@ -709,3 +709,11 @@ BEGIN
         DBMS_OUTPUT.PUT_LINE(sp_result);
     END LOOP;    
 END; 
+
+ALTER TABLE subject MODIFY subj_name VARCHAR2(20)UNIQUE;
+
+ALTER TABLE member MODIFY ssn VARCHAR2(20)UNIQUE;
+
+ALTER TABLE member MODIFY phone VARCHAR2(20)UNIQUE;
+
+ALTER TABLE major MODIFY title VARCHAR2(100)UNIQUE;

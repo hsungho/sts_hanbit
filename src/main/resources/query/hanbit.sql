@@ -1,26 +1,16 @@
-drop table account;
-drop view account_member;
-drop table grade;
-drop view grade_member;
-drop view grade_view;
-drop table member;
-drop table subject;
-drop view subject_member;
-drop table test;
-
-DROP SEQUENCE major_seq;
-DROP SEQUENCE grade_seq;
+-- CREATE
+DROP SEQUENCE seq;
 DROP SEQUENCE art_seq;
 DROP SEQUENCE subj_seq;
+DROP SEQUENCE major_seq;
 DROP SEQUENCE exam_seq;
-
-CREATE SEQUENCE major_seq START WITH 1000 INCREMENT BY 1 NOCACHE NOCYCLE;
 CREATE SEQUENCE grade_seq START WITH 1000 INCREMENT BY 1 NOCACHE NOCYCLE;
 CREATE SEQUENCE art_seq START WITH 1000 INCREMENT BY 1 NOCACHE NOCYCLE;
 CREATE SEQUENCE subj_seq START WITH 1000 INCREMENT BY 1 NOCACHE NOCYCLE;
+CREATE SEQUENCE major_seq START WITH 1000 INCREMENT BY 1 NOCACHE NOCYCLE;
 CREATE SEQUENCE exam_seq START WITH 1000 INCREMENT BY 1 NOCACHE NOCYCLE;
 
-select * from tab;
+-- SELECT SEQUENCE_OWNER, SEQUENCE_NAME FROM ALL_SEQUENCES WHERE SEQUENCE_OWNER = 'HANBIT';
 
 DROP TABLE Major CASCADE CONSTRAINT;
 DROP TABLE Member CASCADE CONSTRAINT;
@@ -30,263 +20,195 @@ DROP TABLE Subject CASCADE CONSTRAINT;
 DROP TABLE Exam CASCADE CONSTRAINT;
 
 CREATE TABLE Major(
-  major_seq  INT CONSTRAINT major_pk PRIMARY KEY,
-  title      VARCHAR2(100) NOT NULL
+	major_seq INT PRIMARY KEY,
+	title VARCHAR2(20) NOT NULL UNIQUE
 );
-select * from major;
-
 CREATE TABLE Member(
-  mem_id      VARCHAR2(20) CONSTRAINT member_pk PRIMARY KEY,
-  pw          VARCHAR2(20)  NOT NULL,
-  name        VARCHAR2(20)  NOT NULL,
-  gender      VARCHAR2(10)  NOT NULL,
-  reg_date    VARCHAR2(20)  NOT NULL,
-  ssn         VARCHAR2(10)  NOT NULL,
-  email       VARCHAR2(30),
-  profile_img VARCHAR2(100) DEFAULT 'default.jpg',
-  role        VARCHAR2(10)  DEFAULT 'STUDENT',
-  phone       VARCHAR2(13)  NOT NULL,
-  major_seq   INT,
-  CONSTRAINT gender_ck CHECK (gender IN ('MALE','FEMALE')),
-  CONSTRAINT major_member_fk FOREIGN KEY(major_seq)
-	REFERENCES Major(major_seq) ON DELETE CASCADE
+	mem_id VARCHAR2(20) PRIMARY KEY,
+	pw VARCHAR2(20) NOT NULL,
+	name VARCHAR2(20) NOT NULL,
+	gender VARCHAR2(10) NOT NULL,
+	reg_date VARCHAR2(20) NOT NULL,
+	ssn VARCHAR2(10) NOT NULL UNIQUE,
+	email VARCHAR2(30),
+	profile_img VARCHAR2(100) DEFAULT 'default.jpg',
+	role VARCHAR2(10) DEFAULT 'STUDENT',
+	phone VARCHAR2(13) NOT NULL UNIQUE,
+	major_seq INT,
+	CONSTRAINT gender_ck CHECK (gender IN ('MALE', 'FEMALE')),
+	CONSTRAINT major_member_fk FOREIGN KEY (major_seq) REFERENCES Major(major_seq) ON DELETE CASCADE
 );
-select *
-from   member
-;
-
 CREATE TABLE Grade(
-	grade_seq  INT CONSTRAINT grade_pk PRIMARY KEY,
-	grade      VARCHAR2(5)   NOT NULL,
-    term       VARCHAR2(10)  NOT NULL,
-	mem_id     VARCHAR2(20)  NOT NULL,
-	CONSTRAINT member_grade_fk FOREIGN KEY(mem_id)
-	REFERENCES Member(mem_id) ON DELETE CASCADE
+	grade_seq INT PRIMARY KEY,
+	grade VARCHAR2(5) NOT NULL,
+	term VARCHAR2(10) NOT NULL,
+	mem_id VARCHAR2(20) NOT NULL,
+	CONSTRAINT member_grade_fk FOREIGN KEY (mem_id) REFERENCES Member(mem_id) ON DELETE CASCADE
 );
-select *
-from   grade
-;
-
 CREATE TABLE Board(
-  art_seq    INT CONSTRAINT board_pk PRIMARY KEY,
-  category   VARCHAR2(20)  NOT NULL,
-  title      VARCHAR2(30)  DEFAULT 'NO TITLE',
-  reg_date   VARCHAR2(20)  NOT NULL,
-  content    VARCHAR2(100) DEFAULT 'NO CONTENT',
-  mem_id     VARCHAR2(20),
-  CONSTRAINT member_board_fk FOREIGN KEY(mem_id)
-	REFERENCES Member(mem_id) ON DELETE CASCADE
+	art_seq INT PRIMARY KEY,
+	category VARCHAR2(20) NOT NULL UNIQUE,
+	title VARCHAR2(30) DEFAULT 'NO TITLE',
+	reg_date VARCHAR2(20) NOT NULL,
+	content VARCHAR2(100) DEFAULT 'NO CONTENT',
+	mem_id VARCHAR2(20),
+	CONSTRAINT member_board_fk FOREIGN KEY (mem_id) REFERENCES Member(mem_id) ON DELETE CASCADE
 );
-select *
-from   board
-;
-
 CREATE TABLE Subject(
-  subj_seq   INT CONSTRAINT subject_pk PRIMARY KEY,
-  subj_name  VARCHAR2(20)  NOT NULL,
-  mem_id     VARCHAR2(20)  NOT NULL,
-  CONSTRAINT member_subject_fk FOREIGN KEY(mem_id)
-	REFERENCES Member(mem_id) ON DELETE CASCADE
+	subj_seq INT PRIMARY KEY,
+	subj_name VARCHAR2(20) NOT NULL UNIQUE,
+	mem_id VARCHAR2(20)NOT NULL,
+	CONSTRAINT member_subject_fk FOREIGN KEY (mem_id) REFERENCES Member(mem_id) ON DELETE CASCADE
 );
-select *
-from   Subject
-;
-
 CREATE TABLE Exam(
-  exam_seq   INT CONSTRAINT exam_pk PRIMARY KEY,
-  term       VARCHAR2(10) NOT NULL,
-  score      INT DEFAULT 0,
-  subj_seq   INT,
-  mem_id     VARCHAR2(20),
-  CONSTRAINT subject_exam_fk FOREIGN KEY(subj_seq)
-	REFERENCES Subject(subj_seq) ON DELETE CASCADE,
-  CONSTRAINT member_exam_fk FOREIGN KEY(mem_id)
-	REFERENCES Member(mem_id) ON DELETE CASCADE
+	exam_seq INT PRIMARY KEY,
+	term VARCHAR2(10)NOT NULL,
+	score INT DEFAULT 0,
+	subj_seq INT,
+	mem_id VARCHAR2(20),
+	CONSTRAINT subject_exam_fk FOREIGN KEY (subj_seq) REFERENCES Subject(subj_seq) ON DELETE CASCADE,
+	CONSTRAINT member_exam_fk FOREIGN KEY (mem_id) REFERENCES Member(mem_id) ON DELETE CASCADE
 );
-select *
-from   exam
-;
+CREATE OR REPLACE VIEW Major_view
+AS
+SELECT 
+	m.major_seq AS majorSeq,
+	m.title AS majorTitle,
+	u.mem_id AS id,
+	u.pw AS pw,
+	u.name AS name,
+	u.gender AS gender,
+	u.reg_date AS regDate,
+	u.ssn AS ssn,
+	u.email AS email,
+	u.profile_img AS profileImg,
+	u.role AS role,
+	u.phone AS phone
+FROM Major m, Member u
+WHERE m.major_seq = u.major_seq;
 
-CREATE OR REPLACE VIEW Major_view AS
-SELECT m.major_seq AS majorSeq
-      ,m.title AS majorTitle
-      ,u.mem_id AS id
-      ,u.pw
-      ,u.name
-      ,u.reg_date AS regDate
-      ,u.gender
-      ,u.ssn
-      ,u.profile_img AS profileImg
-      ,u.email
-      ,u.phone
-      ,u.role
-      ,substrb(u.ssn,1,6) birth
-FROM   Major   m
-      ,Member  u
-WHERE  m.major_seq = u.major_seq      
-;
-select *
-from   Major_view;
+CREATE OR REPLACE VIEW Grade_view
+AS
+SELECT 
+    x.exam_seq AS examSeq,
+	x.score AS score,
+	s.subj_seq AS subjSeq,
+	s.subj_name AS subjName,
+	g.grade_seq AS gradeSeq,
+	g.grade AS grade,
+	g.term AS term,
+	u.mem_id AS id,
+	u.pw AS pw,
+	u.name AS name,
+	u.gender AS gender,
+	u.reg_date AS regDate,
+	u.ssn AS ssn,
+	u.email AS email,
+	u.profile_img AS profileImg,
+	u.role AS role,
+	u.phone AS phone,
+	u.birth AS birth
+FROM Member u, Grade g, Subject s, Exam x
+WHERE u.mem_id = g.mem_id AND u.mem_id = s.mem_id AND u.mem_id = x.mem_id;
 
-CREATE OR REPLACE VIEW Grade_view AS
-SELECT u.mem_id AS id
-      ,u.pw
-      ,u.name
-      ,u.reg_date AS regDate
-      ,u.gender 
-      ,u.ssn
-      ,u.profile_img AS profileImg
-      ,u.email
-      ,u.phone
-      ,u.role
-      ,substrb(u.ssn,1,6) AS birth
-      ,g.grade_seq AS gradeSeq
-      ,g.grade
-      ,g.term
-      ,x.exam_seq AS examSeq
-      ,x.score
-      ,s.subj_seq AS subjSeq
-      ,s.subj_name AS subjName
-FROM   member u
-      ,grade   g
-      ,exam    x
-      ,subject s
-WHERE  u.mem_id = g.mem_id
-AND    u.mem_id = x.mem_id
-AND    u.mem_id = s.mem_id
-AND    x.subj_seq = s.subj_seq
-;
-select *
-from   Grade_view;
-
-CREATE OR REPLACE VIEW Board_view AS
-SELECT u.mem_id AS id
-      ,u.pw
-      ,u.name
-      ,u.reg_date AS regDate
-      ,u.gender
-      ,u.ssn
-      ,u.profile_img AS profileImg
-      ,u.email
-      ,u.phone
-      ,u.role
-      ,substrb(u.ssn,1,6) birth
-      ,b.art_seq AS artSeq
-      ,b.content
-      ,b.title
-      ,b.reg_date AS writeDate
-      ,b.category
-FROM   member u
-      ,board  b
-WHERE  u.mem_id = b.mem_id
-;
-select *
-from   Board_view;
-
-CREATE OR REPLACE VIEW Subject_view AS
-SELECT u.mem_id AS id
-      ,u.pw
-      ,u.name
-      ,u.reg_date AS regDate
-      ,u.gender
-      ,u.ssn
-      ,u.profile_img AS profileImg
-      ,u.email
-      ,u.phone
-      ,u.role
-      ,substrb(u.ssn,1,6) birth
-      ,s.subj_seq AS subjSeq
-      ,s.subj_name AS subjName
-FROM   member  u
-      ,subject s
-WHERE  u.mem_id = s.mem_id
-;
-select *
-from   Subject_view
-;
+CREATE OR REPLACE VIEW Board_view
+AS
+SELECT 
+	b.art_seq AS artSeq,
+	b.category AS category,
+	b.title AS title,
+	b.reg_date AS writeDate,
+	b.content AS content,
+	u.mem_id AS id,
+	u.pw AS pw,
+	u.name AS name,
+	u.gender AS gender,
+	u.reg_date AS regDate,
+	u.gender AS gender,
+	u.ssn AS ssn,
+	u.email AS email,
+	u.profile_img AS profileImg,
+	u.phone AS phone,
+	u.role AS role
+FROM Member u,Board b
+WHERE u.mem_id = b.mem_id;
 /*
-======== META PROCEDURE ==============
-*/
-select *
-from   user_sequences
-;
-select *
-from   user_objects
-;
-select *
-from   SYS.user_constraints
-order by table_name,constraint_name
-;
-SELECT *
-FROM   user_procedures
-;
-DROP PROCEDURE insert_exam;
-DROP PROCEDURE HANBIT.INSERTBOARD;
+========= META_PROCEDURE ====
+*/	
+SELECT OBJECT_NAME FROM USER_PROCEDURES ORDER BY OBJECT_NAME ASC;
+DROP PROCEDURE HANBIT.SELECT_MAJOR;
 /*
-================ MAJOR ==============
-@AUTHOR : ckan2010@gmail.com
-@CREATE : 2016-09-08
-@UPDATE : 2016-09-09
-@DESC   : ¿¸∞¯
-=====================================
+============ MAJOR ==========
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2016-9-8
+@UPDATE DATE : 2016-9-9
+@DESC : Ï†ÑÍ≥µ
+==============================
 */
 -- DEF_INSERT_MAJOR
-CREATE OR REPLACE PROCEDURE insert_major(
-	sp_title IN Major.title%TYPE
-) AS
+CREATE OR REPLACE PROCEDURE insert_major(sp_title IN Major.title%TYPE) AS
 BEGIN
-	INSERT INTO Major(major_seq,title)
-	VALUES(major_seq.nextval,sp_title);
+	INSERT INTO Major(major_seq,title) VALUES(major_seq.nextval,sp_title);
 END insert_major;
------ SELECT MAJOR -----
-SELECT *
-FROM   major
-;
 -- EXE_INSERT_MAJOR
-EXEC insert_major('ƒƒ«ª≈Õ∞¯«–∞˙');
+EXEC HANBIT.INSERT_MAJOR('Ïª¥Ìì®ÌÑ∞Í≥µÌïô');
 -- DEF_COUNT_MAJOR
-CREATE OR REPLACE PROCEDURE count_major(sp_major_count OUT NUMBER) AS
-BEGIN SELECT COUNT(*) INTO sp_major_count FROM   Major m;END count_major;
+CREATE OR REPLACE PROCEDURE count_major(sp_count OUT NUMBER) AS 
+BEGIN SELECT COUNT(*) into sp_count FROM Major;END count_major;
 -- EXE_COUNT_MAJOR
-DECLARE sp_count NUMBER := 0;BEGIN count_major(sp_count);DBMS_OUTPUT.PUT_LINE('¿¸∞¯ ∞˙∏Ò º˝ : '||sp_count);END;  
+DECLARE sp_count NUMBER;BEGIN count_major(sp_count);DBMS_OUTPUT.put_line ('Ï†ÑÍ≥µ ÏàòÎüâ : '||sp_count);END;
 -- DEF_FIND_BY_MAJOR_SEQ
 CREATE OR REPLACE PROCEDURE find_by_major_seq(
-    sp_major_seq IN OUT major.major_seq%TYPE,    
-    sp_result       OUT VARCHAR2
-) AS
-    sp_title    MAJOR.TITLE%TYPE := NULL;
-    major_count NUMBER := 0;
+	sp_major_seq IN OUT Major.major_seq%TYPE,
+	sp_title OUT Major.title%TYPE,
+	sp_result OUT VARCHAR2
+) AS 
+    sp_temp_count NUMBER;
 BEGIN
-    SELECT COUNT(*)
-    INTO   major_count
-    FROM   Major m
-    WHERE  m.major_seq = sp_major_seq;
-    
-    IF major_count > 0 THEN
-       
-       SELECT major_seq,title
-       INTO   sp_major_seq,sp_title
-       FROM   Major
-       WHERE  major_seq = sp_major_seq
-       ;
-       sp_result := '∞˙∏Òπ¯»£ : '||sp_major_seq||', ∞˙∏Ò∏Ì : '||sp_title;
-    ELSE
-    
-       sp_result := '¿¸∞¯ ∞˙∏Ò¿Ã æ¯Ω¿¥œ¥Ÿ';
-       
+    SELECT COUNT(*) into SP_temp_count from major where major_seq = sp_major_seq; 
+	IF (sp_temp_count > 0) 
+	THEN
+        SELECT major_seq, title
+        INTO sp_major_seq,sp_title 
+        FROM Major 
+        WHERE major_seq = sp_major_seq;
+        sp_result :='Í≥ºÎ™©Î≤àÌò∏ : '||sp_major_seq||', Í≥ºÎ™©Î™Ö : '||sp_title;
+    ELSE  
+        sp_result :='Ï†ÑÍ≥µ Í≥ºÎ™©Ïù¥ ÏóÜÏäµÎãàÎã§';
     END IF;
-    
 END find_by_major_seq;
--- EXC_FIND_BY_MAJOR_SEQ
+-- EXE_FIND_BY_MAJOR_SEQ
 DECLARE
-    sp_major_seq major.major_seq%TYPE := 1001;
-    sp_result    VARCHAR2(100) := null;
+ sp_major_seq NUMBER := 1001;
+ sp_result VARCHAR2(100);
+ sp_title VARCHAR2(100);
 BEGIN
-    find_by_major_seq(sp_major_seq,sp_result);
-    DBMS_OUTPUT.PUT_LINE(sp_result);
-    
+ find_by_major_seq(sp_major_seq,sp_title,sp_result);
+  DBMS_OUTPUT.put_line (sp_result);
+ END;
+-- DEF_ALL_MAJOR(CURSOR VERSION)
+CREATE OR REPLACE PROCEDURE HANBIT.all_major(
+    major_cur OUT SYS_REFCURSOR
+) IS
+BEGIN
+    OPEN major_cur FOR SELECT major_seq,title FROM major;
+END all_major;
+-- EXE_ALL_MAJOR(CURSOR VERSION)
+DECLARE
+  sp_cursor  SYS_REFCURSOR;
+  sp_major_seq   Major.major_seq%TYPE;
+  sp_title   Major.title%TYPE;
+BEGIN
+  all_major (sp_cursor);         
+  LOOP 
+    FETCH sp_cursor
+    INTO  sp_major_seq, sp_title;
+    EXIT WHEN sp_cursor%NOTFOUND;
+    DBMS_OUTPUT.PUT_LINE(sp_major_seq || ',' ||sp_title);
+  END LOOP;
+  CLOSE sp_cursor;
 END;
--- DEF_ALL_MAJOR
+-- DEF_ALL_MAJOR(CLOB VERSION)
 CREATE OR REPLACE PROCEDURE HANBIT.all_major(
     sp_result OUT CLOB
 ) AS
@@ -314,398 +236,287 @@ BEGIN
     sp_result := sp_temp;
     
 END all_major;
--- EXC_ALL_MAJOR
-DECLARE
-     sp_result CLOB;
-BEGIN
-    all_major(sp_result);
-    DBMS_OUTPUT.PUT_LINE(sp_result);
-    
-END; 
--- EXC_ALL_MAJOR
-DECLARE
-    pkg_major    major%ROWTYPE;
-    CURSOR cur IS
-    SELECT major_seq,title
-    FROM   Major;    
-BEGIN
-    FOR pkg_major IN cur
-    LOOP
-        EXIT WHEN cur%NOTFOUND;
-        DBMS_OUTPUT.PUT_LINE(pkg_major.major_seq||'  -  '||pkg_major.title);
-    END LOOP;    
-END;
--- DEF_CURSOR_RETURN_ALL_MAJOR
-CREATE OR REPLACE PROCEDURE HANBIT.all_major(
-    major_cur OUT SYS_REFCURSOR
-) AS
-BEGIN        
-    OPEN major_cur FOR SELECT major_seq,title FROM major ORDER BY major_seq;
-END all_major;
--- EXC_RETURN_CURSOR_ALL_MAJOR
-DECLARE
-    sp_major_cur SYS_REFCURSOR;
-    sp_marjor_rec major%ROWTYPE;
-BEGIN
-    all_major(sp_major_cur);
-    LOOP 
-    FETCH sp_major_cur 
-    INTO sp_marjor_rec;
-        EXIT WHEN sp_major_cur%NOTFOUND;
-        DBMS_OUTPUT.PUT_LINE(sp_marjor_rec.major_seq||','||sp_marjor_rec.title);
-    END LOOP;
-    CLOSE sp_major_cur;
-END;
+-- EXE_ALL_MAJOR(CLOB VERSION)
+DECLARE sp_result CLOB; BEGIN all_major(sp_result);DBMS_OUTPUT.PUT_LINE(sp_result);END; 
 -- DEF_UPDATE_MAJOR
 CREATE OR REPLACE PROCEDURE update_major(
-    sp_title     IN major.title%TYPE,
-    sp_major_seq IN major.major_seq%TYPE
-)
-AS
-BEGIN    
-    UPDATE Major SET title = sp_title WHERE major_seq = sp_major_seq;
-END update_major;
--- EXC_UPDATE_MAJOR
-BEGIN update_major('øπº˙«–∫Œ',1006);END;
+  sp_major_seq IN Major.major_seq%TYPE,
+  sp_title IN Major.title%TYPE
+)AS BEGIN UPDATE Major SET title = sp_title WHERE major_seq = sp_major_seq;END update_major;
+-- EXE_UPDATE_MAJOR
+BEGIN update_major(1002,'Í≤ΩÏòÅÌïôÎ∂Ä');END;
 -- DEF_DELETE_MAJOR
-CREATE OR REPLACE PROCEDURE delete_major(sp_major_seq IN major.major_seq%TYPE) AS
-BEGIN DELETE FROM  Major WHERE major_seq = sp_major_seq;END delete_major;
--- EXC_DELETE_MAJOR
-BEGIN delete_major(1006);END;
+CREATE OR REPLACE PROCEDURE delete_major(sp_major_seq IN Major.major_seq%TYPE)AS 
+BEGIN DELETE FROM Major WHERE major_seq = sp_major_seq; END;
+-- EXE_DELETE_MAJOR
+BEGIN delete_major(1006); END;
 /*
-========== MEMBER_PROFESSOR =========
-@AUTHOR : ckan2010@gmail.com
-@CREATE : 2016-09-08
-@UPDATE : 2016-09-09
-@DESC   : ¿¸∞¯
-=====================================
+========= MEMBER_PROF =======
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2016-9-8
+@UPDATE DATE : 2016-9-9
+@DESC : ÍµêÏàò
+==============================
 */
--- DEF_INSERT_PROFESSOR
+-- DEF_INSERT_PROF
 CREATE OR REPLACE PROCEDURE insert_prof(
-	sp_mem_id      IN Member.mem_id%TYPE,
-	sp_pw          IN Member.pw%TYPE,
-	sp_name        IN Member.name%TYPE,
-	sp_gender      IN Member.gender%TYPE,
-	sp_reg_date    IN Member.reg_date%TYPE,
-	sp_ssn         IN Member.ssn%TYPE,
-	sp_email       IN Member.email%TYPE,
+	sp_mem_id IN Member.mem_id%TYPE,
+	sp_pw IN Member.pw%TYPE,
+	sp_name IN Member.name%TYPE,
+	sp_gender IN Member.gender%TYPE,
+	sp_reg_date IN Member.reg_date%TYPE,
+	sp_ssn IN Member.ssn%TYPE,
+	sp_email IN Member.email%TYPE,
 	sp_profile_img IN Member.profile_img%TYPE,
-	sp_role        IN Member.role%TYPE,
-	sp_phone       IN Member.phone%TYPE
+	sp_role IN Member.role%TYPE,
+	sp_phone IN Member.phone%TYPE
 ) AS
 BEGIN
-	INSERT INTO Member(mem_id,pw,name,gender,reg_date,ssn,email,profile_img,role,phone)
+	INSERT INTO Member(mem_id,pw,name,gender,reg_date,ssn,email,profile_img,role,phone) 
 	VALUES(sp_mem_id,sp_pw,sp_name,sp_gender,sp_reg_date,sp_ssn,sp_email,sp_profile_img,sp_role,sp_phone);
 END insert_prof;
--- EXC_INSERT_PROFESSOR
-EXEC insert_prof('prof_james','1','¡¶¿”Ω∫ ∞ÌΩΩ∏µ','MALE','2016-08-01','620905-1','james@test.com','prof_james.jpg','PROF','010-1234-5678');
--- DEF_COUNT_PROFESSOR
-CREATE OR REPLACE PROCEDURE count_prof(sp_count OUT NUMBER) AS
-BEGIN SELECT COUNT(*) INTO sp_count FROM Member m WHERE role = 'PROF' ;END count_prof;
--- EXE_COUNT_MAJOR
-DECLARE sp_count NUMBER := 0;
-BEGIN 
-count_prof(sp_count);
-DBMS_OUTPUT.PUT_LINE('±≥ºˆ¿Œø¯ : '||sp_count||' ∏Ì');END;
+-- EXE_INSERT_PROF
+EXEC HANBIT.INSERT_PROF('prof_x','1','Ï∞∞Ïä§','MALE','2010-06-01','700101-1','prof_x@test.com','default.jpg','PROF','010-1234-5678');
+-- DEF_COUNT_PROF
+CREATE OR REPLACE PROCEDURE count_prof(sp_count OUT NUMBER) AS 
+BEGIN SELECT COUNT(*) into sp_count FROM Member WHERE role='PROF';END count_prof;
+-- EXE_COUNT_PROF
+DECLARE sp_count NUMBER;BEGIN count_prof(sp_count);DBMS_OUTPUT.put_line ('ÍµêÏàò Ïù∏Ïõê : '||sp_count||' Î™Ö');END;
 -- DEF_EXIST_MEMBER_ID
-CREATE OR REPLACE FUNCTION exist_member_id(sp_mem_id IN member.mem_id%TYPE) 
-RETURN NUMBER AS 
-    sp_cnt NUMBER := 0;
-BEGIN 
- SELECT COUNT(*)
- INTO   sp_cnt
- FROM   member m
- WHERE  m.mem_id = sp_mem_id;
- RETURN sp_cnt;
-END exist_member_id; 
+CREATE OR REPLACE PROCEDURE exist_member_id(
+    sp_mem_id IN Member.mem_id%TYPE,
+    sp_count OUT NUMBER
+)AS BEGIN SELECT COUNT(*) INTO sp_count FROM Member WHERE mem_id = sp_mem_id;END exist_member_id;
 -- EXE_EXIST_MEMBER_ID
-DECLARE
-    sp_mem_cnt NUMBER := 0;
-    sp_mem_id  VARCHAR2(20) := 'haesu';
-BEGIN
-    sp_mem_cnt := exist_member_id(sp_mem_id);
-    IF sp_mem_cnt = 0 THEN
-       DBMS_OUTPUT.PUT_LINE('¡∏¿Á«œ¡ˆ æ ¥¬ ∏‚πˆ ¿‘¥œ¥Ÿ.');
-    END IF;
-    
-END;    
+DECLARE sp_mem_id VARCHAR2(30) := 'hong';sp_count NUMBER;BEGIN exist_member_id(sp_mem_id,sp_count);DBMS_OUTPUT.put_line ('Ï°∞ÌöåÍ≤∞Í≥ºÎäî  : '||sp_count||' Î™Ö');END;
 -- DEF_FIND_BY_PROF_ID
 CREATE OR REPLACE PROCEDURE find_by_prof_id(
-    sp_prof_id      IN member.mem_id%TYPE,
-    sp_prof_rec    OUT member%ROWTYPE    
-) AS BEGIN SELECT * INTO sp_prof_rec FROM member WHERE mem_id = sp_prof_id;END find_by_prof_id;
--- EXC_FIND_BY_PROF_ID
+	sp_prof_id IN Member.mem_id%TYPE,
+	sp_prof OUT Member%ROWTYPE
+) AS BEGIN SELECT * INTO sp_prof FROM Member 
+    WHERE mem_id = sp_prof_id AND role='PROF'; END find_by_prof_id;
+-- EXE_FIND_BY_PROF_ID
 DECLARE
-    sp_mem_id    member.mem_id%TYPE := 'prof_james';
-    sp_prof_rec  member%ROWTYPE;
-    sp_mem_cnt   NUMBER := 0;
+ sp_prof_id VARCHAR2(100) := 'profx';
+ sp_prof Member%ROWTYPE;
 BEGIN
-    sp_mem_cnt := exist_member_id(sp_mem_id);
-    IF sp_mem_cnt = 0 THEN
-       DBMS_OUTPUT.PUT_LINE('¡∏¿Á«œ¡ˆ æ ¥¬ ∏‚πˆ ¿‘¥œ¥Ÿ.');
-    ELSE
-       find_by_prof_id(sp_mem_id,sp_prof_rec);
-        DBMS_OUTPUT.PUT_LINE('∏‚πˆ ID : '||sp_prof_rec.mem_id||', ∫Òπ¯ : '||sp_prof_rec.pw||', ¿Ã∏ß : '||sp_prof_rec.name||
-                            ', º∫∫∞ : '||sp_prof_rec.gender||', ¿‘«–¿œ¿⁄ : '||sp_prof_rec.reg_date||', SSN : '||sp_prof_rec.ssn||
-                            ', ¿Ã∏ﬁ¿œ : '||sp_prof_rec.email||', ªÁ¡¯ : '||sp_prof_rec.profile_img||', ±««— : '||sp_prof_rec.role||
-                            ', ¿¸»≠π¯»£ : '||sp_prof_rec.phone);
-    END IF;    
-END;
--- DEF_ALL_PROF
-CREATE OR REPLACE PROCEDURE all_prof(
-    sp_prof_cur OUT SYS_REFCURSOR
-) AS
-BEGIN        
-    OPEN sp_prof_cur FOR SELECT * FROM member WHERE role = 'PROF';
+ find_by_prof_id(sp_prof_id,sp_prof);
+  DBMS_OUTPUT.put_line (sp_prof.name);
+ END;
+ -- DEF_ALL_PROF(CURSOR VERSION)
+CREATE OR REPLACE PROCEDURE HANBIT.all_prof(
+    prof_cur OUT SYS_REFCURSOR
+) IS
+BEGIN
+    OPEN prof_cur FOR SELECT * FROM Member WHERE role = 'PROF';
 END all_prof;
--- EXE_ALL_PROF
+ -- EXE_ALL_PROF(CURSOR VERSION)
 DECLARE
-    sp_prof_cur SYS_REFCURSOR;
-    sp_prof_rec member%ROWTYPE;
+  sp_cursor  SYS_REFCURSOR;
+  sp_prof Member%ROWTYPE;
 BEGIN
-    all_prof(sp_prof_cur);
-    LOOP 
-    FETCH sp_prof_cur 
-    INTO sp_prof_rec;
-        EXIT WHEN sp_prof_cur%NOTFOUND;
-        DBMS_OUTPUT.PUT_LINE('∏‚πˆ ID : '||sp_prof_rec.mem_id||', ∫Òπ¯ : '||sp_prof_rec.pw||', ¿Ã∏ß : '||sp_prof_rec.name||
-                            ', º∫∫∞ : '||sp_prof_rec.gender||', ¿‘«–¿œ¿⁄ : '||sp_prof_rec.reg_date||', SSN : '||sp_prof_rec.ssn||
-                            ', ¿Ã∏ﬁ¿œ : '||sp_prof_rec.email||', ªÁ¡¯ : '||sp_prof_rec.profile_img||', ±««— : '||sp_prof_rec.role||
-                            ', ¿¸»≠π¯»£ : '||sp_prof_rec.phone);
-    END LOOP;
-    CLOSE sp_prof_cur;
+  all_prof (sp_cursor);         
+  LOOP 
+    FETCH sp_cursor
+    INTO  sp_prof;
+    EXIT WHEN sp_cursor%NOTFOUND;
+    DBMS_OUTPUT.PUT_LINE(sp_prof.mem_id || ' : '||sp_prof.name || '   ÍµêÏàò : '||sp_prof.email);
+  END LOOP;
+  CLOSE sp_cursor;
 END;
 -- DEF_UPDATE_PROF
 CREATE OR REPLACE PROCEDURE update_prof(
-    sp_prof_id    IN member.mem_id%TYPE,
-    sp_prof_pw    IN member.pw%TYPE,
-    sp_prof_email IN member.email%TYPE,
-    sp_prof_phone IN member.phone%TYPE
-)
-AS
-BEGIN    
-    UPDATE Member SET pw = NVL(sp_prof_pw,pw),email = NVL(sp_prof_email,email),phone = NVL(sp_prof_phone,phone) WHERE mem_id = sp_prof_id AND role = 'PROF';
-END update_prof;
--- EXC_UPDATE_PROF
-BEGIN update_prof('haesu',2,null,null);END;
--- DEF_DELETE_MAJOR
-CREATE OR REPLACE PROCEDURE delete_prof(sp_prof_id IN member.mem_id%TYPE) AS
-BEGIN DELETE FROM  Member WHERE mem_id = sp_prof_id AND role = 'PROF';END delete_prof;
--- EXC_DELETE_MAJOR
-BEGIN delete_prof('prof_james');END;
+  sp_prof_id IN Member.mem_id%TYPE,
+  sp_pw IN Member.pw%TYPE,
+  sp_email IN Member.email%TYPE,
+  sp_phone IN Member.phone%TYPE
+)AS BEGIN UPDATE Member SET pw = sp_pw , email = sp_email 
+, phone = sp_phone WHERE mem_id = sp_prof_id;END update_prof;
+-- EXE_UPDATE_PROF
+BEGIN update_prof('profx','1','change@test.com','101-9999-9999');END;
+-- DEF_DELETE_PROF
+CREATE OR REPLACE PROCEDURE delete_prof(sp_prof_id IN Member.mem_id%TYPE)AS 
+BEGIN DELETE FROM Member WHERE mem_id = sp_prof_id; END;
+-- EXE_DELETE_PROF
+BEGIN delete_prof('profx'); END;
 /*
-========== MEMBER_STUDENT =========
-@AUTHOR : ckan2010@gmail.com
-@CREATE : 2016-09-08
-@UPDATE : 2016-09-09
-@DESC   : ¿¸∞¯
-=====================================
+========= MEMBER_STUDENT =====
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2016-9-8
+@UPDATE DATE : 2016-9-9
+@DESC : ÌïôÏÉù
+==============================
 */
 -- DEF_INSERT_STUDENT
 CREATE OR REPLACE PROCEDURE insert_student(
-	sp_mem_id      IN Member.mem_id%TYPE,
-	sp_pw          IN Member.pw%TYPE,
-	sp_name        IN Member.name%TYPE,
-	sp_gender      IN Member.gender%TYPE,
-	sp_reg_date    IN Member.reg_date%TYPE,
-	sp_ssn         IN Member.ssn%TYPE,
-	sp_email       IN Member.email%TYPE,
+	sp_mem_id IN Member.mem_id%TYPE,
+	sp_pw IN Member.pw%TYPE,
+	sp_name IN Member.name%TYPE,
+	sp_gender IN Member.gender%TYPE,
+	sp_reg_date IN Member.reg_date%TYPE,
+	sp_ssn IN Member.ssn%TYPE,
+	sp_email IN Member.email%TYPE,
 	sp_profile_img IN Member.profile_img%TYPE,
-	sp_role        IN Member.role%TYPE,
-	sp_phone       IN Member.phone%TYPE,
-	sp_major_seq   IN Member.major_seq%TYPE
+	sp_role IN Member.role%TYPE,
+	sp_phone IN Member.phone%TYPE,
+	sp_major_seq IN Member.major_seq%TYPE 
 ) AS
 BEGIN
-	INSERT INTO Member(mem_id,pw,name,gender,reg_date,ssn,email,profile_img,role,phone,major_seq)
+	INSERT INTO Member(mem_id,pw,name,gender,reg_date,ssn,email,profile_img,role,phone,major_seq) 
 	VALUES(sp_mem_id,sp_pw,sp_name,sp_gender,sp_reg_date,sp_ssn,sp_email,sp_profile_img,sp_role,sp_phone,sp_major_seq);
 END insert_student;
--- EXC_INSERT_STUDENT
-EXEC insert_student('han','1','«—»ø¡÷','FEMALE','2016-07-01','870222-2','han@test.com','han.jpg','STUDENT','010-1234-5678',1000);
+-- EXE_INSERT_STUDENT
+EXEC HANBIT.INSERT_STUDENT('hong','1','ÌôçÍ∏∏Îèô','MALE','2016-06-01','800101-1','hong@test.com','default.jpg','STUDENT','010-1234-5678','1001');
 -- DEF_COUNT_STUDENT
-CREATE OR REPLACE PROCEDURE count_student(sp_student_cnt OUT NUMBER) AS
-BEGIN SELECT COUNT(*) INTO sp_student_cnt FROM member u WHERE u.role = 'STUDENT'; END count_student;
--- EXC_COUNT_MEMBER
-DECLARE sp_count NUMBER := 0;BEGIN count_student(sp_count);DBMS_OUTPUT.PUT_LINE('«–ª˝ : '||sp_count||' ∏Ì');END;
-/*
-========== EXAM =========
-@AUTHOR : ckan2010@gmail.com
-@CREATE : 2016-09-08
-@UPDATE : 2016-09-09
-@DESC   : ¿¸∞¯
-=====================================
-*/
--- DEF_INSERT_EXAM
-CREATE OR REPLACE PROCEDURE insert_exam(
-	sp_term      IN Exam.term%TYPE,
-	sp_score     IN Exam.score%TYPE,
-	sp_subj_seq  IN Exam.subj_seq%TYPE,
-	sp_mem_id    IN Exam.mem_id%TYPE
-) AS
+CREATE OR REPLACE PROCEDURE count_student(sp_count OUT NUMBER) AS 
+BEGIN SELECT COUNT(*) into sp_count FROM Member WHERE role='STUDENT';COMMIT;END count_student;
+-- EXE_COUNT_STUDENT
+
+-- DEF_FIND_BY_STUDENT_ID
+CREATE OR REPLACE PROCEDURE find_by_student_id(
+	sp_student_id IN Member.mem_id%TYPE,
+	sp_student OUT Member%ROWTYPE
+) AS BEGIN SELECT * INTO sp_student FROM Member 
+    WHERE mem_id = sp_student_id AND role='STUDENT';COMMIT; END find_by_student_id;
+-- EXE_FIND_BY_STUDENT_ID
+DECLARE
+ sp_student_id VARCHAR2(100) := 'test';
+ sp_student Member%ROWTYPE;
 BEGIN
-	INSERT INTO Exam(exam_seq,term,score ,subj_seq,mem_id)
-	VALUES(exam_seq.nextval,sp_term,sp_score,sp_subj_seq,sp_mem_id);
-END insert_exam;
--- EXC_INSERT_EXAM
-EXEC insert_exam('1-1','95',1000,'han');
-/*
-========== GRADE =========
-@AUTHOR : ckan2010@gmail.com
-@CREATE : 2016-09-08
-@UPDATE : 2016-09-09
-@DESC   : ¿¸∞¯
-=====================================
-*/
--- DEF_INSERT_GRADE
-CREATE OR REPLACE PROCEDURE insert_grade(
-	sp_grade       IN Grade.grade%TYPE,
-	sp_term        IN Grade.term%TYPE,
-	sp_mem_id      IN Grade.mem_id%TYPE
-) AS
+ find_by_student_id(sp_student_id,sp_student);
+  DBMS_OUTPUT.put_line (sp_student.name);
+ END;
+ -- DEF_ALL_STUDENT(CURSOR VERSION)
+CREATE OR REPLACE PROCEDURE HANBIT.all_student(
+    student_cur OUT SYS_REFCURSOR
+) IS
 BEGIN
-	INSERT INTO Grade(grade_seq,grade,term,mem_id)
-	VALUES(grade_seq.nextval,sp_grade,sp_term,sp_mem_id);
-END insert_grade;
--- EXC_INSERT_GRADE
-EXEC insert_grade('A','1-1','han');
-/*
-========== BOARD_NOTICE =========
-@AUTHOR : ckan2010@gmail.com
-@CREATE : 2016-09-08
-@UPDATE : 2016-09-09
-@DESC   : ¿¸∞¯
-=====================================
-*/
--- DEF_INSERT_NOTICE
-CREATE OR REPLACE PROCEDURE insert_notice(
-	sp_category  IN Board.category%TYPE,
-	sp_title     IN Board.title%TYPE,
-	sp_reg_date  IN Board.reg_date%TYPE,
-	sp_content   IN Board.content%TYPE
-) AS
+    OPEN student_cur FOR SELECT * FROM Member WHERE role = 'STUDENT'; COMMIT;
+END all_student;
+ -- EXE_ALL_STUDENT(CURSOR VERSION)
+DECLARE
+  sp_cursor  SYS_REFCURSOR;
+  sp_student Member%ROWTYPE;
 BEGIN
-	INSERT INTO Board(art_seq,category,title ,reg_date,content)
-	VALUES(art_seq.nextval,sp_category,sp_title,sp_reg_date,sp_content);
-END insert_notice;
--- EXC_INSERT_NOTICE
-EXEC insert_notice('«–±≥','¿«¿⁄¡ª ∏∏µÈæÓ¡÷ººø‰','2016-09-08','¿«¿⁄∏¶ ∏π¿Ã ∏∏µÈæÓº≠ ΩØºˆ ¿÷¥¬∞¯∞£ ¿Ã¿÷æÓæﬂ «’¥œ¥Ÿ.');
+  all_student (sp_cursor);         
+  LOOP 
+    FETCH sp_cursor
+    INTO  sp_student;
+    EXIT WHEN sp_cursor%NOTFOUND;
+    DBMS_OUTPUT.PUT_LINE(sp_student.mem_id || ' : '||sp_student.name
+     || '   ÌïôÏÉù : '||sp_student.email);
+  END LOOP;
+  CLOSE sp_cursor;
+END;
+-- DEF_UPDATE_STUDENT
+CREATE OR REPLACE PROCEDURE update_student(
+  sp_student_id IN Member.mem_id%TYPE,
+  sp_pw IN Member.pw%TYPE,
+  sp_email IN Member.email%TYPE,
+  sp_phone IN Member.phone%TYPE
+)AS BEGIN UPDATE Member SET pw = sp_pw , email = sp_email , phone = sp_phone WHERE mem_id = sp_student_id;END update_student;
+-- EXE_UPDATE_STUDENT
+BEGIN update_student('profx','1','change@test.com','101-9999-9999');END;
+-- DEF_DELETE_STUDENT
+CREATE OR REPLACE PROCEDURE delete_student(sp_student_id IN Member.mem_id%TYPE)AS BEGIN DELETE FROM Member WHERE mem_id = sp_student_id; END;
+-- EXE_DELETE_STUDENT
+BEGIN delete_prof('profx'); END;
 /*
-========== BOARD_QNA =========
-@AUTHOR : ckan2010@gmail.com
-@CREATE : 2016-09-08
-@UPDATE : 2016-09-09
-@DESC   : ¿¸∞¯
-=====================================
-*/
--- DEF_INSERT_QNA
-CREATE OR REPLACE PROCEDURE insert_qna(
-	sp_category  IN Board.category%TYPE,
-	sp_title     IN Board.title%TYPE,
-	sp_reg_date  IN Board.reg_date%TYPE,
-	sp_content   IN Board.content%TYPE,
-	sp_mem_id    IN Board.mem_id%TYPE
-) AS
-BEGIN
-	INSERT INTO Board(art_seq,category,title ,reg_date,content,mem_id)
-	VALUES(art_seq.nextval,sp_category,sp_title,sp_reg_date,sp_content,sp_mem_id);
-END insert_qna;
--- EXC_INSERT_QNA
-EXEC insert_qna('«–¡°','«–¡°¿ÃªÛ«ÿø‰','2016-09-08','1-1 JAVA «–¡°¿Ã ¿ÃªÛ «ÿø‰.','han');
-/*
-========== SUBJECT =========
-@AUTHOR : ckan2010@gmail.com
-@CREATE : 2016-09-08
-@UPDATE : 2016-09-09
-@DESC   : ¿¸∞¯
-=====================================
+=========== SUBJECT =========
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2016-9-8
+@UPDATE DATE : 2016-9-9
+@DESC : Í≥ºÎ™©
+=============================
 */
 -- DEF_INSERT_SUBJECT
 CREATE OR REPLACE PROCEDURE insert_subject(
 	sp_subj_name IN Subject.subj_name%TYPE,
-	sp_mem_id    IN Subject.mem_id%TYPE
+	sp_mem_id IN Subject.mem_id%TYPE
 ) AS
 BEGIN
-	INSERT INTO Subject(subj_seq,subj_name,mem_id)
-	VALUES(subj_seq.nextval,sp_subj_name,sp_mem_id);
+	INSERT INTO Subject(subj_seq,subj_name,mem_id) 
+	VALUES(subj_seq.NEXTVAL,sp_subj_name,sp_mem_id);
 END insert_subject;
--- EXC_INSERT_PROFESSOR
-EXEC insert_subject('JAVA','haesu');
+-- EXE_INSERT_SUBJECT
+EXEC HANBIT.INSERT_SUBJECT('java','profx');
 /*
-========== MEMBER_ID_SEARCH =========
-@AUTHOR : ckan2010@gmail.com
-@CREATE : 2016-09-08
-@UPDATE : 2016-09-09
-@DESC   : ¿¸∞¯
-=====================================
+=========== EXAM ===========
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2016-9-8
+@UPDATE DATE : 2016-9-9
+@DESC : ÏãúÌóò
+============================
 */
--- DEF_INSERT_PROFESSOR
-CREATE OR REPLACE PROCEDURE find_by_id(
-    sp_mem_id  IN member.mem_id%TYPE,    
-    sp_result OUT VARCHAR2
+-- DEF_INSERT_EXAM
+CREATE OR REPLACE PROCEDURE insert_exam(
+	sp_exam_seq IN Exam.exam_seq%TYPE,
+	sp_term IN Exam.term%TYPE,
+	sp_score IN Exam.score%TYPE,
+	sp_subj_seq IN Exam.subj_seq%TYPE,
+	sp_mem_id IN Exam.mem_id%TYPE
 ) AS
-    sp_pw          member.pw%TYPE;
-    sp_name        member.name%TYPE;
-    sp_gender      member.gender%TYPE;
-    sp_reg_date    member.reg_date%TYPE;
-    sp_ssn         member.ssn%TYPE;
-    sp_email       member.email%TYPE;
-    sp_profile_img member.profile_img%TYPE;
-    sp_role        member.role%TYPE;
-    sp_phone       member.phone%TYPE;
-    sp_major_seq   member.major_seq%TYPE;
-    mem_count   NUMBER := 0;
 BEGIN
-    SELECT COUNT(*)
-    INTO   mem_count
-    FROM   member m
-    WHERE  m.mem_id = sp_mem_id;
-    
-    IF mem_count > 0 THEN
-       
-       SELECT pw,
-              name,
-              gender,
-              reg_date,
-              ssn,
-              email,
-              profile_img,
-              role,
-              phone,
-              major_seq
-       INTO   sp_pw,
-              sp_name,
-              sp_gender,
-              sp_reg_date,
-              sp_ssn,
-              sp_email,
-              sp_profile_img,
-              sp_role,
-              sp_phone,
-              sp_major_seq
-       FROM   member m
-       WHERE  m.mem_id = sp_mem_id
-       ;
-       sp_result := '∏‚πˆ ID : '||sp_mem_id||', ∫Òπ¯ : '||sp_pw||', ¿Ã∏ß : '||sp_name||
-                    ', º∫∫∞ : '||sp_gender||', ¿‘«–¿œ¿⁄ : '||sp_reg_date||', SSN : '||sp_ssn||
-                    ', ¿Ã∏ﬁ¿œ : '||sp_email||', ªÁ¡¯ : '||sp_profile_img||', ±««— : '||sp_role||
-                    ', ¿¸»≠π¯»£ : '||sp_phone||', ¿¸∞¯º¯º≠ : '||sp_major_seq;
-    ELSE
-    
-       sp_result := sp_mem_id||' ∏‚πˆ∞° æ¯Ω¿¥œ¥Ÿ';
-       
-    END IF;
-    
-END find_by_id;
--- EXC_INSERT_PROFESSOR
-DECLARE    
-    sp_result    VARCHAR2(3000) := null;
+	INSERT INTO Exam(exam_seq,term,score,subj_seq,mem_id) 
+	VALUES(sp_exam_seq,sp_term,sp_score,sp_subj_seq,sp_mem_id);
+END insert_exam;
+/*
+============ GRADE =========
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2016-9-8
+@UPDATE DATE : 2016-9-9
+@DESC : ÏÑ±Ï†Å
+============================
+*/
+-- DEF_INSERT_GRADE
+CREATE OR REPLACE PROCEDURE insert_grade(
+	sp_grade_seq IN Grade.grade_seq%TYPE,
+	sp_grade IN Grade.grade%TYPE,
+	sp_term IN Grade.term%TYPE,
+	sp_mem_id IN Grade.mem_id%TYPE
+) AS
 BEGIN
-    
-    FOR mem_rec IN (SELECT mem_id
-                    FROM   member
-                   )
-    LOOP
-                   
-        find_by_id(mem_rec.mem_id,sp_result);
-        DBMS_OUTPUT.PUT_LINE(sp_result);
-    END LOOP;    
-END; 
+	INSERT INTO Grade(grade_seq,grade,term,mem_id) 
+	VALUES(sp_grade_seq,sp_grade,sp_term,sp_mem_id);
+END insert_grade;
+/*
+========== BOARD_QNA ========
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2016-9-8
+@UPDATE DATE : 2016-9-9
+@DESC : QNA
+=============================
+*/
+-- DEF_INSERT_QNA	
+CREATE OR REPLACE PROCEDURE insert_qna(
+	sp_art_seq IN Board.art_seq%TYPE,
+	sp_category IN Board.category%TYPE,
+	sp_title IN Board.title%TYPE,
+	sp_reg_date IN Board.reg_date%TYPE,
+	sp_content IN Board.content%TYPE,
+	sp_mem_id IN Board.mem_id%TYPE
+) AS
+BEGIN
+	INSERT INTO Board(art_seq,category,title,reg_date,content,mem_id) 
+	VALUES(sp_art_seq,sp_category,sp_title,sp_reg_date,sp_content,sp_mem_id);
+END insert_qna;
+/*
+========= BOARD_NOTICE ======
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2016-9-8
+@UPDATE DATE : 2016-9-9
+@DESC : Í≥µÏßÄÏÇ¨Ìï≠
+=============================
+*/
+-- DEF_INSERT_NOTICE
+CREATE OR REPLACE PROCEDURE insert_notice(
+	sp_art_seq IN Board.art_seq%TYPE,
+	sp_category IN Board.category%TYPE,
+	sp_title IN Board.title%TYPE,
+	sp_reg_date IN Board.reg_date%TYPE,
+	sp_content IN Board.content%TYPE
+) AS
+BEGIN
+	INSERT INTO Board(art_seq,category,title,reg_date,content) 
+	VALUES(sp_art_seq,sp_category,sp_title,sp_reg_date,sp_content);
+END insert_notice;
