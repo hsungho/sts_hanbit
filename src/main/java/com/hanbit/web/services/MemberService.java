@@ -15,13 +15,14 @@ import com.hanbit.web.util.CommonService;
  */
 public interface MemberService extends CommonService{
 	public String open(MemberDTO stu);
-	public MemberDTO findOne(Command command);
 	public MemberDTO show();
 	public void update(MemberDTO stu);
 	public String delete(String id);
+	public MemberDTO findOne(Command command);
 	public int genderCount(String gender);
 	public MemberDTO login(MemberDTO member);
 	public int findId(String id);
 	public int findPw(MemberDTO mem);
 	public void logout(MemberDTO mem);
+	public int existId(String id);
 }

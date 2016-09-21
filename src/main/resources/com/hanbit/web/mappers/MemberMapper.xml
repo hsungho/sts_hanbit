@@ -18,4 +18,11 @@
                phone as phone
 	   from    member where ${option} = #{keyword}
 	</select>
+	<select id="count" resultType="int">
+		select count(*) count from member 
+	</select>
+	<select id="existId" parameterType="com.hanbit.web.domains.MemberDTO" resultType="int">
+    select count(*) as count from member where mem_id = #{id}
+    </select>
+	
 </mapper>

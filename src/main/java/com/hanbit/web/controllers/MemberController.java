@@ -1,5 +1,7 @@
 package com.hanbit.web.controllers;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,73 +11,91 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.hanbit.web.domains.Command;
 import com.hanbit.web.domains.MemberDTO;
+import com.hanbit.web.domains.Retval;
 import com.hanbit.web.service.impl.MemberServiceImpl;
 
-@Controller // has a 愿�怨�
+@Controller // has a 관계
 @SessionAttributes({"user","context","js","css","img"})
 @RequestMapping("/member")
 public class MemberController {
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	@Autowired MemberServiceImpl service;
+	@Autowired MemberDTO member;
 	@Autowired Command command;
+	@Autowired Retval retval;
 	@RequestMapping("/search/{option}/{keyword}")
+	
 	public MemberDTO find(@PathVariable("option") String option,
-			@PathVariable("keyword")String keyword,
-			Model model){
-		logger.info("TO SEARCH KEYWORD IS {}",keyword);
-		logger.info("TO SEARCH KEYWORD IS {}",option);
-		command.setOption(option);
+			@PathVariable("keyword")String keyword){
+		logger.info("TO SERCH OPTION IS {}",option);
+		logger.info("TO SERCH KEYWORD IS {}",keyword);
 		command.setKeyword(keyword);
+		command.setOption(option);
 		return service.findOne(command);
 	}
-	@RequestMapping(value="/count/{condition}",method=RequestMethod.GET,
-			consumes="application/json")
-	public String count(@PathVariable String condition,Model model){
-		logger.info("TO COUNT CONDITION IS {}",condition);
-		int count = service.count();
-		model.addAttribute("count",count);
-		return "admin:member/detail.tiles";
+	@RequestMapping(value="/count/{option}",consumes="application/json")
+	public Model count(@PathVariable("option") String option,
+			Model model){
+		logger.info("TO COUNT OPTION IS {}",option);
+		model.addAttribute("count", service.count());
+		return model;
 	}
-	@RequestMapping(value="/login",method=RequestMethod.POST)
-	public String login(@RequestParam("id") String id,
-			@RequestParam("pw") String pw,
-			@RequestParam("context")String context,
-			Model model) {
-		logger.info("GO TO {}","execute login");
-		logger.info("TO LOGIN ID IS {}",id);
-		logger.info("TO LOGIN PW IS {}",pw);
-		logger.info("CONTXT IS {}",context);
-		MemberDTO member = new MemberDTO();
+	@RequestMapping("/logined/header")
+	public String loginedHeader(){
+		logger.info("TO COUNT CONDITION IS : {}","LOGINED_HEADER");
+		return "user/header.jsp";
+	}
+
+	@RequestMapping(value="/login", method=RequestMethod.POST)
+	public @ResponseBody MemberDTO Login(
+			@RequestParam("id")String id,
+			@RequestParam("pw")String pw,
+			HttpSession session
+			) {
+		logger.info("로그인시 넘어온 id {}",id);
+		logger.info("로그인시 넘어온 pw {}",pw);
 		member.setId(id);
 		member.setPw(pw);
-		member = service.login(member);
+		//member = service.login(member);
+		MemberDTO user = service.login(member);
 		if (member.getId().equals("NONE")) {
-			logger.info("Controller LOGIN {}","FAIL");
-			return "public:member/login.tiles";
-			
+			logger.info("COntroller LOGIN","FAIL");
+			return user;
 		}else{
-			model.addAttribute("user", member);
-			model.addAttribute("context", context);
-			model.addAttribute("js", context+"/resources/js");
-			model.addAttribute("css", context+"/resources/css");
-			model.addAttribute("img", context+"/resources/img");
-			return "user:user/content.tiles";
+			logger.info("COntroller LOGIN","SUCCESS");
+			session.setAttribute("user", user);
+			return user;
 		}
-		
 	}
 	@RequestMapping("/main")
 	public String moveMain() {
 		logger.info("GO TO {}","main");
 		return "admin:member/content.tiles";
 	}
-	@RequestMapping("/regist")
-	public String regist() {
-		logger.info("GO TO {}","regist");
-		return "public:member/regist.tiles";
+	@RequestMapping("/signup")
+	public @ResponseBody Retval signup() {
+		logger.info("SIGN UP {}","EXECUTE");
+		return retval;
+	}
+	@RequestMapping("/check_dup/{id}")
+	public @ResponseBody Retval CheckDup(@PathVariable String id) {
+		logger.info("CHECK DUP {}","EXECUTE");
+		if (service.existId(id)==1) {
+			retval.setFlag("TRUE");
+			retval.setMessage("입력하신 ID는 이미 존재합니다");
+		}else{
+			retval.setFlag("FALSE");
+			retval.setMessage("입력하신 ID는 사용 가능한 ID입니다");
+		}
+		logger.info("RETVAL IS {}",retval.getFlag());
+		logger.info("RETVAL IS {}",retval.getMessage());
+		return retval;
 	}
 	@RequestMapping("/a_detail")
 	public String moveDetail(@RequestParam("key")String key) {
@@ -104,9 +124,11 @@ public class MemberController {
 		return "public:member/login.tiles";
 	}
 	@RequestMapping("/logout")
-	public String logout() {
+	public String logout(SessionStatus status) {
 		logger.info("GO TO {}","logout");
-		return "admin:member/logout.tiles";
+		status.setComplete();
+		logger.info("SESSION IS {}","CLEAR");
+		return "redirect:/";
 	}
 	@RequestMapping("/list")
 	public String list() {

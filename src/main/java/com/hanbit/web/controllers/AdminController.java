@@ -11,7 +11,7 @@ public class AdminController {
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 	@RequestMapping("/main")
 	public String goMain(){
-		logger.info("AdminController ! goMain()");
+		logger.info("AdminController ! ====ADMIN MAIN()");
 		return "admin:admin/content.tiles";
 	}
 }

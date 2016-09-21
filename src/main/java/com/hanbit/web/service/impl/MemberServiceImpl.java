@@ -81,7 +81,6 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public MemberDTO findOne(Command command) {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
-		// TODO Auto-generated method stub	
 		return mapper.findOne(command);
 	}
 	@Override
@@ -103,6 +102,9 @@ public class MemberServiceImpl implements MemberService{
 	public MemberDTO login(MemberDTO member) {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		logger.info("MemberService login ID = {}",member.getId());
+		Command command = new Command();
+		command.setKeyword(member.getId());
+		command.setOption("mem_id");
 		MemberDTO mem = this.findOne(command);
 		if (member.getPw().equals(mem.getPw())) {
 			logger.info("MemberService LOGIN IS {}","SUCCESS");
@@ -112,6 +114,11 @@ public class MemberServiceImpl implements MemberService{
 		logger.info("MemberService LOGIN IS {}","FAIL");
 		return mem;
 	}
-
-
+	@Override
+	public int existId(String id) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		logger.info("MemberService existid ID is {}",id);
+		return mapper.existId(id);
+	}
+	
 }
