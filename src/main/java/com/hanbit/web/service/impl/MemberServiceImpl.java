@@ -26,14 +26,8 @@ public class MemberServiceImpl implements MemberService{
 		
 	}
 	@Override
-	public String open(MemberDTO stu) {
-		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
-		int cnt = findId(stu.getId());
-		if (cnt == 0) {
-			return "";		
-		} else {
-			return "중복 ID 입니다.";
-		}
+	public String open(MemberDTO member) {
+		return (sqlSession.getMapper(MemberMapper.class).insert(member)==1)?"success":"fail";
 	}
 	@Override
 	public MemberDTO show() {
@@ -99,20 +93,22 @@ public class MemberServiceImpl implements MemberService{
 		return 0;
 	}
 	@Override
-	public MemberDTO login(MemberDTO member) {
+	public MemberDTO login(MemberDTO param) {
+		logger.info("MemberService login ID is {}",member.getId());
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
-		logger.info("MemberService login ID = {}",member.getId());
-		Command command = new Command();
 		command.setKeyword(member.getId());
 		command.setOption("mem_id");
-		MemberDTO mem = this.findOne(command);
-		if (member.getPw().equals(mem.getPw())) {
-			logger.info("MemberService LOGIN IS {}","SUCCESS");
-			return mem;
+		MemberDTO retval = mapper.findOne(command);
+		logger.info("MemberService PASSWORD(param) is {}",param.getPw());
+		logger.info("MemberService PASSWORD(retval) is {}",retval.getPw());
+		if(retval.getPw().equals(param.getPw())){
+			logger.info("MemberService login is {}"," SUCCESS ");
+			return retval;
+		}else{
+			logger.info("MemberService login is {}"," FAIL ");
+			retval.setId("NONE");
+			return retval;
 		}
-		mem.setId("NONE");
-		logger.info("MemberService LOGIN IS {}","FAIL");
-		return mem;
 	}
 	@Override
 	public int existId(String id) {
